@@ -1151,31 +1151,6 @@
                         'femur length', 'estimated fetal weight', 'placenta', 'amniotic', 'weeks pregnant',
                         'GA', 'HC', 'AC', 'FL', 'EFW', 'prenatal ultrasound', 'obstetric'
                     ],
-                    'MRI Brain': [
-                        'mri brain', 'brain mri', 'magnetic resonance', 'brain angiogram', 'angio',
-                        'flair', 'dwi', 'diffusion weighted', 'basal ganglia', 'thalami', 'cerebellum',
-                        'brainstem', 'ventricular system', 'intracerebral', 'angiography', 'tof'
-                    ],
-                    'CT Chest': [
-                        'ct chest', 'chest ct', 'hrct', 'computed tomography chest', 'lung',
-                        'trachea', 'bronchi', 'mediastinal', 'lymphadenopathy', 'parenchyma',
-                        'alveolar', 'interstitial', 'pleural', 'thorax'
-                    ],
-                    'CT Abdomen': [
-                        'ct abdomen', 'abdomen ct', 'ct pelvis', 'abdominal ct', 'liver',
-                        'gallbladder', 'pancreas', 'spleen', 'kidneys', 'adrenal', 'aorta',
-                        'ivc', 'bladder', 'prostate', 'peritoneal'
-                    ],
-                    'CT Brain': [
-                        'ct brain', 'brain ct', 'ct head', 'head ct', 'computed tomography brain',
-                        'cerebral', 'grey matter', 'white matter', 'focal lesion', 'parenchyma',
-                        'posterior fossa', 'intra-axial', 'extra-axial', 'midline shift'
-                    ],
-                    'MRI Spine': [
-                        'mri spine', 'spine mri', 'cervical spine', 'c spine', 'mri cervical',
-                        'whole spine screening', 'spinal canal', 'vertebral bodies', 'discs',
-                        'thecal sac', 'neural foraminae', 'facet joints'
-                    ],
                     'Echocardiogram': [
                         'echocardiogram', 'echo', 'cardiac', 'heart', 'ejection fraction', 'ventricular',
                         'valve', 'aortic', 'mitral', 'tricuspid', 'pulmonary', 'cardiology', 'ef',
@@ -1315,106 +1290,15 @@
                         /left\s+ventricular\s+(\w+)/i
                     ],
 
-                    // Radiology Specific Parameters
-                    'Sex': [
-                        /(?:sex|gender)\s*(?:is\s+)?(\w+)/i,
-                        /(male|female|M|F)\s*patient/i,
-                        /patient\s+is\s+(male|female)/i
+                    // Additional Parameters
+                    'Oxygen Saturation': [
+                        /(?:oxygen\s+saturation|O2\s+sat|sats?)\s*(?:is\s+)?(\d+)\s*(?:%|percent)?/i,
+                        /O2\s*(\d+)/i,
+                        /sat\s*(\d+)/i
                     ],
-                    'Technique': [
-                        /technique\s*:?\s*(.+?)(?:\.|findings|impression)/i,
-                        /performed\s+using\s+(.+?)(?:\.|findings)/i,
-                        /scanner\s+(.+?)(?:\.|findings)/i
-                    ],
-                    
-                    // MRI Brain Parameters
-                    'Basal Ganglia': [
-                        /basal\s+ganglia\s+(?:and\s+thalami\s+)?(?:are\s+)?(\w+)/i,
-                        /bilateral\s+basal\s+ganglia\s+(\w+)/i
-                    ],
-                    'Cerebellum': [
-                        /cerebellum\s+(?:and\s+brainstem\s+)?(?:are\s+)?(\w+)/i,
-                        /posterior\s+fossa\s+(\w+)/i
-                    ],
-                    'Ventricular System': [
-                        /ventricular\s+system\s*,?\s*cisternal\s*&?\s*sulcal\s+spaces\s+(?:are\s+)?(\w+)/i,
-                        /ventricles\s+(?:are\s+)?(\w+)/i
-                    ],
-                    'Angiography': [
-                        /angiography\s+shows?\s*:?\s*(.+?)(?:impression|consultant)/i,
-                        /arteries\s+(?:are\s+)?(\w+)/i
-                    ],
-                    
-                    // CT Chest Parameters
-                    'Trachea': [
-                        /trachea\s+(?:and\s+main\s+bronchi\s+)?(?:are\s+)?(\w+)/i,
-                        /bronchi\s+(?:are\s+)?(\w+)/i
-                    ],
-                    'Mediastinum': [
-                        /mediastinal\s+(.+?)(?:\.|no)/i,
-                        /lymphadenopathy\s+(\w+)/i
-                    ],
-                    'Lung Parenchyma': [
-                        /lung\s+parenchyma\s+(.+?)(?:\.|no)/i,
-                        /bilateral\s+lung\s+fields\s+(.+?)(?:\.|no)/i
-                    ],
-                    'Pleural': [
-                        /pleural\s+(.+?)(?:\.|soft)/i,
-                        /pleural\s+collection\s+(\w+)/i
-                    ],
-                    
-                    // CT Abdomen Parameters
-                    'Liver': [
-                        /liver\s+is\s+(.+?)(?:\.|cbd|gallbladder)/i,
-                        /liver\s+(.+?)(?:size|attenuation)/i
-                    ],
-                    'Gallbladder': [
-                        /gallbladder\s+(.+?)(?:\.|spleen|pancreas)/i,
-                        /gb\s+(.+?)(?:\.|spleen)/i
-                    ],
-                    'Pancreas': [
-                        /pancreas\s*:?\s*(.+?)(?:\.|both\s+kidneys|kidneys)/i
-                    ],
-                    'Kidneys': [
-                        /(?:both\s+)?kidneys\s+(?:are\s+)?(.+?)(?:\.|adrenal|aorta)/i,
-                        /renal\s+(.+?)(?:\.|adrenal)/i
-                    ],
-                    'Spleen': [
-                        /spleen\s+is\s+(.+?)(?:\.|mesentery|pancreas)/i
-                    ],
-                    
-                    // CT Brain Parameters
-                    'Cerebral Matter': [
-                        /cerebral\s+grey\s+and\s+white\s+matter\s+(.+?)(?:\.|basal)/i,
-                        /cerebral\s+parenchyma\s+(.+?)(?:\.|basal)/i
-                    ],
-                    'Posterior Fossa': [
-                        /posterior\s+fossa\s+structures\s+(.+?)(?:\.|ventricular)/i,
-                        /brain\s+stem\s+and\s+cerebellum\s+(.+?)(?:\.|ventricular)/i
-                    ],
-                    
-                    // MRI Spine Parameters
-                    'Curvature': [
-                        /curvature\s+of\s+spine\s+is\s+(.+?)(?:\.|canal)/i,
-                        /spinal\s+curvature\s+(.+?)(?:\.|canal)/i
-                    ],
-                    'Canal Diameters': [
-                        /canal\s+diameters\s+(.+?)(?:mm|whole\s+spine)/i,
-                        /ap\s+(\d+\.?\d*)\s*mm/i
-                    ],
-                    'Vertebral Bodies': [
-                        /vertebral\s+bodies\s+(.+?)(?:\.|configuration)/i,
-                        /alignment\s*,?\s*heights\s+(.+?)(?:\.|configuration)/i
-                    ],
-                    'Discs': [
-                        /discs?\s*,?\s*thecal\s+sac\s+(.+?)(?:\.|impression)/i,
-                        /disc\s+(.+?)(?:\.|thecal)/i
-                    ],
-                    
-                    // Impression (common to all)
-                    'Impression': [
-                        /impression\s*:?\s*(.+?)(?:consultant|dr\.|radiologist)/i,
-                        /conclusion\s*:?\s*(.+?)(?:consultant|dr\.)/i
+                    'Respiratory Rate': [
+                        /(?:respiratory\s+rate|breathing\s+rate|RR)\s*(?:is\s+)?(\d+)/i,
+                        /RR\s*(\d+)/i
                     ]
                 };
 
@@ -1544,333 +1428,29 @@
                     return;
                 }
 
-                const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+                const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '');
                 const filename = `${this.patientName.replace(/\s+/g, '_')}_${this.examType.replace(/\s+/g, '_').toLowerCase()}_${timestamp}`;
 
-                let documentContent = this.generateMedicalReport();
+                let documentContent = `# ${this.examType} Report
+
+**Patient:** ${this.patientName}
+**Date:** ${new Date().toLocaleDateString()}
+**Time:** ${new Date().toLocaleTimeString()}
+**Generated Files:**
+- ${filename}.json
+- ${filename}.docx
+
+## Measurements`;
+
+                for (let [name, value] of Object.entries(this.parameters)) {
+                    documentContent += `\n• ${name}: ${value}`;
+                }
+
+                documentContent += `\n\n## Complete Transcript\n${this.transcript}
+
+*Generated automatically: ${new Date().toLocaleString()}*`;
+
                 preview.textContent = documentContent;
-                
-                // Show download button
-                this.showDownloadButton(filename, documentContent);
-            }
-
-            generateMedicalReport() {
-                const date = new Date().toLocaleDateString('en-IN');
-                const time = new Date().toLocaleTimeString('en-IN');
-                
-                switch (this.examType) {
-                    case 'MRI Brain':
-                        return this.generateMRIBrainReport(date, time);
-                    case 'CT Chest':
-                        return this.generateCTChestReport(date, time);
-                    case 'CT Abdomen':
-                        return this.generateCTAbdomenReport(date, time);
-                    case 'CT Brain':
-                        return this.generateCTBrainReport(date, time);
-                    case 'MRI Spine':
-                        return this.generateMRISpineReport(date, time);
-                    case 'Ultrasound':
-                        return this.generateUltrasoundReport(date, time);
-                    case 'Echocardiogram':
-                        return this.generateEchoReport(date, time);
-                    default:
-                        return this.generateGeneralReport(date, time);
-                }
-            }
-
-            generateMRIBrainReport(date, time) {
-                const age = this.parameters['Age'] || '[Age]';
-                const sex = this.parameters['Sex'] || '[Sex]';
-                
-                return `**Name: ${this.patientName} Sex: ${sex} Age: ${age} Yrs Date: ${date}**
-
-**Reff.By: Dr. UHID: UH**
-
-**DEPARTMENT OF RADIO-DIAGNOSIS**
-
-**MRI BRAIN PLAIN (ANGIOGRAM)**
-
-**TECHNIQUE:**
-T2 FSE Axials / Sagittals & Coronals.T1 &T2 FLAIR Axials. DWI, GRE Axials.
-3D TOF MR Angiography of Intra + Extracranial Arteries.
-
-**FINDINGS:**
-No restriction is seen on diffusion weighted images to suggest acute infarct.
-No intracerebral hemorrhage is noted.
-Bilateral basal ganglia and thalami are ${this.parameters['Basal Ganglia'] || 'normal'}.
-Cerebellum and brainstem are ${this.parameters['Cerebellum'] || 'unremarkable'}.
-The ventricular system, cisternal & sulcal spaces are ${this.parameters['Ventricular System'] || 'normal'}.
-
-**MR ANGIOGRAPHY SHOWS:**
-${this.parameters['Angiography'] || 'Bilateral intracranial internal carotid arteries, anterior & middle cerebral arteries and their branches are normal in caliber/flow signal. The basilar artery and bilateral posterior cerebral arteries are normal in caliber and course. Both vertebral arteries are normal in calibre and flow signal.'}
-
-**IMPRESSION:**
-- ${this.parameters['Impression'] || 'No significant brain parenchymal abnormality detected.'}
-
----Suggested clinical correlation / further evaluation if clinically indicated.
-
-**CONSULTANT RADIOLOGIST**
-**DR. VISHRUTH RASA. M.D. RADIOLOGY**
-
-Generated: ${date} ${time}`;
-            }
-
-            generateCTChestReport(date, time) {
-                const age = this.parameters['Age'] || '[Age]';
-                const sex = this.parameters['Sex'] || 'F';
-                
-                return `**Name: ${this.patientName} Sex: ${sex} Age: ${age} Yrs Date: ${date}**
-
-**Reff.By: UHID: UH**
-
-**DEPARTMENT OF RADIO-DIAGNOSIS**
-
-**CT CHEST PLAIN**
-
-**TECHNIQUE:**
-CT scan of the chest was performed on 96 slice MDCT scanner using 0.625mm detector collimation. Coronal & sagittal reconstructions were performed at 2.5mm intervals.
-
-**FINDINGS:**
-Trachea and main bronchi are ${this.parameters['Trachea'] || 'normal in caliber and course with no endobronchial lesions seen'}.
-Mediastinal vascular structures are ${this.parameters['Mediastinum'] || 'within normal limits'}.
-No significant mediastinal lymphadenopathy seen.
-Lung parenchyma ${this.parameters['Lung Parenchyma'] || 'does not reveal any alveolar, interstitial or airway disease'}.
-${this.parameters['Pleural'] || 'No pleural collection seen'}.
-Soft tissues and bony cage are normal.
-
-**IMPRESSION:**
-- ${this.parameters['Impression'] || 'No focal lesions in bilateral lung fields.'}
-
----Suggested clinical correlation / further evaluation if clinically indicated.
-
-**CONSULTANT RADIOLOGIST**
-**DR. VISHRUTH RASA. M.D. RADIOLOGY**
-
-Generated: ${date} ${time}`;
-            }
-
-            generateCTAbdomenReport(date, time) {
-                const age = this.parameters['Age'] || '[Age]';
-                const sex = this.parameters['Sex'] || 'M/F';
-                
-                return `**Name: ${this.patientName} Sex: ${sex} Age: ${age} Yrs Date: ${date}**
-
-**Reff.By.Dr: UHID:**
-
-**DEPARTMENT OF RADIO-DIAGNOSIS**
-
-**CT ABDOMEN AND PELVIS PLAIN**
-
-**TECHNIQUE:** CT abdomen plain study was performed on 96 slice MDCT scanner with detector collimation of 0.625mm, 1mm reconstruction in saggital and coronal planes.
-
-**FINDINGS:**
-Liver is ${this.parameters['Liver'] || 'normal in size and attenuation. No IHBRD'}.
-CBD normal in caliber.
-Gallbladder ${this.parameters['Gallbladder'] || 'is well distended. Wall thickness appears normal. No e/o hyperdense calculi'}.
-Spleen is ${this.parameters['Spleen'] || 'normal in size and attenuation'}.
-Mesentery and omentum are normal.
-Pancreas: ${this.parameters['Pancreas'] || 'Normal in size, shape and attenuation. No e/o ductal dilatation, parenchymal calcifications and peripancreatic fluid collection'}.
-Both kidneys ${this.parameters['Kidneys'] || 'are normal in size, shape and attenuation. No hydronephrosis / calculi'}.
-Both adrenal glands appear normal.
-Aorta and IVC are normal.
-Urinary bladder is normal in contours. No filling defects noted. No calculi. Wall thickness appears normal.
-Prostate is normal in size and attenuation.
-No free fluid in the peritoneal cavity.
-
-**IMPRESSION:**
-- ${this.parameters['Impression'] || 'No significant abnormality detected.'}
-
-**CONSULTANT RADIOLOGIST**
-**DR. VISHRUTH RASA. M.D. RADIOLOGY**
-
-Generated: ${date} ${time}`;
-            }
-
-            generateCTBrainReport(date, time) {
-                const age = this.parameters['Age'] || '[Age]';
-                const sex = this.parameters['Sex'] || 'M';
-                
-                return `**Name: ${this.patientName} Sex: ${sex} Age: ${age} Yrs Date: ${date}**
-
-**Reff.By: UHID:**
-
-**DEPARTMENT OF RADIO-DIAGNOSIS**
-
-**CT BRAIN PLAIN**
-
-**TECHNIQUE:** CT scan of brain was performed on 96 slice MDCT scanner.
-
-**FINDINGS:**
-The cerebral grey and white matter ${this.parameters['Cerebral Matter'] || 'appear normal. No focal lesion is seen in the cerebral parenchyma'}.
-The basal ganglia and thalami are ${this.parameters['Basal Ganglia'] || 'normal'}.
-The posterior fossa structures ${this.parameters['Posterior Fossa'] || 'including the brain stem and cerebellum do not show any abnormality'}.
-The ventricular system, cisternal & sulcal spaces are ${this.parameters['Ventricular System'] || 'normal'}.
-No intra / extra-axial bleed seen.
-No midline shift / herniations noted.
-Skull bones are unremarkable.
-
-**IMPRESSION:**
-- ${this.parameters['Impression'] || 'No significant brain parenchymal abnormality detected.'}
-
----Suggested clinical correlation/further evaluation if clinically indicated.
-
-**CONSULTANT RADIOLOGIST**
-**DR. VISHRUTH RASA. M.D. RADIOLOGY**
-
-Generated: ${date} ${time}`;
-            }
-
-            generateMRISpineReport(date, time) {
-                const age = this.parameters['Age'] || '[Age]';
-                const sex = this.parameters['Sex'] || '[Sex]';
-                
-                return `**Name: ${this.patientName} Sex: ${sex} Age: ${age} Yrs Date: ${date}**
-
-**Reff.By.Dr: UHID:**
-
-**DEPARTMENT OF RADIO-DIAGNOSIS**
-
-**MRI CERVICAL SPINE WITH WHOLE SPINE SCREENING**
-
-**TECHNIQUE:** T1-T2 sagittal & axials, IR coronals.
-
-**FINDINGS:**
-Curvature of spine is ${this.parameters['Curvature'] || 'well maintained'}.
-
-**Canal diameters are as below:**
-${this.parameters['Canal Diameters'] || `
-Level     C2-C3   C3-C4   C4-C5   C5-C6   C6-C7
-AP Mm     13      13      8.7     11      9.5`}
-
-**WHOLE SPINE SCREENING:**
-Alignment, heights and bone marrow signal intensity of rest of the cervical vertebral bodies ${this.parameters['Vertebral Bodies'] || 'are within normal limits'}.
-Configuration of rest of the discs, thecal sac, filar roots, lateral recesses, neural foraminae, neural arches, facet joints and posterior elements ${this.parameters['Discs'] || 'are within normal limits'}.
-
-**IMPRESSION:**
-- ${this.parameters['Impression'] || 'No significant abnormality detected.'}
-
-**CONSULTANT RADIOLOGIST**
-**DR. VISHRUTH RASA. M.D. RADIOLOGY**
-
-Generated: ${date} ${time}`;
-            }
-
-            generateUltrasoundReport(date, time) {
-                return `# Ultrasound Examination Report
-
-**Patient:** ${this.patientName}
-**Date:** ${date}
-**Time:** ${time}
-
-## Biometric Measurements
-${this.parameters['Gestational Age'] ? `• Gestational Age: ${this.parameters['Gestational Age']}` : ''}
-${this.parameters['Biparietal Diameter'] ? `• Biparietal Diameter (BPD): ${this.parameters['Biparietal Diameter']}` : ''}
-${this.parameters['Head Circumference'] ? `• Head Circumference (HC): ${this.parameters['Head Circumference']}` : ''}
-${this.parameters['Abdominal Circumference'] ? `• Abdominal Circumference (AC): ${this.parameters['Abdominal Circumference']}` : ''}
-${this.parameters['Femur Length'] ? `• Femur Length (FL): ${this.parameters['Femur Length']}` : ''}
-${this.parameters['Estimated Fetal Weight'] ? `• Estimated Fetal Weight: ${this.parameters['Estimated Fetal Weight']}` : ''}
-
-## Fetal Assessment
-${this.parameters['Heart Rate'] ? `• Heart Rate: ${this.parameters['Heart Rate']}` : ''}
-${this.parameters['Placenta Location'] ? `• Placenta Location: ${this.parameters['Placenta Location']}` : ''}
-${this.parameters['Amniotic Fluid'] ? `• Amniotic Fluid: ${this.parameters['Amniotic Fluid']}` : ''}
-
-## Complete Transcript
-${this.transcript}
-
-*Generated automatically: ${date} ${time}*`;
-            }
-
-            generateEchoReport(date, time) {
-                return `# Echocardiogram Report
-
-**Patient:** ${this.patientName}
-**Date:** ${date}
-
-## Cardiac Function  
-${this.parameters['Ejection Fraction'] ? `• Ejection Fraction: ${this.parameters['Ejection Fraction']}` : ''}
-${this.parameters['Left Ventricular Function'] ? `• LV Function: ${this.parameters['Left Ventricular Function']}` : ''}
-${this.parameters['Heart Rate'] ? `• Heart Rate: ${this.parameters['Heart Rate']}` : ''}
-${this.parameters['Blood Pressure'] ? `• Blood Pressure: ${this.parameters['Blood Pressure']}` : ''}
-
-## Complete Study
-${this.transcript}
-
-*Generated automatically: ${date} ${time}*`;
-            }
-
-            generateGeneralReport(date, time) {
-                return `# Medical Examination Report
-
-**Patient:** ${this.patientName}
-**Date:** ${date}
-**Time:** ${time}
-
-## Vital Signs
-${this.parameters['Age'] ? `• Age: ${this.parameters['Age']} years` : ''}
-${this.parameters['Weight'] ? `• Weight: ${this.parameters['Weight']}` : ''}
-${this.parameters['Height'] ? `• Height: ${this.parameters['Height']}` : ''}
-${this.parameters['Blood Pressure'] ? `• Blood Pressure: ${this.parameters['Blood Pressure']}` : ''}
-${this.parameters['Heart Rate'] ? `• Heart Rate: ${this.parameters['Heart Rate']}` : ''}
-${this.parameters['Temperature'] ? `• Temperature: ${this.parameters['Temperature']}` : ''}
-
-## Examination Notes
-${this.transcript}
-
-*Generated automatically: ${date} ${time}*`;
-            }
-
-            showDownloadButton(filename, content) {
-                // Remove existing download button
-                const existingBtn = document.getElementById('downloadBtn');
-                if (existingBtn) {
-                    existingBtn.remove();
-                }
-
-                // Create download button
-                const downloadBtn = document.createElement('button');
-                downloadBtn.id = 'downloadBtn';
-                downloadBtn.className = 'px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors flex items-center text-sm mt-4';
-                downloadBtn.innerHTML = '<i class="fas fa-download mr-2"></i>Download Report (.txt)';
-                
-                downloadBtn.onclick = () => {
-                    this.downloadFile(filename + '.txt', content);
-                };
-
-                // Add button after document preview
-                const preview = document.getElementById('documentPreview');
-                preview.parentNode.appendChild(downloadBtn);
-            }
-
-            downloadFile(filename, content) {
-                const blob = new Blob([content], { type: 'text/plain' });
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = filename;
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-                document.body.removeChild(a);
-                
-                // Show success message
-                this.showSuccessMessage(`Report downloaded: ${filename}`);
-            }
-
-            showSuccessMessage(message) {
-                // Create success notification
-                const notification = document.createElement('div');
-                notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
-                notification.innerHTML = `<i class="fas fa-check-circle mr-2"></i>${message}`;
-                
-                document.body.appendChild(notification);
-                
-                // Remove after 3 seconds
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.parentNode.removeChild(notification);
-                    }
-                }, 3000);
             }
 
             updateTranscript() {
