@@ -547,49 +547,16 @@
             }
         }
 
-        @keyframes fadeInScale {
-            0% {
-                opacity: 0;
-                transform: scale(0.8) translateY(10px);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
         }
 
-        .parameter-item {
-            transition: all 0.3s ease;
-        }
-
-        .parameter-item:hover {
-            background: rgba(102, 126, 234, 0.1);
-            transform: translateX(5px);
-        }
-
-        /* Better visual feedback for recording */
-        .recording-indicator {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            width: 20px;
-            height: 20px;
-            background: #ef4444;
-            border-radius: 50%;
-            animation: pulse 1.5s infinite;
-        }
-
-        /* Enhanced demo output styling */
-        .demo-output {
-            border: 2px solid rgba(102, 126, 234, 0.2);
-            border-radius: 15px;
-            padding: 1rem;
-            background: rgba(248, 250, 252, 0.5);
-        }
-
-        .demo-output.active {
-            border-color: rgba(102, 126, 234, 0.5);
-            background: rgba(248, 250, 252, 0.8);
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* Demo specific styles */
@@ -963,39 +930,7 @@
                     
                     this.recognition.onerror = (event) => {
                         console.error('Speech recognition error:', event.error);
-                        let errorMessage = 'Speech recognition error';
-                        
-                        switch(event.error) {
-                            case 'network':
-                                errorMessage = '🌐 Network error - Check internet connection';
-                                break;
-                            case 'not-allowed':
-                                errorMessage = '🎤 Microphone access denied - Please allow microphone';
-                                break;
-                            case 'no-speech':
-                                errorMessage = '🔇 No speech detected - Please speak louder';
-                                break;
-                            case 'audio-capture':
-                                errorMessage = '🎤 Microphone not working - Check device';
-                                break;
-                            default:
-                                errorMessage = `🔧 ${event.error} - Try refreshing the page`;
-                        }
-                        
-                        this.updateStatus(errorMessage);
-                        
-                        // Auto-restart recognition after brief pause
-                        setTimeout(() => {
-                            if (this.isRecording && this.recognition) {
-                                this.updateStatus('🔄 Restarting speech recognition...');
-                                try {
-                                    this.recognition.start();
-                                } catch (e) {
-                                    console.log('Could not restart recognition:', e);
-                                    this.updateStatus('❌ Speech recognition unavailable - Try demo mode');
-                                }
-                            }
-                        }, 2000);
+                        this.updateStatus('Speech recognition error - try again');
                     };
                     
                     this.recognition.onend = () => {
@@ -1043,7 +978,6 @@
 
             handleSpeechResult(event) {
                 let finalTranscript = '';
-                let interimTranscript = '';
                 
                 for (let i = event.resultIndex; i < event.results.length; i++) {
                     const transcript = event.results[i][0].transcript;
@@ -1051,68 +985,21 @@
                     if (event.results[i].isFinal) {
                         finalTranscript += transcript + ' ';
                         this.transcript += transcript + ' ';
-                        
-                        // Process each sentence for better accuracy
                         this.processTranscript(transcript);
-                        
-                        // Update status based on what's been detected
-                        this.updateProcessingStatus();
-                    } else {
-                        interimTranscript += transcript;
                     }
                 }
                 
                 if (finalTranscript) {
                     this.updateTranscript();
-                    this.updateDisplay();
-                }
-            }
-
-            updateProcessingStatus() {
-                const patientDetected = !!this.patientName;
-                const examDetected = !!this.examType;
-                const paramsCount = Object.keys(this.parameters).length;
-                
-                if (patientDetected && examDetected && paramsCount > 0) {
-                    this.updateStatus(`🎯 Full automation active! ${paramsCount} parameters extracted`);
-                } else if (patientDetected && examDetected) {
-                    this.updateStatus('✅ Patient and exam detected - Listening for parameters...');
-                } else if (patientDetected) {
-                    this.updateStatus('👤 Patient detected - Analyzing exam type...');
-                } else if (examDetected) {
-                    this.updateStatus('🏥 Exam type detected - Listening for patient name...');
-                } else {
-                    this.updateStatus('🎤 Processing speech - Detecting patient and exam type...');
                 }
             }
 
             processTranscript(text) {
-                // Show immediate feedback for detected terms
-                this.showLiveDetection(text);
-                
-                // Simulate AI processing with more realistic timing
+                // Simulate AI processing
                 this.extractPatientName(text);
                 this.detectExamType(text);
                 this.extractParameters(text);
                 this.updateDisplay();
-            }
-
-            showLiveDetection(text) {
-                // Highlight detected medical terms in real-time
-                const medicalTerms = [
-                    'ultrasound', 'echocardiogram', 'biparietal', 'diameter', 
-                    'heart rate', 'blood pressure', 'gestational', 'placenta',
-                    'ejection fraction', 'ventricular', 'patient', 'examination'
-                ];
-                
-                const detectedTerms = medicalTerms.filter(term => 
-                    text.toLowerCase().includes(term)
-                );
-                
-                if (detectedTerms.length > 0) {
-                    console.log('🎯 Detected medical terms:', detectedTerms);
-                    // Could add visual feedback here for detected terms
-                }
             }
 
             extractPatientName(text) {
@@ -1145,22 +1032,9 @@
                 if (this.examType) return;
                 
                 const examKeywords = {
-                    'Ultrasound': [
-                        'ultrasound', 'sonogram', 'gestational', 'pregnancy', 'fetal', 'prenatal',
-                        'biparietal', 'diameter', 'bpd', 'head circumference', 'abdominal circumference',
-                        'femur length', 'estimated fetal weight', 'placenta', 'amniotic', 'weeks pregnant',
-                        'GA', 'HC', 'AC', 'FL', 'EFW', 'prenatal ultrasound', 'obstetric'
-                    ],
-                    'Echocardiogram': [
-                        'echocardiogram', 'echo', 'cardiac', 'heart', 'ejection fraction', 'ventricular',
-                        'valve', 'aortic', 'mitral', 'tricuspid', 'pulmonary', 'cardiology', 'ef',
-                        'left ventricular', 'right ventricular', 'cardiac function', 'heart function'
-                    ],
-                    'General Exam': [
-                        'physical exam', 'examination', 'vital signs', 'blood pressure', 'temperature',
-                        'weight', 'height', 'pulse', 'general', 'checkup', 'routine', 'physical',
-                        'vitals', 'assessment', 'wellness', 'health check'
-                    ]
+                    'Ultrasound': ['ultrasound', 'gestational', 'pregnancy', 'biparietal', 'fetal', 'weeks'],
+                    'Echocardiogram': ['echo', 'cardiac', 'ejection fraction', 'ventricular', 'heart'],
+                    'General Exam': ['physical', 'vital signs', 'blood pressure', 'temperature']
                 };
 
                 let maxScore = 0;
@@ -1168,7 +1042,7 @@
 
                 for (let [exam, keywords] of Object.entries(examKeywords)) {
                     const score = keywords.filter(keyword => 
-                        text.toLowerCase().includes(keyword.toLowerCase())
+                        text.toLowerCase().includes(keyword)
                     ).length;
                     
                     if (score > maxScore) {
@@ -1177,171 +1051,29 @@
                     }
                 }
 
-                // Lower threshold for detection and add context scoring
-                if (maxScore >= 1) {
-                    // Additional context scoring
-                    const textLower = text.toLowerCase();
-                    
-                    // Boost ultrasound score if pregnancy terms present
-                    if (detectedExam === 'Ultrasound' && 
-                        (textLower.includes('week') || textLower.includes('prenatal') || 
-                         textLower.includes('fetal') || textLower.includes('pregnancy'))) {
-                        maxScore += 2;
-                    }
-                    
-                    // Boost echo score if cardiac terms present  
-                    if (detectedExam === 'Echocardiogram' &&
-                        (textLower.includes('ef') || textLower.includes('fraction') ||
-                         textLower.includes('cardiac') || textLower.includes('valve'))) {
-                        maxScore += 2;
-                    }
-                    
-                    if (maxScore >= 1) {
-                        this.examType = detectedExam;
-                    }
+                if (maxScore >= 2) {
+                    this.examType = detectedExam;
                 }
             }
 
             extractParameters(text) {
-                // Enhanced patterns for better medical parameter extraction
                 const paramPatterns = {
-                    // General Vitals
-                    'Blood Pressure': [
-                        /(?:blood\s+pressure|BP)\s*(?:is\s+)?(\d+)(?:\s*over\s*|\s*\/\s*)(\d+)/i,
-                        /BP\s*(\d+)\/(\d+)/i,
-                        /(\d+)\s*over\s*(\d+)/i
-                    ],
-                    'Heart Rate': [
-                        /(?:heart\s+rate|HR|pulse|FHR|fetal\s+heart\s+rate)\s*(?:is\s+)?(\d+)\s*(?:bpm|beats\s+per\s+minute|beats)?/i,
-                        /(?:heart\s+rate|HR)\s*(\d+)/i,
-                        /(\d+)\s*(?:bpm|beats\s+per\s+minute)/i
-                    ],
-                    'Temperature': [
-                        /temperature\s*(?:is\s+)?(\d+\.?\d*)\s*(?:degrees?|°)?(?:\s*[CF])?/i,
-                        /temp\s*(\d+\.?\d*)/i
-                    ],
-                    'Weight': [
-                        /(?:weight|wt)\s*(?:is\s+)?(\d+\.?\d*)\s*(?:kg|kilograms?|lbs?|pounds?|grams?|g)?/i,
-                        /(\d+\.?\d*)\s*(?:kg|kilograms?|grams?|g)\b/i
-                    ],
-                    'Height': [
-                        /height\s*(?:is\s+)?(\d+\.?\d*)\s*(?:cm|centimeters?|ft|feet|inches?|in)?/i,
-                        /(\d+\.?\d*)\s*(?:cm|centimeters?)/i
-                    ],
-                    'Age': [
-                        /(?:age\s+(?:is\s+)?|patient\s+is\s+|(?:year\s+old\s+)?(?:male|female)\s+)(\d+)\s*(?:years?\s+old)?/i,
-                        /(\d+)[\s-]year[\s-]old/i
-                    ],
-
-                    // Ultrasound Specific
-                    'Gestational Age': [
-                        /(?:gestational\s+age|GA)\s*(?:is\s+)?(\d+)\s*(?:weeks?)?\s*(?:(\d+)\s*days?)?/i,
-                        /(\d+)[\s-]week\s+(?:ultrasound|prenatal|pregnancy)/i,
-                        /(\d+)\s*weeks?\s*(\d+)?\s*days?\s*pregnant/i
-                    ],
-                    'Biparietal Diameter': [
-                        /(?:biparietal\s+diameter|BPD)\s*(?:is\s+)?(?:measures\s+)?(\d+\.?\d*)\s*(?:mm|millimeters?)?/i,
-                        /BPD\s*(\d+\.?\d*)/i,
-                        /biparietal\s+(\d+\.?\d*)/i
-                    ],
-                    'Head Circumference': [
-                        /(?:head\s+circumference|HC)\s*(?:is\s+)?(\d+\.?\d*)\s*(?:mm|millimeters?)?/i,
-                        /HC\s*(\d+\.?\d*)/i,
-                        /head\s+circumference\s+(\d+\.?\d*)/i
-                    ],
-                    'Abdominal Circumference': [
-                        /(?:abdominal\s+circumference|AC)\s*(?:is\s+)?(\d+\.?\d*)\s*(?:mm|millimeters?)?/i,
-                        /AC\s*(\d+\.?\d*)/i,
-                        /abdominal\s+(\d+\.?\d*)/i
-                    ],
-                    'Femur Length': [
-                        /(?:femur\s+length|FL)\s*(?:is\s+)?(\d+\.?\d*)\s*(?:mm|millimeters?)?/i,
-                        /FL\s*(\d+\.?\d*)/i,
-                        /femur\s+(\d+\.?\d*)/i
-                    ],
-                    'Estimated Fetal Weight': [
-                        /(?:estimated\s+fetal\s+weight|EFW)\s*(?:is\s+)?(\d+\.?\d*)\s*(?:grams?|g)?/i,
-                        /EFW\s*(\d+\.?\d*)/i,
-                        /fetal\s+weight\s+(\d+\.?\d*)/i,
-                        /estimated\s+weight\s+(\d+\.?\d*)/i
-                    ],
-                    'Placenta Location': [
-                        /placenta\s+(?:is\s+)?(?:located\s+)?(?:at\s+)?(\w+)/i,
-                        /placenta\s+(\w+)/i
-                    ],
-                    'Amniotic Fluid': [
-                        /amniotic\s+fluid\s+(?:is\s+)?(\w+)/i,
-                        /amniotic\s+(\w+)/i,
-                        /fluid\s+(?:is\s+)?(\w+)/i
-                    ],
-                    'Presentation': [
-                        /(?:fetal\s+)?presentation\s+(?:is\s+)?(\w+)/i,
-                        /presentation\s+(\w+)/i
-                    ],
-
-                    // Cardiac Specific
-                    'Ejection Fraction': [
-                        /(?:ejection\s+fraction|EF)\s*(?:is\s+)?(\d+\.?\d*)\s*(?:%|percent)?/i,
-                        /EF\s*(\d+\.?\d*)/i
-                    ],
-                    'Left Ventricular Function': [
-                        /(?:left\s+ventricular?|LV)\s+function\s+(?:is\s+)?(\w+)/i,
-                        /LV\s+function\s+(\w+)/i,
-                        /left\s+ventricular\s+(\w+)/i
-                    ],
-
-                    // Additional Parameters
-                    'Oxygen Saturation': [
-                        /(?:oxygen\s+saturation|O2\s+sat|sats?)\s*(?:is\s+)?(\d+)\s*(?:%|percent)?/i,
-                        /O2\s*(\d+)/i,
-                        /sat\s*(\d+)/i
-                    ],
-                    'Respiratory Rate': [
-                        /(?:respiratory\s+rate|breathing\s+rate|RR)\s*(?:is\s+)?(\d+)/i,
-                        /RR\s*(\d+)/i
-                    ]
+                    'Blood Pressure': /(?:blood\s+pressure|BP)\s*(?:is\s+)?(\d+)(?:\s*over\s*|\s*\/\s*)(\d+)/i,
+                    'Heart Rate': /(?:heart\s+rate|HR|pulse)\s*(?:is\s+)?(\d+)\s*(?:bpm|beats)?/i,
+                    'Temperature': /temperature\s*(?:is\s+)?(\d+\.?\d*)\s*(?:degrees?|°)?/i,
+                    'Weight': /weight\s*(?:is\s+)?(\d+\.?\d*)\s*(?:kg|lbs)?/i,
+                    'Gestational Age': /(?:gestational\s+age|GA)\s*(?:is\s+)?(\d+)\s*(?:weeks?)?/i,
+                    'Biparietal Diameter': /(?:biparietal\s+diameter|BPD)\s*(?:is\s+)?(\d+\.?\d*)\s*(?:mm)?/i,
+                    'Ejection Fraction': /(?:ejection\s+fraction|EF)\s*(?:is\s+)?(\d+\.?\d*)\s*(?:%|percent)?/i
                 };
 
-                // Process each parameter with multiple patterns
-                for (let [paramName, patterns] of Object.entries(paramPatterns)) {
-                    // Skip if already found
-                    if (this.parameters[paramName]) continue;
-                    
-                    for (let pattern of patterns) {
-                        const match = text.match(pattern);
-                        if (match) {
-                            let value;
-                            
-                            // Handle special cases
-                            if (paramName === 'Blood Pressure' && match[2]) {
-                                value = `${match[1]}/${match[2]}`;
-                            } else if (paramName === 'Gestational Age' && match[2]) {
-                                value = `${match[1]} weeks ${match[2]} days`;
-                            } else if (paramName === 'Gestational Age' && match[1]) {
-                                value = `${match[1]} weeks`;
-                            } else {
-                                value = match[1];
-                            }
-                            
-                            // Add units for measurements
-                            if (['Biparietal Diameter', 'Head Circumference', 'Abdominal Circumference', 'Femur Length'].includes(paramName)) {
-                                value += ' mm';
-                            } else if (paramName === 'Estimated Fetal Weight') {
-                                value += ' grams';
-                            } else if (paramName === 'Heart Rate') {
-                                value += ' bpm';
-                            } else if (paramName === 'Ejection Fraction') {
-                                value += '%';
-                            } else if (paramName === 'Temperature') {
-                                value += '°F';
-                            } else if (paramName === 'Weight' && !text.toLowerCase().includes('gram')) {
-                                value += ' kg';
-                            } else if (paramName === 'Height') {
-                                value += ' cm';
-                            }
-                            
-                            this.parameters[paramName] = value;
-                            break; // Found match, move to next parameter
+                for (let [paramName, pattern] of Object.entries(paramPatterns)) {
+                    const match = text.match(pattern);
+                    if (match) {
+                        if (paramName === 'Blood Pressure' && match[2]) {
+                            this.parameters[paramName] = `${match[1]}/${match[2]}`;
+                        } else {
+                            this.parameters[paramName] = match[1];
                         }
                     }
                 }
@@ -1376,7 +1108,7 @@
                 if (Object.keys(this.parameters).length === 0) {
                     paramsList.innerHTML = `
                         <div class="parameter-item">
-                            <span class="parameter-name">🎤 Listening for medical parameters...</span>
+                            <span class="parameter-name">Listening for parameters...</span>
                             <span class="parameter-value">--</span>
                         </div>
                     `;
@@ -1384,39 +1116,13 @@
                 }
 
                 paramsList.innerHTML = '';
-                
-                // Sort parameters by importance for medical display
-                const parameterOrder = [
-                    'Patient Name', 'Gestational Age', 'Biparietal Diameter', 
-                    'Head Circumference', 'Abdominal Circumference', 'Femur Length',
-                    'Estimated Fetal Weight', 'Heart Rate', 'Blood Pressure',
-                    'Ejection Fraction', 'Left Ventricular Function', 
-                    'Placenta Location', 'Amniotic Fluid', 'Presentation',
-                    'Temperature', 'Weight', 'Height', 'Age'
-                ];
-                
-                // Add found parameters in order
-                for (let paramName of parameterOrder) {
-                    if (this.parameters[paramName]) {
-                        paramsList.innerHTML += `
-                            <div class="parameter-item" style="animation: fadeInScale 0.5s ease-out;">
-                                <span class="parameter-name">✅ ${paramName}</span>
-                                <span class="parameter-value">${this.parameters[paramName]}</span>
-                            </div>
-                        `;
-                    }
-                }
-                
-                // Add any remaining parameters not in the order list
                 for (let [name, value] of Object.entries(this.parameters)) {
-                    if (!parameterOrder.includes(name)) {
-                        paramsList.innerHTML += `
-                            <div class="parameter-item" style="animation: fadeInScale 0.5s ease-out;">
-                                <span class="parameter-name">✅ ${name}</span>
-                                <span class="parameter-value">${value}</span>
-                            </div>
-                        `;
-                    }
+                    paramsList.innerHTML += `
+                        <div class="parameter-item">
+                            <span class="parameter-name">${name}</span>
+                            <span class="parameter-value">${value}</span>
+                        </div>
+                    `;
                 }
             }
 
@@ -1469,20 +1175,14 @@
                 document.getElementById('micIcon').className = 'fas fa-stop';
                 document.getElementById('demoOutput').style.display = 'block';
                 
-                this.updateStatus('🎤 Demo Mode - Simulating enhanced voice input...');
+                this.updateStatus('🎤 Demo Mode - Simulating voice input...');
                 
-                // Enhanced simulation with more realistic medical speech
                 const simulatedSpeech = [
-                    "Patient Jennifer Martinez is here for her ultrasound examination",
-                    "This is a 32-week prenatal ultrasound assessment",
-                    "Biparietal diameter measures 84.2 millimeters",
-                    "Head circumference is 295 millimeters",
-                    "Abdominal circumference 275 millimeters", 
-                    "Femur length 63.8 millimeters",
-                    "Estimated fetal weight is 1850 grams",
-                    "Fetal heart rate is 142 beats per minute",
-                    "Placenta is located anteriorly",
-                    "Amniotic fluid appears normal"
+                    "Patient Sarah Johnson is here for her ultrasound",
+                    "She is 28 weeks pregnant",
+                    "Biparietal diameter measures 71.2 millimeters",
+                    "Heart rate is 145 beats per minute",
+                    "Blood pressure is 120 over 80"
                 ];
 
                 let index = 0;
@@ -1492,16 +1192,14 @@
                         this.transcript += text + ' ';
                         this.processTranscript(text);
                         this.updateTranscript();
-                        this.updateDisplay();
-                        this.updateProcessingStatus();
                         index++;
                     } else {
                         clearInterval(interval);
                         if (this.isRecording) {
-                            this.updateStatus('✅ Demo complete - All parameters extracted successfully!');
+                            this.updateStatus('Demo complete - Click mic to try again');
                         }
                     }
-                }, 1500); // Slower for better demo effect
+                }, 2000);
             }
         }
 
