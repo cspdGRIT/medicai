@@ -12,9 +12,6 @@
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- JSZip for proper DOCX generation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    
     <style>
         * {
             margin: 0;
@@ -86,12 +83,6 @@
             animation: pulse 2s infinite;
         }
 
-        .status-indicator.processing {
-            background: rgba(249, 115, 22, 0.1);
-            border-color: rgba(249, 115, 22, 0.3);
-            color: #f97316;
-        }
-
         /* Main Content */
         .main-content {
             flex: 1;
@@ -127,33 +118,6 @@
             color: #666;
             margin-bottom: 2rem;
             line-height: 1.6;
-        }
-
-        /* AI Status */
-        .ai-status {
-            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-            border: 2px solid rgba(14, 165, 233, 0.2);
-            border-radius: 12px;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            width: 100%;
-            max-width: 300px;
-        }
-
-        .ai-status-title {
-            font-weight: 700;
-            color: #0369a1;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .ai-status-text {
-            color: #0284c7;
-            font-size: 0.8rem;
-            line-height: 1.4;
         }
 
         /* Microphone Button */
@@ -261,12 +225,6 @@
         .action-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .action-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
         }
 
         /* Output Panel */
@@ -458,21 +416,6 @@
             line-height: 1.5;
         }
 
-        /* Loading States */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(102, 126, 234, 0.3);
-            border-radius: 50%;
-            border-top-color: #667eea;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
         /* Mobile Responsiveness */
         @media (max-width: 768px) {
             .app-container {
@@ -541,6 +484,67 @@
             }
         }
 
+        @media (max-width: 480px) {
+            .patient-info {
+                grid-template-columns: 1fr;
+            }
+
+            .output-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .quick-actions {
+                gap: 0.5rem;
+            }
+
+            .action-btn {
+                font-size: 0.8rem;
+                padding: 0.6rem 1rem;
+            }
+        }
+
+        /* Loading States */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(102, 126, 234, 0.3);
+            border-radius: 50%;
+            border-top-color: #667eea;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Touch Optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .mic-button {
+                width: 130px;
+                height: 130px;
+            }
+            
+            .action-btn {
+                min-height: 44px;
+                padding: 0.8rem 1.2rem;
+            }
+        }
+
         /* Notification */
         .notification {
             position: fixed;
@@ -571,10 +575,6 @@
         .notification.warning {
             background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
         }
-
-        .notification.info {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-        }
     </style>
 </head>
 <body>
@@ -596,20 +596,9 @@
             <section class="control-panel">
                 <h1 class="app-title">Voice Medical Documentation</h1>
                 <p class="app-subtitle">
-                    Professional medical reports with AI-powered extraction. 
-                    Enhanced with open-source LLM processing for accurate medical terminology.
+                    Professional radiology reports generated instantly from voice input. 
+                    Support for CT Brain, MRI Brain, MRI Spine, CT Abdomen, and Stroke Protocols.
                 </p>
-
-                <!-- AI Status -->
-                <div class="ai-status" id="aiStatus">
-                    <div class="ai-status-title">
-                        <i class="fas fa-brain"></i>
-                        AI Medical Intelligence
-                    </div>
-                    <div class="ai-status-text" id="aiStatusText">
-                        Ready to process medical dictation with advanced language understanding
-                    </div>
-                </div>
 
                 <div class="mic-container">
                     <button class="mic-button" id="micButton" aria-label="Start voice recording">
@@ -619,7 +608,7 @@
                 </div>
 
                 <div class="mic-status" id="micStatus">
-                    Tap microphone to start AI-powered voice documentation
+                    Tap microphone to start voice documentation
                 </div>
 
                 <div class="quick-actions">
@@ -629,7 +618,7 @@
                     </button>
                     <button class="action-btn btn-primary" id="downloadBtn" style="display: none;">
                         <i class="fas fa-file-word"></i>
-                        Download DOCX
+                        Download .docx
                     </button>
                     <button class="action-btn btn-secondary" id="copyBtn" style="display: none;">
                         <i class="fas fa-copy"></i>
@@ -643,7 +632,7 @@
                 <div class="output-header">
                     <h2 class="output-title">
                         <i class="fas fa-file-medical"></i>
-                        AI-Enhanced Documentation
+                        Live Documentation
                     </h2>
                 </div>
 
@@ -651,15 +640,15 @@
                 <div class="patient-info">
                     <div class="info-card">
                         <div class="info-label">Patient Name</div>
-                        <div class="info-value detecting" id="patientName">AI Listening...</div>
+                        <div class="info-value detecting" id="patientName">Listening...</div>
                     </div>
                     <div class="info-card">
                         <div class="info-label">Exam Type</div>
-                        <div class="info-value detecting" id="examType">AI Detecting...</div>
+                        <div class="info-value detecting" id="examType">Detecting...</div>
                     </div>
                     <div class="info-card">
                         <div class="info-label">Gender</div>
-                        <div class="info-value detecting" id="detectedGender">AI Analysis</div>
+                        <div class="info-value detecting" id="detectedGender">Auto-detect</div>
                     </div>
                     <div class="info-card">
                         <div class="info-label">Age</div>
@@ -671,12 +660,12 @@
                 <div class="live-output">
                     <div class="parameters-section">
                         <h3 class="section-title">
-                            <i class="fas fa-brain"></i>
-                            AI-Extracted Medical Parameters
+                            <i class="fas fa-list-check"></i>
+                            Extracted Parameters
                         </h3>
                         <div class="parameters-list" id="parametersList">
                             <div class="parameter-item">
-                                <span class="parameter-name">🧠 AI ready for medical dictation...</span>
+                                <span class="parameter-name">🎤 Ready for voice input...</span>
                                 <span class="parameter-value">--</span>
                             </div>
                         </div>
@@ -685,18 +674,26 @@
                     <div class="document-section">
                         <h3 class="section-title">
                             <i class="fas fa-file-alt"></i>
-                            Live Medical Report
+                            Live Report Preview
                         </h3>
                         <div class="document-preview" id="documentPreview">
-AI-powered professional medical report will generate automatically...
+Professional medical report will generate automatically as you speak...
 
-Enhanced features:
-• Intelligent medical terminology recognition
-• Context-aware parameter extraction
-• Professional hospital-grade formatting
-• Production-quality DOCX generation
-
-Try dictating complete medical findings naturally.
+Try saying:
+• "Patient Rajesh Kumar, 45-year-old"
+• "MRI CERVICAL SPINE WITH WHOLE SPINE SCREENING
+TECHNIQUE: T1-T2 sagittal & axials, IR coronals.
+FINDINGS:
+Curvature of spine is well maintained.
+Canal diameters are as below:
+Level     C2-C3   C3-C4   C4-C5   C5-C6   C6-C7
+AP Mm        13      13     8.7      11     9.5
+WHOLE SPINE SCREENING:
+Alignment, heights and bone marrow signal intensity of rest of the cervical vertebral bodies are within normal limits.
+Configuration of rest of the discs, thecal sac, filar roots, lateral recesses, neural foraminae, neural arches, facet joints and posterior elements are within normal limits.
+IMPRESSION:No significant abnormality detected.
+"
+• "MRI cervical spine for Priya Sharma ... etc"
                         </div>
                     </div>
                 </div>
@@ -705,11 +702,11 @@ Try dictating complete medical findings naturally.
                 <div class="transcript-section">
                     <h3 class="section-title">
                         <i class="fas fa-quote-left"></i>
-                        Live Medical Transcript
+                        Live Transcript
                     </h3>
                     <div class="transcript-box">
                         <div class="transcript-text" id="transcriptText">
-                            AI-enhanced voice transcription will appear here...
+                            Your voice will be transcribed here in real-time...
                         </div>
                     </div>
                 </div>
@@ -727,243 +724,11 @@ Try dictating complete medical findings naturally.
                 this.examType = '';
                 this.detectedGender = '';
                 this.parameters = {};
-                this.currentReport = '';
                 this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-                
-                // AI Processing settings
-                this.aiProcessing = false;
-                this.useAI = true; // Toggle for AI vs pattern-based processing
                 
                 this.initializeApp();
                 this.setupEventListeners();
                 this.checkBrowserSupport();
-                this.initializeAI();
-            }
-
-            async initializeAI() {
-                try {
-                    this.updateAIStatus('Initializing AI medical intelligence...', 'info');
-                    
-                    // Test AI connection
-                    await this.testAIConnection();
-                    
-                    this.updateAIStatus('AI ready for medical text processing', 'success');
-                } catch (error) {
-                    console.warn('AI initialization failed, falling back to pattern-based processing:', error);
-                    this.useAI = false;
-                    this.updateAIStatus('Using pattern-based processing (AI unavailable)', 'warning');
-                }
-            }
-
-            async testAIConnection() {
-                // Test with a simple medical text
-                const testText = "Patient John Doe, 45-year-old male, CT brain examination";
-                const result = await this.processWithAI(testText);
-                
-                if (!result || !result.patientInfo) {
-                    throw new Error('AI test failed');
-                }
-            }
-
-            async processWithAI(text) {
-                if (!this.useAI || this.aiProcessing) {
-                    return this.processWithPatterns(text);
-                }
-
-                try {
-                    this.aiProcessing = true;
-                    this.updateAIStatus('AI processing medical text...', 'processing');
-
-                    // Using Hugging Face Inference API with a medical-trained model
-                    const response = await fetch('https://api-inference.huggingface.co/models/microsoft/DialoGPT-medium', {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': 'Bearer hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', // You'd need a real token
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            inputs: `Extract medical information from this text in JSON format:
-                            
-Text: "${text}"
-
-Please extract:
-1. Patient name (if mentioned)
-2. Age (if mentioned) 
-3. Gender (if mentioned or can be inferred)
-4. Examination type (CT, MRI, etc.)
-5. Medical findings (organize by body system)
-6. Impression/conclusion
-
-Return as JSON with keys: patientInfo, examType, findings, impression.`,
-                            parameters: {
-                                max_new_tokens: 500,
-                                temperature: 0.1,
-                                return_full_text: false
-                            }
-                        })
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`AI API error: ${response.status}`);
-                    }
-
-                    const result = await response.json();
-                    this.updateAIStatus('AI processing complete', 'success');
-                    
-                    // Parse AI response
-                    return this.parseAIResponse(result, text);
-
-                } catch (error) {
-                    console.error('AI processing failed:', error);
-                    this.updateAIStatus('AI processing failed, using pattern fallback', 'warning');
-                    
-                    // Fallback to pattern-based processing
-                    return this.processWithPatterns(text);
-                } finally {
-                    this.aiProcessing = false;
-                }
-            }
-
-            parseAIResponse(aiResult, originalText) {
-                try {
-                    // Extract JSON from AI response
-                    let jsonText = '';
-                    if (Array.isArray(aiResult) && aiResult[0]?.generated_text) {
-                        jsonText = aiResult[0].generated_text;
-                    } else if (typeof aiResult === 'string') {
-                        jsonText = aiResult;
-                    }
-
-                    // Try to extract JSON from the response
-                    const jsonMatch = jsonText.match(/\{[\s\S]*\}/);
-                    if (jsonMatch) {
-                        const parsed = JSON.parse(jsonMatch[0]);
-                        return this.structureAIData(parsed);
-                    }
-                } catch (error) {
-                    console.warn('Failed to parse AI response:', error);
-                }
-
-                // Fallback to pattern-based processing
-                return this.processWithPatterns(originalText);
-            }
-
-            structureAIData(parsed) {
-                return {
-                    patientInfo: {
-                        name: parsed.patientInfo?.name || '',
-                        age: parsed.patientInfo?.age || '',
-                        gender: parsed.patientInfo?.gender || ''
-                    },
-                    examType: parsed.examType || '',
-                    findings: parsed.findings || {},
-                    impression: parsed.impression || ''
-                };
-            }
-
-            processWithPatterns(text) {
-                // Enhanced pattern-based processing as fallback
-                const result = {
-                    patientInfo: {
-                        name: this.extractPatientNamePattern(text),
-                        age: this.extractAgePattern(text),
-                        gender: this.extractGenderPattern(text)
-                    },
-                    examType: this.detectExamTypePattern(text),
-                    findings: this.extractFindingsPattern(text),
-                    impression: this.extractImpressionPattern(text)
-                };
-
-                return result;
-            }
-
-            // Enhanced pattern-based extraction methods
-            extractPatientNamePattern(text) {
-                const namePatterns = [
-                    /(?:patient|mr\.?|mrs\.?|ms\.?|dr\.?)\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)/i,
-                    /([A-Za-z]+(?:\s+[A-Za-z]+)*)\s+(?:is\s+)?(?:a\s+)?\d+[\s-]year[\s-]old/i,
-                    /(?:examining|patient)\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)/i
-                ];
-
-                for (let pattern of namePatterns) {
-                    const match = text.match(pattern);
-                    if (match && this.isValidName(match[1])) {
-                        return match[1].trim();
-                    }
-                }
-                return '';
-            }
-
-            extractAgePattern(text) {
-                const agePatterns = [
-                    /(\d+)[\s-]year[\s-]old/i,
-                    /age\s+(?:is\s+)?(\d+)/i,
-                    /(\d+)\s+years?\s+old/i
-                ];
-
-                for (let pattern of agePatterns) {
-                    const match = text.match(pattern);
-                    if (match) {
-                        const age = parseInt(match[1]);
-                        if (age >= 0 && age <= 120) {
-                            return age.toString();
-                        }
-                    }
-                }
-                return '';
-            }
-
-            extractGenderPattern(text) {
-                const malePatterns = /\b(?:male|man|mr\.?|gentleman)\b/i;
-                const femalePatterns = /\b(?:female|woman|mrs\.?|ms\.?|lady)\b/i;
-
-                if (malePatterns.test(text)) return 'M';
-                if (femalePatterns.test(text)) return 'F';
-                return '';
-            }
-
-            detectExamTypePattern(text) {
-                const examTypes = {
-                    'CT Brain': /\b(?:ct|computed tomography)\s+(?:brain|head|cerebral)\b/i,
-                    'MRI Brain': /\b(?:mri|magnetic resonance)\s+(?:brain|head|cerebral)\b/i,
-                    'MRI Stroke Protocol': /\b(?:stroke|acute stroke)\s+(?:protocol|mri|imaging)\b/i,
-                    'MRI Cervical Spine': /\b(?:mri|magnetic resonance)\s+(?:cervical|c[\s-]?spine|spine)\b/i,
-                    'CT Abdomen': /\b(?:ct|computed tomography)\s+(?:abdomen|abdominal|pelvis)\b/i
-                };
-
-                for (let [type, pattern] of Object.entries(examTypes)) {
-                    if (pattern.test(text)) {
-                        return type;
-                    }
-                }
-                return '';
-            }
-
-            extractFindingsPattern(text) {
-                const findings = {};
-                
-                // Enhanced medical findings extraction
-                const findingPatterns = {
-                    'Brain Parenchyma': /(?:cerebral|brain)\s+(?:grey|white)\s+matter[^.]*\./gi,
-                    'Ventricular System': /ventricular\s+system[^.]*\./gi,
-                    'Hemorrhage': /(?:hemorrhage|bleed|bleeding)[^.]*\./gi,
-                    'Spine Alignment': /(?:alignment|curvature)[^.]*\./gi,
-                    'Impression': /impression\s*:?[^.]*\./gi
-                };
-
-                for (let [category, pattern] of Object.entries(findingPatterns)) {
-                    const matches = text.match(pattern);
-                    if (matches) {
-                        findings[category] = matches.map(m => m.trim()).join(' ');
-                    }
-                }
-
-                return findings;
-            }
-
-            extractImpressionPattern(text) {
-                const impressionMatch = text.match(/impression\s*:?\s*([^.]+\.?)/i);
-                return impressionMatch ? impressionMatch[1].trim() : '';
             }
 
             initializeApp() {
@@ -972,13 +737,15 @@ Return as JSON with keys: patientInfo, examType, findings, impression.`,
                     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
                     this.recognition = new SpeechRecognition();
                     
+                    // Enhanced configuration for mobile
                     this.recognition.continuous = true;
                     this.recognition.interimResults = true;
                     this.recognition.lang = 'en-US';
                     this.recognition.maxAlternatives = 1;
                     
+                    // Mobile optimizations
                     if (this.isMobile) {
-                        this.recognition.continuous = false;
+                        this.recognition.continuous = false; // Better for mobile
                     }
                     
                     this.recognition.onstart = () => {
@@ -994,20 +761,29 @@ Return as JSON with keys: patientInfo, examType, findings, impression.`,
                     };
                     
                     this.recognition.onend = () => {
-                        if (this.isRecording && !this.isMobile) {
-                            setTimeout(() => {
-                                try {
-                                    this.recognition.start();
-                                } catch (e) {
-                                    console.log('Recognition restart failed:', e);
-                                }
-                            }, 100);
+                        if (this.isRecording) {
+                            // Auto-restart for continuous listening (desktop only)
+                            if (!this.isMobile) {
+                                setTimeout(() => {
+                                    try {
+                                        this.recognition.start();
+                                    } catch (e) {
+                                        console.log('Recognition restart failed:', e);
+                                    }
+                                }, 100);
+                            } else {
+                                // On mobile, require manual restart
+                                this.updateMicStatus('Tap microphone to continue...');
+                            }
                         }
                     };
+                } else {
+                    this.showNotification('Speech recognition not supported in this browser. Please use Chrome or Safari.', 'warning');
                 }
             }
 
             setupEventListeners() {
+                // Microphone button
                 document.getElementById('micButton').addEventListener('click', () => {
                     if (this.isRecording) {
                         this.stopRecording();
@@ -1016,6 +792,7 @@ Return as JSON with keys: patientInfo, examType, findings, impression.`,
                     }
                 });
 
+                // Action buttons
                 document.getElementById('clearBtn').addEventListener('click', () => {
                     this.clearAll();
                 });
@@ -1027,6 +804,23 @@ Return as JSON with keys: patientInfo, examType, findings, impression.`,
                 document.getElementById('copyBtn').addEventListener('click', () => {
                     this.copyToClipboard();
                 });
+
+                // Mobile-specific optimizations
+                if (this.isMobile) {
+                    // Prevent zoom on double-tap
+                    document.addEventListener('touchstart', (e) => {
+                        if (e.touches.length > 1) {
+                            e.preventDefault();
+                        }
+                    });
+
+                    // Handle orientation changes
+                    window.addEventListener('orientationchange', () => {
+                        setTimeout(() => {
+                            this.adjustMobileLayout();
+                        }, 100);
+                    });
+                }
 
                 // Keyboard shortcuts
                 document.addEventListener('keydown', (e) => {
@@ -1051,19 +845,29 @@ Return as JSON with keys: patientInfo, examType, findings, impression.`,
                     return false;
                 }
 
+                // Check for HTTPS requirement
+                if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+                    this.showNotification('HTTPS required for microphone access', 'warning');
+                }
+
                 this.updateSystemStatus('ready', 'System Ready');
                 return true;
             }
 
-            async startRecording() {
+            startRecording() {
                 if (!this.recognition) {
                     this.simulateDemo();
                     return;
                 }
 
+                // Request microphone permission on mobile
+                if (this.isMobile && !this.micPermissionGranted) {
+                    this.requestMicrophonePermission();
+                }
+
                 this.isRecording = true;
                 this.updateRecordingUI(true);
-                this.updateMicStatus('🎤 AI listening... Speak medical findings clearly');
+                this.updateMicStatus('🎤 Listening... Speak clearly');
 
                 try {
                     this.recognition.start();
@@ -1084,7 +888,20 @@ Return as JSON with keys: patientInfo, examType, findings, impression.`,
                 }
             }
 
-            async handleSpeechResult(event) {
+            requestMicrophonePermission() {
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    navigator.mediaDevices.getUserMedia({ audio: true })
+                        .then(() => {
+                            this.micPermissionGranted = true;
+                            this.showNotification('Microphone access granted', 'success');
+                        })
+                        .catch(() => {
+                            this.showNotification('Microphone access denied. Please enable in browser settings.', 'error');
+                        });
+                }
+            }
+
+            handleSpeechResult(event) {
                 let finalTranscript = '';
                 let interimTranscript = '';
 
@@ -1094,9 +911,7 @@ Return as JSON with keys: patientInfo, examType, findings, impression.`,
                     if (event.results[i].isFinal) {
                         finalTranscript += transcript + ' ';
                         this.transcript += transcript + ' ';
-                        
-                        // Process with AI or patterns
-                        await this.processTranscript(transcript);
+                        this.processTranscript(transcript);
                     } else {
                         interimTranscript += transcript;
                     }
@@ -1105,47 +920,12 @@ Return as JSON with keys: patientInfo, examType, findings, impression.`,
                 if (finalTranscript) {
                     this.updateTranscript();
                     this.updateDisplay();
-                    this.updateMicStatus('🧠 AI processing... Continue speaking');
+                    this.updateMicStatus('🎤 Processing... Continue speaking');
                 }
 
+                // Show interim results for better feedback
                 if (interimTranscript) {
                     this.showInterimTranscript(interimTranscript);
-                }
-            }
-
-            async processTranscript(text) {
-                try {
-                    const aiResult = await this.processWithAI(text);
-                    
-                    // Update patient info
-                    if (aiResult.patientInfo.name && !this.patientName) {
-                        this.patientName = aiResult.patientInfo.name;
-                        this.showNotification(`Patient: ${this.patientName}`, 'success');
-                    }
-                    
-                    if (aiResult.patientInfo.age && !this.parameters['Age']) {
-                        this.parameters['Age'] = aiResult.patientInfo.age;
-                    }
-                    
-                    if (aiResult.patientInfo.gender && !this.detectedGender) {
-                        this.detectedGender = aiResult.patientInfo.gender;
-                    }
-                    
-                    if (aiResult.examType && !this.examType) {
-                        this.examType = aiResult.examType;
-                        this.showNotification(`Exam: ${this.examType}`, 'info');
-                    }
-                    
-                    // Update findings
-                    Object.assign(this.parameters, aiResult.findings);
-                    
-                    if (aiResult.impression) {
-                        this.parameters['Impression'] = aiResult.impression;
-                    }
-                    
-                } catch (error) {
-                    console.error('Error processing transcript:', error);
-                    this.updateAIStatus('Processing error, check connection', 'error');
                 }
             }
 
@@ -1154,21 +934,280 @@ Return as JSON with keys: patientInfo, examType, findings, impression.`,
                 
                 const errorMessages = {
                     'network': '🌐 Network error - Check internet connection',
-                    'not-allowed': '🎤 Microphone access denied',
-                    'no-speech': '🔇 No speech detected',
-                    'audio-capture': '🎤 Microphone not working',
+                    'not-allowed': '🎤 Microphone access denied - Check browser permissions',
+                    'no-speech': '🔇 No speech detected - Please speak louder',
+                    'audio-capture': '🎤 Microphone not working - Check device',
+                    'service-not-allowed': '🔒 Speech service not allowed - Try refreshing page',
+                    'bad-grammar': '🗣️ Speech not recognized - Try speaking more clearly',
+                    'language-not-supported': '🌍 Language not supported - Using English only'
                 };
 
-                const message = errorMessages[error] || `Error: ${error}`;
+                const message = errorMessages[error] || `🔧 ${error} - Please try again`;
                 this.updateMicStatus(message);
                 this.showNotification(message, 'error');
+
+                // Auto-retry on certain errors
+                if (['network', 'service-not-allowed'].includes(error) && this.isRecording) {
+                    setTimeout(() => {
+                        if (this.isRecording) {
+                            try {
+                                this.recognition.start();
+                            } catch (e) {
+                                this.updateMicStatus('❌ Please refresh page and try again');
+                            }
+                        }
+                    }, 2000);
+                }
+            }
+
+            processTranscript(text) {
+                this.extractPatientName(text);
+                this.detectExamType(text);
+                this.extractParameters(text);
+                this.updateDisplay();
+            }
+
+            extractPatientName(text) {
+                if (this.patientName) return;
+
+                const namePatterns = [
+                    /patient\s+(?:name\s+(?:is\s+)?)?([A-Za-z]+(?:\s+[A-Za-z]+)*)/i,
+                    /(?:this\s+is|examining)\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)/i,
+                    /([A-Za-z]+(?:\s+[A-Za-z]+)*)\s+(?:is\s+)?(?:the\s+)?patient/i,
+                    /(?:mr\.?|ms\.?|mrs\.?|dr\.?)\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)/i,
+                    /patient\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)\s+is\s+here/i,
+                    /([A-Za-z]+(?:\s+[A-Za-z]+)*)\s+is\s+here\s+for/i,
+                    /(?:mri|ct|scan)\s+(?:for\s+)?([A-Za-z]+(?:\s+[A-Za-z]+)*)/i
+                ];
+
+                for (let pattern of namePatterns) {
+                    const match = text.match(pattern);
+                    if (match) {
+                        const name = match[1].trim();
+                        if (this.isValidName(name)) {
+                            this.patientName = name;
+                            this.detectedGender = this.guessGenderFromIndianName(name) || 'Unknown';
+                            this.showNotification(`Patient detected: ${name}`, 'success');
+                            break;
+                        }
+                    }
+                }
+            }
+
+            isValidName(name) {
+                const exclusions = [
+                    'patient', 'exam', 'blood', 'pressure', 'heart', 'rate', 'normal',
+                    'examination', 'scan', 'study', 'brain', 'chest', 'abdomen',
+                    'year', 'old', 'male', 'female', 'doctor', 'imaging', 'cervical',
+                    'spine', 'protocol', 'findings', 'shows', 'appears', 'seen'
+                ];
+                const nameLower = name.toLowerCase();
+                return !exclusions.some(word => nameLower.includes(word)) &&
+                       name.length >= 2 &&
+                       name.length <= 50 &&
+                       /^[A-Za-z\s]+$/.test(name);
+            }
+
+            guessGenderFromIndianName(name) {
+                if (!name) return null;
+
+                const nameLower = name.toLowerCase();
+
+                const malePatterns = [
+                    'raj', 'kumar', 'dev', 'singh', 'sharma', 'anil', 'sunil', 'vinod', 'manoj',
+                    'ajay', 'vijay', 'sanjay', 'rakesh', 'mahesh', 'ramesh', 'suresh', 'dinesh',
+                    'mukesh', 'rajesh', 'naresh', 'umesh', 'yogesh', 'ganesh', 'hitesh', 'jitesh',
+                    'amit', 'sumit', 'rohit', 'mohit', 'lalit', 'ankit', 'puneet', 'ravi', 'kiran',
+                    'arun', 'varun', 'tarun', 'arjun', 'manan', 'rohan', 'sohan', 'mohan', 'gopal',
+                    'krishna', 'rama', 'shiva', 'vishnu', 'indra', 'surya', 'chandra', 'deepak',
+                    'ashok', 'alok', 'abhishek', 'akhil', 'nikhil', 'sachin', 'rahul', 'kapil',
+                    'aman', 'naman', 'chaman', 'gagan', 'raman', 'shyam', 'harish', 'manish'
+                ];
+
+                const femalePatterns = [
+                    'priya', 'rani', 'devi', 'kumari', 'bai', 'mata', 'sita', 'gita', 'rita',
+                    'neeta', 'seeta', 'maya', 'asha', 'usha', 'nisha', 'rekha', 'lata', 'shanta',
+                    'sunita', 'anita', 'mamta', 'sapna', 'pooja', 'meera', 'seema', 'reema',
+                    'kavita', 'sangita', 'geeta', 'sushma', 'pushpa', 'deepa', 'sheela', 'leela',
+                    'radha', 'sudha', 'vidya', 'divya', 'shreya', 'preeti', 'kriti', 'aditi',
+                    'smiti', 'swati', 'bharti', 'aarti', 'shakti', 'shanti', 'jyoti', 'mohini',
+                    'laxmi', 'saraswati', 'parvati', 'durga', 'tara', 'mira', 'indira', 'kamala',
+                    'vimala', 'nirmala', 'shobha', 'sneha', 'neha', 'megha', 'renu', 'manu'
+                ];
+
+                for (let pattern of malePatterns) {
+                    if (nameLower.includes(pattern)) return 'M';
+                }
+
+                for (let pattern of femalePatterns) {
+                    if (nameLower.includes(pattern)) return 'F';
+                }
+
+                if (nameLower.endsWith('a') && !nameLower.endsWith('ma') && !nameLower.endsWith('na')) {
+                    return 'F';
+                }
+
+                if (nameLower.endsWith('i') || nameLower.endsWith('ya')) {
+                    return 'F';
+                }
+
+                return null;
+            }
+
+            detectExamType(text) {
+                if (this.examType) return;
+
+                const examKeywords = {
+                    'CT Brain': [
+                        'ct brain', 'brain ct', 'ct head', 'head ct', 'computed tomography brain',
+                        'cerebral', 'grey matter', 'white matter', 'basal ganglia', 'thalami',
+                        'posterior fossa', 'ventricular system', 'hemorrhage', 'midline shift'
+                    ],
+                    'MRI Brain': [
+                        'mri brain', 'brain mri', 'magnetic resonance brain', 'diffusion weighted',
+                        'flair', 'dwi', 'angiography', 'intra cranial', 'intracranial',
+                        'acute infarct', 'intracerebral hemorrhage'
+                    ],
+                    'MRI Stroke Protocol': [
+                        'stroke protocol', 'mri stroke', 'stroke mri', 'acute stroke',
+                        'stroke imaging', 'emergency stroke', 'stroke evaluation'
+                    ],
+                    'MRI Cervical Spine': [
+                        'mri cervical spine', 'cervical spine mri', 'mri spine', 'spine mri',
+                        'cervical', 'c spine', 'whole spine screening', 'spinal canal',
+                        'vertebral bodies', 'canal diameters', 'curvature', 'alignment'
+                    ],
+                    'CT Abdomen': [
+                        'ct abdomen', 'abdomen ct', 'ct pelvis', 'abdominal ct',
+                        'liver', 'gallbladder', 'pancreas', 'spleen', 'kidneys',
+                        'abdominal imaging', 'pelvic imaging', 'peritoneal'
+                    ]
+                };
+
+                let maxScore = 0;
+                let detectedExam = '';
+
+                for (let [exam, keywords] of Object.entries(examKeywords)) {
+                    const score = keywords.filter(keyword =>
+                        text.toLowerCase().includes(keyword.toLowerCase())
+                    ).length;
+
+                    if (score > maxScore) {
+                        maxScore = score;
+                        detectedExam = exam;
+                    }
+                }
+
+                if (maxScore >= 1) {
+                    this.examType = detectedExam;
+                    this.showNotification(`Exam type: ${detectedExam}`, 'success');
+                }
+            }
+
+            extractParameters(text) {
+                const paramPatterns = {
+                    'Age': [
+                        /(?:age\s+(?:is\s+)?|patient\s+is\s+|(?:\d+\s+)?(?:year\s+old\s+)?(?:male|female)\s+)(\d+)\s*(?:years?\s+old)?/i,
+                        /(\d+)[\s-]year[\s-]old/i,
+                        /(?:this\s+is\s+a\s+)?(\d+)[\s-]year[\s-]old/i,
+                        /age\s+(\d+)/i,
+                        /(\d+)\s+years?\s+old/i
+                    ],
+                    'Cerebral Matter': [
+                        /cerebral\s+grey\s+and\s+white\s+matter\s+(.+?)(?:\.|basal|findings)/i,
+                        /grey\s+matter\s+(.+?)(?:\.|white|basal)/i,
+                        /white\s+matter\s+(.+?)(?:\.|basal|posterior)/i,
+                        /(appear\s+normal)/i,
+                        /(no\s+focal\s+lesion)/i
+                    ],
+                    'Basal Ganglia': [
+                        /basal\s+ganglia\s+(?:and\s+thalami\s+)?(?:are\s+)?(.+?)(?:\.|posterior|cerebellum)/i,
+                        /thalami\s+(?:are\s+)?(.+?)(?:\.|posterior)/i
+                    ],
+                    'Posterior Fossa': [
+                        /posterior\s+fossa\s+structures\s+(.+?)(?:\.|ventricular)/i,
+                        /cerebellum\s+(?:and\s+brainstem\s+)?(.+?)(?:\.|ventricular)/i,
+                        /brainstem\s+(.+?)(?:\.|ventricular)/i
+                    ],
+                    'Ventricular System': [
+                        /ventricular\s+system\s*,?\s*cisternal\s*&?\s*sulcal\s+spaces\s+(?:are\s+)?(.+?)(?:\.|hemorrhage)/i,
+                        /ventricles\s+(?:are\s+)?(.+?)(?:\.|cisternal)/i
+                    ],
+                    'Hemorrhage': [
+                        /(no\s+intra\s*\/?\s*extra[\s-]?axial\s+bleed)/i,
+                        /(no\s+intracerebral\s+hemorrhage)/i,
+                        /hemorrhage\s+(.+?)(?:\.|midline)/i
+                    ],
+                    'Midline Shift': [
+                        /(no\s+midline\s+shift)/i,
+                        /(no\s+herniations)/i,
+                        /midline\s+shift\s+(.+?)(?:\.|skull)/i
+                    ],
+                    'Diffusion Weighted': [
+                        /(no\s+restriction\s+(?:is\s+)?seen\s+on\s+diffusion\s+weighted\s+images)/i,
+                        /diffusion\s+weighted\s+(.+?)(?:\.|acute)/i,
+                        /(no\s+acute\s+infarct)/i
+                    ],
+                    'MR Angiography': [
+                        /angiography\s+shows\s*:?\s*(.+?)(?:impression|consultant)/i,
+                        /intracranial\s+(?:internal\s+)?carotid\s+arteries\s+(.+?)(?:\.|basilar)/i,
+                        /basilar\s+artery\s+(.+?)(?:\.|vertebral)/i,
+                        /vertebral\s+arteries\s+(.+?)(?:\.|impression)/i
+                    ],
+                    'Curvature': [
+                        /curvature\s+of\s+spine\s+is\s+(.+?)(?:\.|canal)/i,
+                        /curvature\s+(?:is\s+)?(.+?)(?:\.|canal)/i
+                    ],
+                    'Vertebral Bodies': [
+                        /vertebral\s+bodies\s+(?:are\s+)?(.+?)(?:\.|configuration)/i,
+                        /alignment\s*,?\s*heights\s+(?:and\s+bone\s+marrow\s+signal\s+intensity\s+)?(.+?)(?:\.|configuration)/i
+                    ],
+                    'Liver': [
+                        /liver\s+is\s+(.+?)(?:\.|cbd|gallbladder)/i,
+                        /liver\s+(.+?)(?:\.|normal\s+in)/i
+                    ],
+                    'Gallbladder': [
+                        /gallbladder\s+is\s+(.+?)(?:\.|spleen|wall)/i,
+                        /gallbladder\s+(.+?)(?:\.|wall)/i
+                    ],
+                    'Pancreas': [
+                        /pancreas\s*:?\s*(.+?)(?:\.|both\s+kidneys|kidneys)/i,
+                        /pancreas\s+(.+?)(?:\.|normal)/i
+                    ],
+                    'Kidneys': [
+                        /(?:both\s+)?kidneys\s+(?:are\s+)?(.+?)(?:\.|adrenal|aorta)/i,
+                        /kidneys\s+(.+?)(?:\.|normal)/i
+                    ],
+                    'Impression': [
+                        /impression\s*:?\s*(.+?)(?:consultant|dr\.|radiologist)/i,
+                        /conclusion\s*:?\s*(.+?)(?:consultant|dr\.)/i
+                    ]
+                };
+
+                for (let [paramName, patterns] of Object.entries(paramPatterns)) {
+                    if (this.parameters[paramName]) continue;
+
+                    for (let pattern of patterns) {
+                        const match = text.match(pattern);
+                        if (match) {
+                            let value = match[1] || match[0];
+                            value = value.trim();
+                            if (value.endsWith('.')) {
+                                value = value.slice(0, -1);
+                            }
+
+                            this.parameters[paramName] = value;
+                            break;
+                        }
+                    }
+                }
             }
 
             updateDisplay() {
                 // Update patient information
-                document.getElementById('patientName').textContent = this.patientName || 'AI Listening...';
-                document.getElementById('examType').textContent = this.examType || 'AI Detecting...';
-                document.getElementById('detectedGender').textContent = this.detectedGender || 'AI Analysis';
+                document.getElementById('patientName').textContent = this.patientName || 'Listening...';
+                document.getElementById('examType').textContent = this.examType || 'Detecting...';
+                document.getElementById('detectedGender').textContent = this.detectedGender || 'Auto-detect';
                 document.getElementById('patientAge').textContent = this.parameters['Age'] || '--';
 
                 // Remove detecting class when data is found
@@ -1178,7 +1217,7 @@ Return as JSON with keys: patientInfo, examType, findings, impression.`,
                 if (this.examType) {
                     document.getElementById('examType').classList.remove('detecting');
                 }
-                if (this.detectedGender) {
+                if (this.detectedGender && this.detectedGender !== 'Unknown') {
                     document.getElementById('detectedGender').classList.remove('detecting');
                 }
                 if (this.parameters['Age']) {
@@ -1196,7 +1235,7 @@ Return as JSON with keys: patientInfo, examType, findings, impression.`,
                 if (Object.keys(this.parameters).length === 0) {
                     paramsList.innerHTML = `
                         <div class="parameter-item">
-                            <span class="parameter-name">🧠 AI analyzing medical speech...</span>
+                            <span class="parameter-name">🎤 Listening for medical parameters...</span>
                             <span class="parameter-value">--</span>
                         </div>
                     `;
@@ -1220,15 +1259,12 @@ Return as JSON with keys: patientInfo, examType, findings, impression.`,
                 const preview = document.getElementById('documentPreview');
 
                 if (!this.patientName || !this.examType) {
-                    preview.textContent = `AI-powered professional medical report will generate automatically...
+                    preview.textContent = `Professional medical report will generate automatically as you speak...
 
-Enhanced features:
-• Intelligent medical terminology recognition
-• Context-aware parameter extraction  
-• Professional hospital-grade formatting
-• Production-quality DOCX generation
-
-Try dictating complete medical findings naturally.`;
+Try saying:
+• "Patient Rajesh Kumar, 45-year-old male"
+• "CT brain shows normal findings"
+• "MRI cervical spine for Priya Sharma"`;
                     preview.classList.remove('active');
                     return;
                 }
@@ -1241,39 +1277,39 @@ Try dictating complete medical findings naturally.`;
 
             generateMedicalReport() {
                 const todayDate = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
+
+                switch (this.examType) {
+                    case 'CT Brain':
+                        return this.generateCTBrainReport(todayDate);
+                    case 'MRI Brain':
+                        return this.generateMRIBrainReport(todayDate);
+                    case 'MRI Stroke Protocol':
+                        return this.generateMRIStrokeReport(todayDate);
+                    case 'MRI Cervical Spine':
+                        return this.generateMRISpineReport(todayDate);
+                    case 'CT Abdomen':
+                        return this.generateCTAbdomenReport(todayDate);
+                    default:
+                        return this.generateGeneralReport(todayDate);
+                }
+            }
+
+            generateCTBrainReport(date) {
                 const age = this.parameters['Age'] || '[Age]';
                 const sex = this.detectedGender || 'M';
                 const uhid = `UH${Math.floor(Math.random() * 900000) + 100000}`;
 
-                // Enhanced report generation based on exam type
-                switch (this.examType) {
-                    case 'CT Brain':
-                        return this.generateEnhancedCTBrainReport(todayDate, age, sex, uhid);
-                    case 'MRI Brain':
-                        return this.generateEnhancedMRIBrainReport(todayDate, age, sex, uhid);
-                    case 'MRI Stroke Protocol':
-                        return this.generateEnhancedStrokeReport(todayDate, age, sex, uhid);
-                    case 'MRI Cervical Spine':
-                        return this.generateEnhancedSpineReport(todayDate, age, sex, uhid);
-                    case 'CT Abdomen':
-                        return this.generateEnhancedAbdomenReport(todayDate, age, sex, uhid);
-                    default:
-                        return this.generateGeneralReport(todayDate, age, sex, uhid);
-                }
-            }
-
-            generateEnhancedCTBrainReport(date, age, sex, uhid) {
-                return `**Name: ${this.patientName}                      Sex: ${sex}           Age: ${age} Yrs                    Date: ${date}**
-**Reff.By: Dr. ${this.getRandomDoctorName()}                                                     UHID: ${uhid}**
+                return `**Name: ${this.patientName || '[Patient Name]'}                      Sex: ${sex}           Age: ${age} Yrs                    Date: ${date}**
+**Reff.By: Dr. Rajesh Kumar                                                                     UHID: ${uhid}**
 ** **
 **DEPARTMENT OF RADIO-DIAGNOSIS**
 **CT BRAIN PLAIN**
 ** **
-**TECHNIQUE:** CT scan of brain was performed on 96 slice MDCT scanner with 0.625mm slice thickness.
+**TECHNIQUE: **CT scan of brain was performed on 96 slice MDCT scanner.
 ** **
 **FINDINGS:**
  
-${this.parameters['Brain Parenchyma'] || 'The cerebral grey and white matter appear normal. No focal lesion is seen in the cerebral parenchyma.'}
+${this.parameters['Cerebral Matter'] || 'The cerebral grey and white matter appear normal. No focal lesion is seen in the cerebral parenchyma.'}
  
 ${this.parameters['Basal Ganglia'] || 'The basal ganglia and thalami are normal.'}
  
@@ -1287,29 +1323,33 @@ ${this.parameters['Midline Shift'] || 'No midline shift / herniations noted.'}
  
 Skull bones are unremarkable.
  
-**IMPRESSION:**
+**IMPRESSION**:
 ** **
 ·       **${this.parameters['Impression'] || 'No significant brain parenchymal abnormality detected.'}**
 ** **
 *---Suggested clinical correlation/further evaluation if clinically indicated.*
 ** **
 ** **
-**CONSULTANT RADIOLOGIST**
-**                                                                            DR. ${this.getRandomRadiologist()}**`;
+**             CONSULTANT RADIOLOGIST**
+**                                                                            DR. VISHRUTH RASA. M.D. RADIOLOGY**`;
             }
 
-            generateEnhancedMRIBrainReport(date, age, sex, uhid) {
-                return `**Name: ${this.patientName}               Sex: ${sex}                Age: ${age} Yrs      Date: ${date}**
-**Reff.By: Dr. ${this.getRandomDoctorName()}                                           UHID: ${uhid}**
+            generateMRIBrainReport(date) {
+                const age = this.parameters['Age'] || '[Age]';
+                const sex = this.detectedGender || 'M';
+                const uhid = `UH${Math.floor(Math.random() * 900000) + 100000}`;
+
+                return `**Name: ${this.patientName || '[Patient Name]'}               Sex: ${sex}                Age: ${age} Yrs      Date: ${date}**
+**Reff.By: Dr. Rajesh Kumar                                                     UHID: ${uhid}**
 ** **
 **DEPARTMENT OF RADIO-DIAGNOSIS**
 **MRI BRAIN PLAIN (ANGIOGRAM)**
 ** **
-**TECHNIQUE:**
+**TECHNIQUE**:
 T2 FSE Axials / Sagittals & Coronals.T1 &T2 FLAIR Axials. DWI, GRE Axials.
 3D TOF MR Angiography of Intra + Extracranial Arteries.
  
-**FINDINGS:**
+**FINDINGS**:
  
 ${this.parameters['Diffusion Weighted'] || 'No restriction is seen on diffusion weighted images to suggest acute infarct.'}
  
@@ -1325,29 +1365,34 @@ ${this.parameters['Ventricular System'] || 'The ventricular system, cisternal & 
  
 ${this.parameters['MR Angiography'] || 'Bilateral intracranial internal carotid arteries, anterior & middle cerebral arteries and their branches are normal in caliber/flow signal.\n\nThe basilar artery and bilateral posterior cerebral arteries are normal in caliber and course.\n\nBoth vertebral arteries are normal in calibre and flow signal.'}
 
-**IMPRESSION:**
+**IMPRESSION: **
 ** **
 ·       **${this.parameters['Impression'] || 'No significant brain parenchymal abnormality detected.'}**
 ** **
-*---Suggested clinical correlation / further evaluation if clinically indicated.*
+*                        ---Suggested clinical correlation / further evaluation if clinically indicated.*
+** **
 ** **
 ** **
 **CONSULTANT RADIOLOGIST**
-**                                                                                                            DR. ${this.getRandomRadiologist()}**`;
+**                                                                                                            DR. VISHRUTH RASA. M.D. RADIOLOGY**`;
             }
 
-            generateEnhancedStrokeReport(date, age, sex, uhid) {
-                return `**Name: ${this.patientName}                       Sex: ${sex}                  Age: ${age} Yrs                             Date: ${date}**
-**Reff.By: Dr. Emergency Medicine                                                                   UHID: ${uhid}**
+            generateMRIStrokeReport(date) {
+                const age = this.parameters['Age'] || '[Age]';
+                const sex = this.detectedGender || 'M';
+                const uhid = `UH${Math.floor(Math.random() * 900000) + 100000}`;
+
+                return `**Name: ${this.patientName || '[Patient Name]'}                       Sex: ${sex}                  Age: ${age} Yrs                             Date: ${date}**
+**Reff.By: Dr. Emergency Medicine                                                                                             UHID: ${uhid}**
 ** **
 **DEPARTMENT OF RADIO-DIAGNOSIS**
 **MRI STROKE PROTOCOL**
 ** **
-**TECHNIQUE:**
+**TECHNIQUE**:
 T2 FSE Axials / Sagittals & Coronals.T1 &T2 FLAIR Axials. DWI, GRE Axials.
 3D TOF MR Angiography of Intra cranial Arteries.
  
-**FINDINGS:**
+**FINDINGS**:
  
 ${this.parameters['Diffusion Weighted'] || 'No restriction is seen on diffusion weighted images to suggest acute infarct.'}
  
@@ -1363,28 +1408,34 @@ ${this.parameters['Ventricular System'] || 'The ventricular system, cisternal & 
  
 ${this.parameters['MR Angiography'] || 'Bilateral intracranial internal carotid arteries, anterior & middle cerebral arteries and their branches are normal in caliber/flow signal.\n\nThe basilar artery and bilateral posterior cerebral arteries are normal in caliber and course.\n\nBoth vertebral arteries are normal in calibre and flow signal.'}
 
-**IMPRESSION:**
+**IMPRESSION: **
 ** **
-·       **${this.parameters['Impression'] || 'No acute stroke detected. No significant brain parenchymal abnormality.'}**
+·       **${this.parameters['Impression'] || 'No significant brain parenchymal abnormality detected.'}**
 ** **
-*---Suggested clinical correlation / further evaluation if clinically indicated.*
+*                        ---Suggested clinical correlation / further evaluation if clinically indicated.*
+** **
 ** **
 ** **
 **CONSULTANT RADIOLOGIST**
-**                                                                                                            DR. ${this.getRandomRadiologist()}**`;
+**                                                                                                            DR. VISHRUTH RASA. M.D. RADIOLOGY**`;
             }
 
-            generateEnhancedSpineReport(date, age, sex, uhid) {
-                return `**Name: ${this.patientName}                                   Sex: ${sex}                Age: ${age} Yrs                  Date: ${date}**
-**Reff.By.Dr: Orthopedic Surgery                                                                     UHID: ${uhid}**
-**                                              DEPARTMENT OF RADIO-DIAGNOSIS**
+            generateMRISpineReport(date) {
+                const age = this.parameters['Age'] || '[Age]';
+                const sex = this.detectedGender || 'M';
+                const uhid = `UH${Math.floor(Math.random() * 900000) + 100000}`;
+
+                return `** **
+**Name: ${this.patientName || '[Patient Name]'}                                   Sex: ${sex}                Age: ${age} Yrs                  Date: ${date}**
+**Reff.By.Dr: Orthopedic Surgery                                                                                       UHID: ${uhid}**
+**            **                   **DEPARTMENT OF RADIO-DIAGNOSIS**
 **          MRI CERVICAL SPINE WITH WHOLE SPINE SCREENING**
 ** **
 **TECHNIQUE:** T1-T2 sagittal & axials, IR coronals.
  
 **FINDINGS:**
  
-${this.parameters['Spine Alignment'] || 'Curvature of spine is well maintained.'}
+${this.parameters['Curvature'] || 'Curvature of spine is well maintained.'}
  
 Canal diameters are as below:
 Level     C2-C3   C3-C4   C4-C5   C5-C6   C6-C7
@@ -1401,32 +1452,41 @@ ${this.parameters['Disc Configuration'] || 'Configuration of rest of the discs, 
 ·       **${this.parameters['Impression'] || 'No significant abnormality detected.'}**
 ** **
 ** **
+** **
+** **
+** **
+** **
+** **
 **CONSULTANT RADIOLOGIST**
-**                                                                                                            DR. ${this.getRandomRadiologist()}**`;
+**                                                                                                            DR. VISHRUTH RASA. M.D. RADIOLOGY**`;
             }
 
-            generateEnhancedAbdomenReport(date, age, sex, uhid) {
-                return `**Name: ${this.patientName}                       Sex: ${sex}                   Age: ${age} Yrs                   Date: ${date}**
-**Reff.By.Dr: Internal Medicine                                                                     UHID: ${uhid}**
+            generateCTAbdomenReport(date) {
+                const age = this.parameters['Age'] || '[Age]';
+                const sex = this.detectedGender || 'M';
+                const uhid = `UH${Math.floor(Math.random() * 900000) + 100000}`;
+
+                return `**Name: ${this.patientName || '[Patient Name]'}                       Sex: ${sex}                   Age: ${age} Yrs                   Date: ${date}**
+**Reff.By.Dr: Internal Medicine                                                                                       UHID: ${uhid}**
 ** **
 **DEPARTMENT OF RADIO-DIAGNOSIS**
 **CT ABDOMEN AND PELVIS PLAIN**
 ** **
-**TECHNIQUE:** CT abdomen plain study was performed on 96 slice MDCT scanner with detector collimation of 0.625mm, 1mm reconstruction in sagittal and coronal planes.
+**TECHNIQUE:** CT abdomen plain study was performed on 96 slice MDCT scanner with detector collimation of 0.625mm, 1mm reconstruction in saggital and coronal planes.
 ** **
 **FINDINGS:**
  
-${this.parameters['Liver'] || 'Liver is normal in size and attenuation. No IHBRD.'}
+${this.parameters['Liver'] || 'Liver is normal in size (cm) & attenuation. No IHBRD.'}
  
 CBD normal in caliber.
  
-${this.parameters['Gallbladder'] || 'Gallbladder is well distended. Wall thickness appears normal. No evidence of calculi.'}
+${this.parameters['Gallbladder'] || 'Gallbladder is well distended. Wall thickness appears normal. No e/o hyperdense calculi.'}
  
-${this.parameters['Spleen'] || 'Spleen is normal in size and attenuation.'}
+${this.parameters['Spleen'] || 'Spleen is normal in size (cm) and attenuation.'}
  
 Mesentery and omentum are normal.
  
-${this.parameters['Pancreas'] || 'Pancreas: Normal in size, shape and attenuation. No evidence of ductal dilatation, parenchymal calcifications and peripancreatic fluid collection.'}
+${this.parameters['Pancreas'] || 'Pancreas: Normal in size, shape and attenuation. No e/o ductal dilatation, parenchymal calcifications and peripancreatic fluid collection.'}
  
 ${this.parameters['Kidneys'] || 'Both kidneys are normal in size, shape and attenuation. No hydronephrosis / calculi.'}
  
@@ -1440,51 +1500,34 @@ Prostate is normal in size and attenuation.
  
 No free fluid in the peritoneal cavity. 
  
-**IMPRESSION:**
+**IMPRESSION: **
 ** **
 ·       **${this.parameters['Impression'] || 'No significant abnormality detected.'}**
 ** **
-**CONSULTANT RADIOLOGIST**
-**                                                                                                            DR. ${this.getRandomRadiologist()}**`;
+**            CONSULTANT RADIOLOGIST**
+**                                                                            DR. VISHRUTH RASA. M.D. RADIOLOGY**`;
             }
 
-            generateGeneralReport(date, age, sex, uhid) {
-                return `# AI-Enhanced Medical Report
+            generateGeneralReport(date) {
+                const age = this.parameters['Age'] || '[Age]';
+                const sex = this.detectedGender || 'M';
 
-**Patient:** ${this.patientName}
+                return `# Medical Examination Report
+
+**Patient:** ${this.patientName || '[Patient Name]'}
 **Date:** ${date}
 **Age:** ${age} years
 **Gender:** ${sex}
-**UHID:** ${uhid}
 
 ## Examination Type: ${this.examType}
 
-## AI-Extracted Findings:
-${Object.entries(this.parameters).map(([key, value]) => `• **${key}:** ${value}`).join('\n')}
+## Findings:
+${Object.entries(this.parameters).map(([key, value]) => `• ${key}: ${value}`).join('\n')}
 
 ## Complete Transcript:
 ${this.transcript}
 
-*AI-Enhanced Report Generated: ${date}*
-*Processed with medical language intelligence*`;
-            }
-
-            getRandomDoctorName() {
-                const doctors = [
-                    'Rajesh Kumar', 'Priya Sharma', 'Amit Patel', 'Sunita Singh',
-                    'Vikram Gupta', 'Neha Agarwal', 'Rohit Verma', 'Kavita Jain'
-                ];
-                return doctors[Math.floor(Math.random() * doctors.length)];
-            }
-
-            getRandomRadiologist() {
-                const radiologists = [
-                    'VISHRUTH RASA. M.D. RADIOLOGY',
-                    'ANJALI MEHTA. M.D. RADIOLOGY', 
-                    'VIKRAM SHAH. M.D. RADIOLOGY',
-                    'PRIYA SINGH. M.D. RADIOLOGY'
-                ];
-                return radiologists[Math.floor(Math.random() * radiologists.length)];
+*Generated automatically: ${date}*`;
             }
 
             showActionButtons() {
@@ -1494,204 +1537,124 @@ ${this.transcript}
                 }
             }
 
-            async downloadReport() {
+            downloadReport() {
                 if (!this.currentReport) {
                     this.showNotification('No report to download', 'warning');
                     return;
                 }
 
-                try {
-                    document.getElementById('downloadBtn').disabled = true;
-                    this.showNotification('Generating professional DOCX...', 'info');
+                const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+                const filename = `${this.patientName.replace(/\s+/g, '_')}_${this.examType.replace(/\s+/g, '_').toLowerCase()}_${timestamp}.docx`;
 
-                    const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
-                    const filename = `${this.patientName.replace(/\s+/g, '_')}_${this.examType.replace(/\s+/g, '_').toLowerCase()}_${timestamp}.docx`;
-
-                    await this.generateProfessionalDOCX(filename, this.currentReport);
-                    
-                } catch (error) {
-                    console.error('Download failed:', error);
-                    this.showNotification('Download failed. Please try again.', 'error');
-                } finally {
-                    document.getElementById('downloadBtn').disabled = false;
-                }
+                this.downloadFile(filename, this.currentReport);
             }
 
-            async generateProfessionalDOCX(filename, content) {
-                try {
-                    // Create new ZIP instance for DOCX
-                    const zip = new JSZip();
-
-                    // Create the basic DOCX structure
-                    
-                    // 1. [Content_Types].xml
-                    zip.file('[Content_Types].xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
-    <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
-    <Default Extension="xml" ContentType="application/xml"/>
-    <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
-    <Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>
-</Types>`);
-
-                    // 2. _rels/.rels
-                    zip.file('_rels/.rels', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-    <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
-</Relationships>`);
-
-                    // 3. word/_rels/document.xml.rels
-                    zip.file('word/_rels/document.xml.rels', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-    <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
-</Relationships>`);
-
-                    // 4. word/styles.xml
-                    zip.file('word/styles.xml', `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
-    <w:docDefaults>
-        <w:rPrDefault>
-            <w:rPr>
-                <w:rFonts w:ascii="Times New Roman" w:eastAsia="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/>
-                <w:sz w:val="24"/>
-                <w:szCs w:val="24"/>
-                <w:lang w:val="en-US" w:eastAsia="en-US" w:bidi="ar-SA"/>
-            </w:rPr>
-        </w:rPrDefault>
-        <w:pPrDefault>
-            <w:pPr>
-                <w:spacing w:after="200" w:line="276" w:lineRule="auto"/>
-            </w:pPr>
-        </w:pPrDefault>
-    </w:docDefaults>
-    <w:style w:type="paragraph" w:default="1" w:styleId="Normal">
-        <w:name w:val="Normal"/>
-        <w:qFormat/>
-        <w:rPr>
-            <w:rFonts w:ascii="Times New Roman" w:eastAsia="Times New Roman" w:hAnsi="Times New Roman" w:cs="Times New Roman"/>
-            <w:sz w:val="24"/>
-            <w:szCs w:val="24"/>
-            <w:lang w:val="en-US" w:eastAsia="en-US" w:bidi="ar-SA"/>
-        </w:rPr>
-    </w:style>
-    <w:style w:type="paragraph" w:styleId="Heading1">
-        <w:name w:val="heading 1"/>
-        <w:basedOn w:val="Normal"/>
-        <w:next w:val="Normal"/>
-        <w:qFormat/>
-        <w:pPr>
-            <w:keepNext/>
-            <w:keepLines/>
-            <w:spacing w:before="480" w:after="0"/>
-            <w:outlineLvl w:val="0"/>
-        </w:pPr>
-        <w:rPr>
-            <w:rFonts w:asciiTheme="majorHAnsi" w:eastAsiaTheme="majorEastAsia" w:hAnsiTheme="majorHAnsi" w:cstheme="majorBidi"/>
-            <w:b/>
-            <w:bCs/>
-            <w:color w:val="365F91" w:themeColor="accent1" w:themeShade="BF"/>
-            <w:sz w:val="28"/>
-            <w:szCs w:val="28"/>
-        </w:rPr>
-    </w:style>
-</w:styles>`);
-
-                    // 5. word/document.xml with content
-                    const documentXML = this.createDocumentXML(content);
-                    zip.file('word/document.xml', documentXML);
-
-                    // Generate the DOCX file
-                    const blob = await zip.generateAsync({type: "blob"});
-                    
-                    // Download the file
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = filename;
-                    document.body.appendChild(a);
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                    document.body.removeChild(a);
-                    
-                    this.showNotification(`Professional DOCX downloaded: ${filename}`, 'success');
-                    
-                } catch (error) {
-                    throw new Error(`DOCX generation failed: ${error.message}`);
-                }
+            downloadFile(filename, content) {
+                // Generate proper Word document
+                const wordContent = this.generateWordDocument(content);
+                
+                const blob = new Blob([wordContent], { 
+                    type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' 
+                });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+                
+                this.showNotification(`Medical Report downloaded: ${filename}`, 'success');
             }
 
-            createDocumentXML(content) {
-                let documentContent = '';
+            generateWordDocument(content) {
+                // Create proper Word XML structure
+                const wordXML = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?mso-application progid="Word.Document"?>
+<pkg:package xmlns:pkg="http://schemas.microsoft.com/office/2006/xmlPackage">
+<pkg:part pkg:name="/_rels/.rels" pkg:contentType="application/vnd.openxmlformats-package.relationships+xml">
+<pkg:xmlData>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
+</Relationships>
+</pkg:xmlData>
+</pkg:part>
+<pkg:part pkg:name="/word/_rels/document.xml.rels" pkg:contentType="application/vnd.openxmlformats-package.relationships+xml">
+<pkg:xmlData>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+</Relationships>
+</pkg:xmlData>
+</pkg:part>
+<pkg:part pkg:name="/word/document.xml" pkg:contentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml">
+<pkg:xmlData>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+<w:body>
+${this.convertToWordXML(content)}
+<w:sectPr>
+<w:pgSz w:w="12240" w:h="15840"/>
+<w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440"/>
+</w:sectPr>
+</w:body>
+</w:document>
+</pkg:xmlData>
+</pkg:part>
+</pkg:package>`;
+                
+                return wordXML;
+            }
+
+            convertToWordXML(content) {
+                let xmlContent = '';
                 const lines = content.split('\n');
                 
                 lines.forEach(line => {
                     line = line.trim();
                     if (line === '') {
-                        // Empty paragraph
-                        documentContent += '<w:p><w:pPr></w:pPr></w:p>';
+                        // Empty line
+                        xmlContent += '<w:p><w:pPr></w:pPr></w:p>';
                         return;
                     }
                     
-                    // Start paragraph
-                    documentContent += '<w:p><w:pPr></w:pPr>';
-                    
-                    // Process bold formatting
+                    // Check if line contains bold formatting
                     if (line.includes('**')) {
-                        this.processBoldText(line, (text, isBold) => {
-                            if (isBold) {
-                                documentContent += `<w:r><w:rPr><w:b/><w:bCs/></w:rPr><w:t xml:space="preserve">${this.escapeXML(text)}</w:t></w:r>`;
-                            } else {
-                                documentContent += `<w:r><w:t xml:space="preserve">${this.escapeXML(text)}</w:t></w:r>`;
+                        xmlContent += '<w:p><w:pPr></w:pPr>';
+                        
+                        // Process bold text
+                        const boldRegex = /\*\*(.*?)\*\*/g;
+                        let lastIndex = 0;
+                        let match;
+                        
+                        while ((match = boldRegex.exec(line)) !== null) {
+                            // Add text before bold
+                            if (match.index > lastIndex) {
+                                const beforeText = line.substring(lastIndex, match.index);
+                                if (beforeText) {
+                                    xmlContent += `<w:r><w:t xml:space="preserve">${this.escapeXML(beforeText)}</w:t></w:r>`;
+                                }
                             }
-                        });
-                    } else {
-                        // Regular text
-                        documentContent += `<w:r><w:t xml:space="preserve">${this.escapeXML(line)}</w:t></w:r>`;
-                    }
-                    
-                    // End paragraph
-                    documentContent += '</w:p>';
-                });
-
-                return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
-    <w:body>
-        ${documentContent}
-        <w:sectPr>
-            <w:pgSz w:w="12240" w:h="15840"/>
-            <w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="720" w:footer="720" w:gutter="0"/>
-            <w:cols w:space="720"/>
-            <w:docGrid w:linePitch="360"/>
-        </w:sectPr>
-    </w:body>
-</w:document>`;
-            }
-
-            processBoldText(line, callback) {
-                const boldRegex = /\*\*(.*?)\*\*/g;
-                let lastIndex = 0;
-                let match;
-                
-                while ((match = boldRegex.exec(line)) !== null) {
-                    // Add text before bold
-                    if (match.index > lastIndex) {
-                        const beforeText = line.substring(lastIndex, match.index);
-                        if (beforeText) {
-                            callback(beforeText, false);
+                            
+                            // Add bold text
+                            xmlContent += `<w:r><w:rPr><w:b/></w:rPr><w:t xml:space="preserve">${this.escapeXML(match[1])}</w:t></w:r>`;
+                            lastIndex = boldRegex.lastIndex;
                         }
+                        
+                        // Add remaining text
+                        if (lastIndex < line.length) {
+                            const remainingText = line.substring(lastIndex);
+                            if (remainingText) {
+                                xmlContent += `<w:r><w:t xml:space="preserve">${this.escapeXML(remainingText)}</w:t></w:r>`;
+                            }
+                        }
+                        
+                        xmlContent += '</w:p>';
+                    } else {
+                        // Regular line
+                        xmlContent += `<w:p><w:pPr></w:pPr><w:r><w:t xml:space="preserve">${this.escapeXML(line)}</w:t></w:r></w:p>`;
                     }
-                    
-                    // Add bold text
-                    callback(match[1], true);
-                    lastIndex = boldRegex.lastIndex;
-                }
+                });
                 
-                // Add remaining text
-                if (lastIndex < line.length) {
-                    const remainingText = line.substring(lastIndex);
-                    if (remainingText) {
-                        callback(remainingText, false);
-                    }
-                }
+                return xmlContent;
             }
 
             escapeXML(text) {
@@ -1749,9 +1712,9 @@ ${this.transcript}
                 this.currentReport = '';
 
                 // Reset UI
-                document.getElementById('patientName').textContent = 'AI Listening...';
-                document.getElementById('examType').textContent = 'AI Detecting...';
-                document.getElementById('detectedGender').textContent = 'AI Analysis';
+                document.getElementById('patientName').textContent = 'Listening...';
+                document.getElementById('examType').textContent = 'Detecting...';
+                document.getElementById('detectedGender').textContent = 'Auto-detect';
                 document.getElementById('patientAge').textContent = '--';
 
                 // Add detecting classes back
@@ -1762,24 +1725,21 @@ ${this.transcript}
 
                 document.getElementById('parametersList').innerHTML = `
                     <div class="parameter-item">
-                        <span class="parameter-name">🧠 AI ready for medical dictation...</span>
+                        <span class="parameter-name">🎤 Ready for voice input...</span>
                         <span class="parameter-value">--</span>
                     </div>
                 `;
 
-                document.getElementById('documentPreview').textContent = `AI-powered professional medical report will generate automatically...
+                document.getElementById('documentPreview').textContent = `Professional medical report will generate automatically as you speak...
 
-Enhanced features:
-• Intelligent medical terminology recognition
-• Context-aware parameter extraction
-• Professional hospital-grade formatting
-• Production-quality DOCX generation
-
-Try dictating complete medical findings naturally.`;
+Try saying:
+• "Patient Rajesh Kumar, 45-year-old male"
+• "CT brain shows normal findings"
+• "MRI cervical spine for Priya Sharma"`;
 
                 document.getElementById('documentPreview').classList.remove('active');
 
-                document.getElementById('transcriptText').textContent = 'AI-enhanced voice transcription will appear here...';
+                document.getElementById('transcriptText').textContent = 'Your voice will be transcribed here in real-time...';
 
                 // Hide action buttons
                 document.getElementById('downloadBtn').style.display = 'none';
@@ -1811,7 +1771,6 @@ Try dictating complete medical findings naturally.`;
                 const icons = {
                     ready: 'fas fa-check-circle',
                     recording: 'fas fa-circle',
-                    processing: 'fas fa-cog fa-spin',
                     error: 'fas fa-exclamation-triangle'
                 };
 
@@ -1821,31 +1780,13 @@ Try dictating complete medical findings naturally.`;
                 `;
             }
 
-            updateAIStatus(text, type = 'info') {
-                const aiStatusText = document.getElementById('aiStatusText');
-                const aiStatus = document.getElementById('aiStatus');
-                
-                aiStatusText.textContent = text;
-                
-                // Update styling based on type
-                const colors = {
-                    success: 'rgba(34, 197, 94, 0.1)',
-                    error: 'rgba(239, 68, 68, 0.1)',
-                    warning: 'rgba(249, 115, 22, 0.1)',
-                    info: 'rgba(59, 130, 246, 0.1)',
-                    processing: 'rgba(249, 115, 22, 0.1)'
-                };
-                
-                aiStatus.style.background = colors[type] || colors.info;
-            }
-
             updateMicStatus(status) {
                 document.getElementById('micStatus').textContent = status;
             }
 
             updateTranscript() {
                 const transcriptText = document.getElementById('transcriptText');
-                transcriptText.textContent = this.transcript || 'AI-enhanced voice transcription will appear here...';
+                transcriptText.textContent = this.transcript || 'Your voice will be transcribed here in real-time...';
                 transcriptText.scrollTop = transcriptText.scrollHeight;
             }
 
@@ -1855,20 +1796,32 @@ Try dictating complete medical findings naturally.`;
                 transcriptText.scrollTop = transcriptText.scrollHeight;
             }
 
+            adjustMobileLayout() {
+                if (window.innerHeight < window.innerWidth) {
+                    // Landscape mode
+                    document.body.style.height = '100vh';
+                } else {
+                    // Portrait mode
+                    document.body.style.height = 'auto';
+                }
+            }
+
             showNotification(message, type = 'success') {
                 const notification = document.createElement('div');
                 notification.className = `notification ${type}`;
                 notification.innerHTML = `
-                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
                     ${message}
                 `;
 
                 document.body.appendChild(notification);
 
+                // Trigger animation
                 setTimeout(() => {
                     notification.classList.add('show');
                 }, 100);
 
+                // Remove notification
                 setTimeout(() => {
                     notification.classList.remove('show');
                     setTimeout(() => {
@@ -1883,83 +1836,51 @@ Try dictating complete medical findings naturally.`;
                 this.isRecording = true;
                 this.updateRecordingUI(true);
                 this.updateSystemStatus('recording', 'Demo Mode Active');
-                this.updateMicStatus('🎤 Demo Mode - AI processing medical dictation...');
-                this.updateAIStatus('Demo: Simulating AI medical text processing...', 'processing');
+                this.updateMicStatus('🎤 Demo Mode - Simulating medical voice input...');
 
                 const demoScenarios = [
-                    {
-                        transcript: [
-                            "Patient Rajesh Kumar is here for CT brain examination",
-                            "This is a 45-year-old male patient",
-                            "The cerebral grey and white matter appear normal",
-                            "No focal lesion seen in cerebral parenchyma",
-                            "Basal ganglia and thalami are normal", 
-                            "Posterior fossa structures are unremarkable",
-                            "Ventricular system and cisternal spaces are normal",
-                            "No intra or extra-axial bleed seen",
-                            "No midline shift noted",
-                            "Impression: No significant brain abnormality detected"
-                        ],
-                        patientName: "Rajesh Kumar",
-                        examType: "CT Brain",
-                        age: "45",
-                        gender: "M"
-                    },
-                    {
-                        transcript: [
-                            "MRI cervical spine for Priya Sharma",
-                            "32-year-old female patient",
-                            "Curvature of spine is well maintained",
-                            "Canal diameters are within normal limits",
-                            "Vertebral bodies show normal alignment",
-                            "Disc configuration appears normal",
-                            "Impression: No significant spinal abnormality"
-                        ],
-                        patientName: "Priya Sharma", 
-                        examType: "MRI Cervical Spine",
-                        age: "32",
-                        gender: "F"
-                    }
+                    [
+                        "Patient Rajesh Kumar is here for CT brain examination",
+                        "This is a 45-year-old male patient",
+                        "The cerebral grey and white matter appear normal",
+                        "No focal lesion seen in cerebral parenchyma",
+                        "Basal ganglia and thalami are normal",
+                        "Posterior fossa structures are unremarkable",
+                        "Ventricular system and cisternal spaces are normal",
+                        "No intra or extra-axial bleed seen",
+                        "No midline shift noted",
+                        "Impression: No significant brain abnormality detected"
+                    ],
+                    [
+                        "MRI cervical spine for Priya Sharma",
+                        "32-year-old female patient",
+                        "Curvature of spine is well maintained",
+                        "Canal diameters are within normal limits",
+                        "Vertebral bodies show normal alignment",
+                        "Disc configuration appears normal",
+                        "No significant spinal abnormality"
+                    ]
                 ];
 
                 const selectedScenario = demoScenarios[Math.floor(Math.random() * demoScenarios.length)];
 
                 let index = 0;
-                const interval = setInterval(async () => {
-                    if (index < selectedScenario.transcript.length && this.isRecording) {
-                        const text = selectedScenario.transcript[index];
+                const interval = setInterval(() => {
+                    if (index < selectedScenario.length && this.isRecording) {
+                        const text = selectedScenario[index];
                         this.transcript += text + ' ';
-                        
-                        // Simulate AI processing
-                        this.updateAIStatus(`AI processing: "${text.substring(0, 30)}..."`, 'processing');
-                        
-                        await this.processTranscript(text);
+                        this.processTranscript(text);
                         this.updateTranscript();
                         this.updateDisplay();
                         index++;
                     } else {
                         clearInterval(interval);
                         if (this.isRecording) {
-                            this.updateMicStatus('✅ Demo complete - AI-generated professional medical report ready!');
+                            this.updateMicStatus('✅ Demo complete - Professional medical report generated!');
                             this.updateSystemStatus('ready', 'Demo Complete');
-                            this.updateAIStatus('Demo complete - AI medical intelligence ready', 'success');
                         }
                     }
-                }, 2500);
-            }
-
-            isValidName(name) {
-                const exclusions = [
-                    'patient', 'exam', 'blood', 'pressure', 'heart', 'rate', 'normal',
-                    'examination', 'scan', 'study', 'brain', 'chest', 'abdomen',
-                    'year', 'old', 'male', 'female', 'doctor', 'imaging', 'cervical',
-                    'spine', 'protocol', 'findings', 'shows', 'appears', 'seen'
-                ];
-                const nameLower = name.toLowerCase();
-                return !exclusions.some(word => nameLower.includes(word)) &&
-                       name.length >= 2 &&
-                       name.length <= 50 &&
-                       /^[A-Za-z\s]+$/.test(name);
+                }, 2000);
             }
         }
 
