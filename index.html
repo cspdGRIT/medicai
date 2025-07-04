@@ -741,31 +741,57 @@ Try dictating complete medical findings naturally.
             }
 
             async initializeAI() {
+                // Start with enhanced pattern-based processing
+                this.useAI = false; // Disable AI for now to avoid errors
+                this.updateAIStatus('Enhanced pattern-based medical processing ready', 'success');
+                
+                // Optional: Uncomment and configure for AI processing
+                /*
                 try {
                     this.updateAIStatus('Initializing AI medical intelligence...', 'info');
-                    
-                    // Test AI connection
                     await this.testAIConnection();
-                    
+                    this.useAI = true;
                     this.updateAIStatus('AI ready for medical text processing', 'success');
                 } catch (error) {
-                    console.warn('AI initialization failed, falling back to pattern-based processing:', error);
+                    console.warn('AI initialization failed, using enhanced patterns:', error);
                     this.useAI = false;
-                    this.updateAIStatus('Using pattern-based processing (AI unavailable)', 'warning');
+                    this.updateAIStatus('Enhanced pattern-based processing active', 'success');
                 }
+                */
             }
 
             async testAIConnection() {
-                // Test with a simple medical text
+                // For demo purposes - replace with your AI endpoint
                 const testText = "Patient John Doe, 45-year-old male, CT brain examination";
-                const result = await this.processWithAI(testText);
                 
-                if (!result || !result.patientInfo) {
-                    throw new Error('AI test failed');
+                // Example: Using OpenRouter (free tier available)
+                const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer YOUR_OPENROUTER_KEY', // Replace with real key
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        model: 'microsoft/wizardlm-2-8x22b',
+                        messages: [{
+                            role: 'user',
+                            content: `Extract medical info from: "${testText}"`
+                        }]
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`AI test failed: ${response.status}`);
                 }
+                
+                return await response.json();
             }
 
             async processWithAI(text) {
+                // For now, always use enhanced patterns
+                return this.processWithPatterns(text);
+                
+                /* Uncomment when you have AI configured
                 if (!this.useAI || this.aiProcessing) {
                     return this.processWithPatterns(text);
                 }
@@ -774,54 +800,20 @@ Try dictating complete medical findings naturally.
                     this.aiProcessing = true;
                     this.updateAIStatus('AI processing medical text...', 'processing');
 
-                    // Using Hugging Face Inference API with a medical-trained model
-                    const response = await fetch('https://api-inference.huggingface.co/models/microsoft/DialoGPT-medium', {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': 'Bearer hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', // You'd need a real token
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            inputs: `Extract medical information from this text in JSON format:
-                            
-Text: "${text}"
-
-Please extract:
-1. Patient name (if mentioned)
-2. Age (if mentioned) 
-3. Gender (if mentioned or can be inferred)
-4. Examination type (CT, MRI, etc.)
-5. Medical findings (organize by body system)
-6. Impression/conclusion
-
-Return as JSON with keys: patientInfo, examType, findings, impression.`,
-                            parameters: {
-                                max_new_tokens: 500,
-                                temperature: 0.1,
-                                return_full_text: false
-                            }
-                        })
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`AI API error: ${response.status}`);
-                    }
-
-                    const result = await response.json();
+                    // Your AI processing logic here
+                    const result = await this.callAIService(text);
                     this.updateAIStatus('AI processing complete', 'success');
                     
-                    // Parse AI response
                     return this.parseAIResponse(result, text);
 
                 } catch (error) {
                     console.error('AI processing failed:', error);
-                    this.updateAIStatus('AI processing failed, using pattern fallback', 'warning');
-                    
-                    // Fallback to pattern-based processing
+                    this.updateAIStatus('Using enhanced pattern processing', 'info');
                     return this.processWithPatterns(text);
                 } finally {
                     this.aiProcessing = false;
                 }
+                */
             }
 
             parseAIResponse(aiResult, originalText) {
@@ -862,7 +854,7 @@ Return as JSON with keys: patientInfo, examType, findings, impression.`,
             }
 
             processWithPatterns(text) {
-                // Enhanced pattern-based processing as fallback
+                // Enhanced pattern-based processing
                 const result = {
                     patientInfo: {
                         name: this.extractPatientNamePattern(text),
@@ -874,20 +866,32 @@ Return as JSON with keys: patientInfo, examType, findings, impression.`,
                     impression: this.extractImpressionPattern(text)
                 };
 
+                // Log for debugging
+                console.log('Pattern extraction result:', result);
                 return result;
             }
 
             // Enhanced pattern-based extraction methods
             extractPatientNamePattern(text) {
                 const namePatterns = [
-                    /(?:patient|mr\.?|mrs\.?|ms\.?|dr\.?)\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)/i,
-                    /([A-Za-z]+(?:\s+[A-Za-z]+)*)\s+(?:is\s+)?(?:a\s+)?\d+[\s-]year[\s-]old/i,
-                    /(?:examining|patient)\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)/i
+                    // "Patient Rajesh Kumar" or "Patient is Rajesh Kumar"
+                    /(?:patient|patient\s+is)\s+([A-Za-z]+(?:\s+[A-Za-z]+){0,2})/i,
+                    // "Mr. Rajesh Kumar" or "Mrs. Priya Sharma"
+                    /(?:mr\.?|mrs\.?|ms\.?|dr\.?)\s+([A-Za-z]+(?:\s+[A-Za-z]+){0,2})/i,
+                    // "Rajesh Kumar is a 45-year-old" or "Rajesh Kumar, 45-year-old"
+                    /([A-Za-z]+(?:\s+[A-Za-z]+){0,2})\s*(?:is\s+(?:a\s+)?|,\s*)?\d+[\s-]year[\s-]old/i,
+                    // "examining Rajesh Kumar" or "for Rajesh Kumar"
+                    /(?:examining|for)\s+([A-Za-z]+(?:\s+[A-Za-z]+){0,2})/i,
+                    // "CT brain for Rajesh Kumar" or "MRI for Priya Sharma"
+                    /(?:ct|mri|scan)\s+(?:\w+\s+)?for\s+([A-Za-z]+(?:\s+[A-Za-z]+){0,2})/i,
+                    // Simple name at start: "Rajesh Kumar here for"
+                    /^([A-Za-z]+(?:\s+[A-Za-z]+){0,2})\s+(?:here\s+for|is\s+here)/i
                 ];
 
                 for (let pattern of namePatterns) {
                     const match = text.match(pattern);
                     if (match && this.isValidName(match[1])) {
+                        console.log('Found name:', match[1]);
                         return match[1].trim();
                     }
                 }
@@ -924,16 +928,45 @@ Return as JSON with keys: patientInfo, examType, findings, impression.`,
 
             detectExamTypePattern(text) {
                 const examTypes = {
-                    'CT Brain': /\b(?:ct|computed tomography)\s+(?:brain|head|cerebral)\b/i,
-                    'MRI Brain': /\b(?:mri|magnetic resonance)\s+(?:brain|head|cerebral)\b/i,
-                    'MRI Stroke Protocol': /\b(?:stroke|acute stroke)\s+(?:protocol|mri|imaging)\b/i,
-                    'MRI Cervical Spine': /\b(?:mri|magnetic resonance)\s+(?:cervical|c[\s-]?spine|spine)\b/i,
-                    'CT Abdomen': /\b(?:ct|computed tomography)\s+(?:abdomen|abdominal|pelvis)\b/i
+                    'CT Brain': [
+                        /\b(?:ct|computed tomography)\s+(?:brain|head|cerebral)\b/i,
+                        /\bct\s+brain\b/i,
+                        /\bbrain\s+ct\b/i,
+                        /\bct\s+head\b/i,
+                        /\bhead\s+ct\b/i
+                    ],
+                    'MRI Brain': [
+                        /\b(?:mri|magnetic resonance)\s+(?:brain|head|cerebral)\b/i,
+                        /\bmri\s+brain\b/i,
+                        /\bbrain\s+mri\b/i,
+                        /\bmri\s+head\b/i
+                    ],
+                    'MRI Stroke Protocol': [
+                        /\b(?:stroke|acute stroke)\s+(?:protocol|mri|imaging)\b/i,
+                        /\bmri\s+stroke\b/i,
+                        /\bstroke\s+protocol\b/i
+                    ],
+                    'MRI Cervical Spine': [
+                        /\b(?:mri|magnetic resonance)\s+(?:cervical|c[\s-]?spine|spine)\b/i,
+                        /\bmri\s+cervical\s+spine\b/i,
+                        /\bcervical\s+spine\s+mri\b/i,
+                        /\bmri\s+spine\b/i,
+                        /\bspine\s+mri\b/i
+                    ],
+                    'CT Abdomen': [
+                        /\b(?:ct|computed tomography)\s+(?:abdomen|abdominal|pelvis)\b/i,
+                        /\bct\s+abdomen\b/i,
+                        /\babdomen\s+ct\b/i,
+                        /\bct\s+pelvis\b/i
+                    ]
                 };
 
-                for (let [type, pattern] of Object.entries(examTypes)) {
-                    if (pattern.test(text)) {
-                        return type;
+                for (let [type, patterns] of Object.entries(examTypes)) {
+                    for (let pattern of patterns) {
+                        if (pattern.test(text)) {
+                            console.log('Found exam type:', type);
+                            return type;
+                        }
                     }
                 }
                 return '';
@@ -1115,37 +1148,180 @@ Return as JSON with keys: patientInfo, examType, findings, impression.`,
 
             async processTranscript(text) {
                 try {
-                    const aiResult = await this.processWithAI(text);
+                    const processingResult = await this.processWithAI(text);
                     
-                    // Update patient info
-                    if (aiResult.patientInfo.name && !this.patientName) {
-                        this.patientName = aiResult.patientInfo.name;
-                        this.showNotification(`Patient: ${this.patientName}`, 'success');
+                    // Update patient info from processing result
+                    if (processingResult.patientInfo.name && !this.patientName) {
+                        this.patientName = processingResult.patientInfo.name;
+                        this.showNotification(`Patient detected: ${this.patientName}`, 'success');
+                        console.log('Set patient name:', this.patientName);
                     }
                     
-                    if (aiResult.patientInfo.age && !this.parameters['Age']) {
-                        this.parameters['Age'] = aiResult.patientInfo.age;
+                    if (processingResult.patientInfo.age && !this.parameters['Age']) {
+                        this.parameters['Age'] = processingResult.patientInfo.age;
+                        console.log('Set age:', this.parameters['Age']);
                     }
                     
-                    if (aiResult.patientInfo.gender && !this.detectedGender) {
-                        this.detectedGender = aiResult.patientInfo.gender;
+                    if (processingResult.patientInfo.gender && !this.detectedGender) {
+                        this.detectedGender = processingResult.patientInfo.gender;
+                        console.log('Set gender:', this.detectedGender);
                     }
                     
-                    if (aiResult.examType && !this.examType) {
-                        this.examType = aiResult.examType;
-                        this.showNotification(`Exam: ${this.examType}`, 'info');
+                    if (processingResult.examType && !this.examType) {
+                        this.examType = processingResult.examType;
+                        this.showNotification(`Exam type detected: ${this.examType}`, 'info');
+                        console.log('Set exam type:', this.examType);
                     }
                     
-                    // Update findings
-                    Object.assign(this.parameters, aiResult.findings);
-                    
-                    if (aiResult.impression) {
-                        this.parameters['Impression'] = aiResult.impression;
+                    // Update findings - merge with existing parameters
+                    if (processingResult.findings && typeof processingResult.findings === 'object') {
+                        Object.assign(this.parameters, processingResult.findings);
+                        console.log('Updated parameters:', this.parameters);
                     }
+                    
+                    if (processingResult.impression) {
+                        this.parameters['Impression'] = processingResult.impression;
+                    }
+                    
+                    // Also try legacy extraction methods for compatibility
+                    this.extractPatientNameLegacy(text);
+                    this.detectExamTypeLegacy(text);
+                    this.extractParametersLegacy(text);
                     
                 } catch (error) {
                     console.error('Error processing transcript:', error);
-                    this.updateAIStatus('Processing error, check connection', 'error');
+                    this.updateAIStatus('Processing error, using fallback methods', 'warning');
+                    
+                    // Fallback to legacy methods
+                    this.extractPatientNameLegacy(text);
+                    this.detectExamTypeLegacy(text);
+                    this.extractParametersLegacy(text);
+                }
+            }
+
+            // Legacy extraction methods as backup
+            extractPatientNameLegacy(text) {
+                if (this.patientName) return; // Don't override if already set
+
+                const namePatterns = [
+                    /patient\s+(?:name\s+(?:is\s+)?)?([A-Za-z]+(?:\s+[A-Za-z]+)*)/i,
+                    /(?:this\s+is|examining)\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)/i,
+                    /([A-Za-z]+(?:\s+[A-Za-z]+)*)\s+(?:is\s+)?(?:the\s+)?patient/i,
+                    /(?:mr\.?|ms\.?|mrs\.?|dr\.?)\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)/i,
+                    /patient\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)\s+is\s+here/i,
+                    /([A-Za-z]+(?:\s+[A-Za-z]+)*)\s+is\s+here\s+for/i,
+                    /(?:mri|ct|scan)\s+(?:for\s+)?([A-Za-z]+(?:\s+[A-Za-z]+)*)/i
+                ];
+
+                for (let pattern of namePatterns) {
+                    const match = text.match(pattern);
+                    if (match) {
+                        const name = match[1].trim();
+                        if (this.isValidName(name)) {
+                            this.patientName = name;
+                            this.detectedGender = this.guessGenderFromIndianName(name) || 'Unknown';
+                            this.showNotification(`Patient detected: ${name}`, 'success');
+                            console.log('Legacy: Set patient name:', this.patientName);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            detectExamTypeLegacy(text) {
+                if (this.examType) return; // Don't override if already set
+
+                const examKeywords = {
+                    'CT Brain': [
+                        'ct brain', 'brain ct', 'ct head', 'head ct', 'computed tomography brain',
+                        'cerebral', 'grey matter', 'white matter', 'basal ganglia', 'thalami',
+                        'posterior fossa', 'ventricular system', 'hemorrhage', 'midline shift'
+                    ],
+                    'MRI Brain': [
+                        'mri brain', 'brain mri', 'magnetic resonance brain', 'diffusion weighted',
+                        'flair', 'dwi', 'angiography', 'intra cranial', 'intracranial',
+                        'acute infarct', 'intracerebral hemorrhage'
+                    ],
+                    'MRI Stroke Protocol': [
+                        'stroke protocol', 'mri stroke', 'stroke mri', 'acute stroke',
+                        'stroke imaging', 'emergency stroke', 'stroke evaluation'
+                    ],
+                    'MRI Cervical Spine': [
+                        'mri cervical spine', 'cervical spine mri', 'mri spine', 'spine mri',
+                        'cervical', 'c spine', 'whole spine screening', 'spinal canal',
+                        'vertebral bodies', 'canal diameters', 'curvature', 'alignment'
+                    ],
+                    'CT Abdomen': [
+                        'ct abdomen', 'abdomen ct', 'ct pelvis', 'abdominal ct',
+                        'liver', 'gallbladder', 'pancreas', 'spleen', 'kidneys',
+                        'abdominal imaging', 'pelvic imaging', 'peritoneal'
+                    ]
+                };
+
+                let maxScore = 0;
+                let detectedExam = '';
+
+                for (let [exam, keywords] of Object.entries(examKeywords)) {
+                    const score = keywords.filter(keyword =>
+                        text.toLowerCase().includes(keyword.toLowerCase())
+                    ).length;
+
+                    if (score > maxScore) {
+                        maxScore = score;
+                        detectedExam = exam;
+                    }
+                }
+
+                if (maxScore >= 1) {
+                    this.examType = detectedExam;
+                    this.showNotification(`Exam type: ${detectedExam}`, 'success');
+                    console.log('Legacy: Set exam type:', this.examType);
+                }
+            }
+
+            extractParametersLegacy(text) {
+                const paramPatterns = {
+                    'Age': [
+                        /(?:age\s+(?:is\s+)?|patient\s+is\s+|(?:\d+\s+)?(?:year\s+old\s+)?(?:male|female)\s+)(\d+)\s*(?:years?\s+old)?/i,
+                        /(\d+)[\s-]year[\s-]old/i,
+                        /(?:this\s+is\s+a\s+)?(\d+)[\s-]year[\s-]old/i,
+                        /age\s+(\d+)/i,
+                        /(\d+)\s+years?\s+old/i
+                    ],
+                    'Cerebral Matter': [
+                        /cerebral\s+grey\s+and\s+white\s+matter\s+(.+?)(?:\.|basal|findings)/i,
+                        /grey\s+matter\s+(.+?)(?:\.|white|basal)/i,
+                        /white\s+matter\s+(.+?)(?:\.|basal|posterior)/i,
+                        /(appear\s+normal)/i,
+                        /(no\s+focal\s+lesion)/i
+                    ],
+                    'Basal Ganglia': [
+                        /basal\s+ganglia\s+(?:and\s+thalami\s+)?(?:are\s+)?(.+?)(?:\.|posterior|cerebellum)/i,
+                        /thalami\s+(?:are\s+)?(.+?)(?:\.|posterior)/i
+                    ],
+                    'Impression': [
+                        /impression\s*:?\s*(.+?)(?:consultant|dr\.|radiologist)/i,
+                        /conclusion\s*:?\s*(.+?)(?:consultant|dr\.)/i
+                    ]
+                };
+
+                for (let [paramName, patterns] of Object.entries(paramPatterns)) {
+                    if (this.parameters[paramName]) continue;
+
+                    for (let pattern of patterns) {
+                        const match = text.match(pattern);
+                        if (match) {
+                            let value = match[1] || match[0];
+                            value = value.trim();
+                            if (value.endsWith('.')) {
+                                value = value.slice(0, -1);
+                            }
+
+                            this.parameters[paramName] = value;
+                            console.log('Legacy: Set parameter:', paramName, '=', value);
+                            break;
+                        }
+                    }
                 }
             }
 
