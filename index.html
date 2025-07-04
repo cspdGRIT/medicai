@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedVoice AI - Revolutionary Medical Voice Documentation</title>
-    <meta name="description" content="Transform medical documentation with AI. Zero typing, instant transcription, automatic parameter extraction, and real-time document generation.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>MedVoice AI - Professional Medical Voice Documentation</title>
+    <meta name="description" content="Professional medical voice documentation system. Zero typing, instant reports, hospital-ready formats.">
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -21,35 +21,37 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             color: #333;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
+        /* Main Container */
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         /* Header */
         .header {
-            position: fixed;
-            top: 0;
-            width: 100%;
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            padding: 1rem 0;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .nav {
-            max-width: 1200px;
-            margin: 0 auto;
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 1rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
         .logo {
@@ -61,485 +63,283 @@
             background-clip: text;
         }
 
-        .nav-links {
+        .status-indicator {
             display: flex;
-            list-style: none;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(34, 197, 94, 0.1);
+            border: 2px solid rgba(34, 197, 94, 0.3);
+            border-radius: 25px;
+            font-weight: 600;
+            color: #22c55e;
+            font-size: 0.9rem;
+        }
+
+        .status-indicator.recording {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+            animation: pulse 2s infinite;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 2rem;
+            height: calc(100vh - 140px);
         }
 
-        .nav-links a {
-            text-decoration: none;
+        /* Control Panel */
+        .control-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .app-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
             color: #333;
-            font-weight: 500;
-            transition: color 0.3s ease;
         }
 
-        .nav-links a:hover {
-            color: #667eea;
+        .app-subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.6;
         }
 
-        .cta-button {
+        /* Microphone Button */
+        .mic-container {
+            position: relative;
+            margin: 2rem 0;
+        }
+
+        .mic-button {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
             color: white;
+            font-size: 3.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mic-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 50px rgba(102, 126, 234, 0.5);
+        }
+
+        .mic-button:active {
+            transform: scale(0.95);
+        }
+
+        .mic-button.recording {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            animation: recording-pulse 1.5s infinite;
+        }
+
+        @keyframes recording-pulse {
+            0% { transform: scale(1); box-shadow: 0 15px 35px rgba(239, 68, 68, 0.4); }
+            50% { transform: scale(1.08); box-shadow: 0 25px 60px rgba(239, 68, 68, 0.6); }
+            100% { transform: scale(1); box-shadow: 0 15px 35px rgba(239, 68, 68, 0.4); }
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .recording-indicator {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 30px;
+            height: 30px;
+            background: #ef4444;
+            border-radius: 50%;
+            border: 3px solid white;
+            animation: pulse 1s infinite;
+        }
+
+        .mic-status {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            color: #666;
+            min-height: 1.5rem;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .action-btn {
             padding: 0.75rem 1.5rem;
             border: none;
             border-radius: 25px;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="g"><stop offset="20%" stop-opacity=".1"/><stop offset="50%" stop-opacity=".05"/><stop offset="100%" stop-opacity="0"/></radialGradient></defs><rect width="100%" height="100%" fill="url(%23g)"/></svg>');
-            opacity: 0.3;
-        }
-
-        .hero-content {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero h1 {
-            font-size: 4rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            line-height: 1.2;
-        }
-
-        .hero .subtitle {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-            font-weight: 300;
-        }
-
-        .hero .description {
-            font-size: 1.2rem;
-            margin-bottom: 3rem;
-            opacity: 0.8;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            flex-wrap: wrap;
+            gap: 0.5rem;
+            font-size: 0.9rem;
         }
 
         .btn-primary {
-            background: white;
-            color: #667eea;
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            color: white;
         }
 
         .btn-secondary {
-            background: transparent;
-            color: white;
-            padding: 1rem 2rem;
-            border: 2px solid white;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-secondary:hover {
-            background: white;
-            color: #667eea;
-            transform: translateY(-3px);
-        }
-
-        /* Stats Section */
-        .stats {
-            padding: 4rem 0;
-            background: white;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 3rem;
-            text-align: center;
-        }
-
-        .stat-item h3 {
-            font-size: 3rem;
-            font-weight: 800;
-            color: #667eea;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-item p {
-            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.8);
             color: #666;
-            font-weight: 500;
+            border: 2px solid rgba(0, 0, 0, 0.1);
         }
 
-        /* Features Section */
-        .features {
-            padding: 6rem 0;
-            background: #f8fafc;
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
 
-        .section-title {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-title h2 {
-            font-size: 3rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            color: #333;
-        }
-
-        .section-title p {
-            font-size: 1.3rem;
-            color: #666;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 3rem;
-            margin-top: 4rem;
-        }
-
-        .feature-card {
-            background: white;
-            padding: 3rem 2rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-align: center;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-        }
-
-        .feature-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 2rem;
-            font-size: 2rem;
-            color: white;
-        }
-
-        .feature-card h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: #333;
-        }
-
-        .feature-card p {
-            color: #666;
-            line-height: 1.8;
-            font-size: 1.1rem;
-        }
-
-        /* Demo Section */
-        .demo-section {
-            padding: 6rem 0;
-            background: white;
-        }
-
-        .demo-container {
-            background: #f8fafc;
-            border-radius: 30px;
-            padding: 3rem;
-            margin-top: 3rem;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-        }
-
-        .demo-interface {
-            background: white;
+        /* Output Panel */
+        .output-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
             border-radius: 20px;
             padding: 2rem;
-            min-height: 600px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
+            overflow: hidden;
         }
 
-        .demo-title {
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .output-title {
             font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 2rem;
             color: #333;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .mic-button {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            color: white;
-            font-size: 3rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-            margin-bottom: 2rem;
-        }
-
-        .mic-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
-        }
-
-        .mic-button.recording {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        .demo-status {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            color: #666;
-        }
-
-        .demo-output {
-            width: 100%;
-            max-width: 800px;
-            margin-top: 2rem;
-        }
-
-        .detected-info {
+        /* Patient Info Cards */
+        .patient-info {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 1rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .info-card {
-            background: #f8fafc;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             padding: 1rem;
-            border-radius: 10px;
+            border-radius: 12px;
             border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
         }
 
         .info-label {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: #666;
             font-weight: 600;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .info-value {
             font-size: 1.1rem;
             font-weight: 700;
             color: #333;
+            min-height: 1.3rem;
         }
 
-        .transcript-box {
-            background: #f8fafc;
-            border: 2px dashed #ddd;
-            border-radius: 15px;
-            padding: 2rem;
-            min-height: 150px;
-            margin-top: 2rem;
+        .info-value.detecting {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient 2s ease infinite;
         }
 
-        .transcript-text {
-            color: #666;
-            font-style: italic;
-            text-align: center;
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        /* How It Works */
-        .how-it-works {
-            padding: 6rem 0;
-            background: #667eea;
-            color: white;
-        }
-
-        .steps-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-            margin-top: 4rem;
-        }
-
-        .step-card {
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .step-number {
-            width: 60px;
-            height: 60px;
-            background: white;
-            color: #667eea;
-            border-radius: 50%;
+        /* Live Output */
+        .live-output {
+            flex: 1;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin: 0 auto 1.5rem;
+            flex-direction: column;
+            gap: 1rem;
+            min-height: 0;
         }
 
-        .step-card h3 {
-            font-size: 1.3rem;
+        .parameters-section, .document-section {
+            flex: 1;
+            min-height: 0;
+        }
+
+        .section-title {
+            font-size: 1rem;
             font-weight: 700;
-            margin-bottom: 1rem;
-        }
-
-        /* CTA Section */
-        .final-cta {
-            padding: 6rem 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-align: center;
-        }
-
-        .final-cta h2 {
-            font-size: 3rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-        }
-
-        .final-cta p {
-            font-size: 1.3rem;
-            margin-bottom: 3rem;
-            opacity: 0.9;
-        }
-
-        /* Footer */
-        .footer {
-            background: #333;
-            color: white;
-            padding: 3rem 0;
-            text-align: center;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .footer-links a {
-            color: white;
-            text-decoration: none;
-            opacity: 0.8;
-            transition: opacity 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            opacity: 1;
-        }
-
-        /* Demo specific styles */
-        .demo-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .demo-left, .demo-right {
-            background: white;
-            border-radius: 15px;
-            padding: 1.5rem;
-            min-height: 400px;
-        }
-
-        .demo-left h4, .demo-right h4 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
             color: #333;
+            margin-bottom: 0.8rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
         .parameters-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 1rem;
+            height: 200px;
+            overflow-y: auto;
+            border: 2px solid rgba(102, 126, 234, 0.1);
         }
 
         .parameter-item {
@@ -547,15 +347,23 @@
             justify-content: space-between;
             align-items: center;
             padding: 0.5rem;
-            background: #f8fafc;
+            margin-bottom: 0.5rem;
+            background: white;
             border-radius: 8px;
             font-size: 0.9rem;
             transition: all 0.3s ease;
+            border-left: 3px solid transparent;
         }
 
-        .parameter-item:hover {
-            background: rgba(102, 126, 234, 0.1);
-            transform: translateX(5px);
+        .parameter-item.detected {
+            border-left-color: #22c55e;
+            background: rgba(34, 197, 94, 0.05);
+            animation: slideInRight 0.5s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         .parameter-name {
@@ -570,338 +378,333 @@
 
         .document-preview {
             background: #f8fafc;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            border: 2px solid rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
             padding: 1rem;
-            font-family: monospace;
+            font-family: 'Courier New', monospace;
             font-size: 0.8rem;
             line-height: 1.4;
             color: #555;
-            height: 300px;
+            height: 250px;
             overflow-y: auto;
             white-space: pre-wrap;
+            transition: all 0.3s ease;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero .subtitle {
-                font-size: 1.2rem;
-            }
-
-            .hero .description {
-                font-size: 1rem;
-            }
-
-            .hero-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .demo-container {
-                padding: 1.5rem;
-            }
-
-            .section-title h2 {
-                font-size: 2rem;
-            }
-
-            .demo-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @keyframes fadeInScale {
-            0% {
-                opacity: 0;
-                transform: scale(0.8) translateY(10px);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
-
-        .demo-output {
-            border: 2px solid rgba(102, 126, 234, 0.2);
-            border-radius: 15px;
-            padding: 1rem;
-            background: rgba(248, 250, 252, 0.5);
-        }
-
-        .demo-output.active {
+        .document-preview.active {
             border-color: rgba(102, 126, 234, 0.5);
             background: rgba(248, 250, 252, 0.8);
         }
 
-        .tips-box {
-            background: #e3f2fd; 
-            padding: 1rem; 
-            border-radius: 8px; 
-            margin: 1rem 0; 
-            font-size: 0.9rem;
+        .transcript-section {
+            margin-top: 1rem;
+        }
+
+        .transcript-box {
+            background: #f8fafc;
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 1rem;
+            min-height: 100px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .transcript-text {
+            color: #666;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .app-container {
+                padding: 0.5rem;
+            }
+
+            .header {
+                padding: 1rem;
+                border-radius: 15px;
+                margin-bottom: 1rem;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                height: auto;
+            }
+
+            .control-panel, .output-panel {
+                padding: 1.5rem;
+                border-radius: 15px;
+            }
+
+            .app-title {
+                font-size: 1.5rem;
+            }
+
+            .app-subtitle {
+                font-size: 1rem;
+            }
+
+            .mic-button {
+                width: 120px;
+                height: 120px;
+                font-size: 3rem;
+            }
+
+            .patient-info {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.8rem;
+            }
+
+            .quick-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .action-btn {
+                justify-content: center;
+            }
+
+            .live-output {
+                gap: 0.8rem;
+            }
+
+            .parameters-list, .document-preview {
+                height: 180px;
+            }
+
+            .transcript-box {
+                max-height: 120px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .patient-info {
+                grid-template-columns: 1fr;
+            }
+
+            .output-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .quick-actions {
+                gap: 0.5rem;
+            }
+
+            .action-btn {
+                font-size: 0.8rem;
+                padding: 0.6rem 1rem;
+            }
+        }
+
+        /* Loading States */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(102, 126, 234, 0.3);
+            border-radius: 50%;
+            border-top-color: #667eea;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Touch Optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .mic-button {
+                width: 130px;
+                height: 130px;
+            }
+            
+            .action-btn {
+                min-height: 44px;
+                padding: 0.8rem 1.2rem;
+            }
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            max-width: 300px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        .notification.warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <nav class="nav">
-            <div class="logo">🎤 MedVoice AI</div>
-            <ul class="nav-links">
-                <li><a href="#features">Features</a></li>
-                <li><a href="#demo">Demo</a></li>
-                <li><a href="#how-it-works">How It Works</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-            <a href="#demo" class="cta-button">Try Demo</a>
-        </nav>
-    </header>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                🎤 MedVoice AI Professional
+            </div>
+            <div class="status-indicator" id="systemStatus">
+                <i class="fas fa-check-circle"></i>
+                <span>System Ready</span>
+            </div>
+        </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Revolutionary Medical Voice Documentation</h1>
-            <p class="subtitle">Zero Typing. Instant Results. Complete Automation.</p>
-            <p class="description">
-                Transform medical documentation with AI-powered voice recognition. Just speak naturally - patient names, exam types, and medical parameters are extracted automatically, generating professional documents in real-time.
-            </p>
-            <div class="hero-buttons">
-                <a href="#demo" class="btn-primary">
-                    <i class="fas fa-play"></i> Try Live Demo
-                </a>
-                <a href="#features" class="btn-secondary">
-                    <i class="fas fa-info-circle"></i> Learn More
-                </a>
-            </div>
-        </div>
-    </section>
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Control Panel -->
+            <section class="control-panel">
+                <h1 class="app-title">Voice Medical Documentation</h1>
+                <p class="app-subtitle">
+                    Professional radiology reports generated instantly from voice input. 
+                    Support for CT Brain, MRI Brain, MRI Spine, CT Abdomen, and Stroke Protocols.
+                </p>
 
-    <!-- Stats Section -->
-    <section class="stats">
-        <div class="container">
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <h3>95%</h3>
-                    <p>Accuracy Rate</p>
-                </div>
-                <div class="stat-item">
-                    <h3>&lt;3s</h3>
-                    <p>Processing Time</p>
-                </div>
-                <div class="stat-item">
-                    <h3>0</h3>
-                    <p>Typing Required</p>
-                </div>
-                <div class="stat-item">
-                    <h3>5+</h3>
-                    <p>Medical Templates</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features" id="features">
-        <div class="container">
-            <div class="section-title fade-in">
-                <h2>Advanced Medical AI Templates</h2>
-                <p>Professional radiology reports for CT Brain, MRI Brain, MRI Spine, CT Abdomen, and Stroke Protocol</p>
-            </div>
-            
-            <div class="features-grid">
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">
-                        <i class="fas fa-brain"></i>
-                    </div>
-                    <h3>CT & MRI Brain Reports</h3>
-                    <p>Advanced AI detects neurological findings, processes diffusion weighted images, angiography results, and generates complete brain imaging reports.</p>
-                </div>
-                
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">
-                        <i class="fas fa-spine"></i>
-                    </div>
-                    <h3>MRI Spine Documentation</h3>
-                    <p>Intelligent cervical spine analysis with canal diameter measurements, vertebral body assessment, and whole spine screening protocols.</p>
-                </div>
-                
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">
-                        <i class="fas fa-lungs"></i>
-                    </div>
-                    <h3>CT Abdomen & Pelvis</h3>
-                    <p>Comprehensive abdominal imaging analysis including liver, gallbladder, pancreas, kidneys, and pelvic organ evaluation with measurements.</p>
-                </div>
-                
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">
-                        <i class="fas fa-heartbeat"></i>
-                    </div>
-                    <h3>Stroke Protocol MRI</h3>
-                    <p>Specialized stroke imaging with DWI analysis, hemorrhage detection, and MR angiography of intracranial vessels for emergency protocols.</p>
-                </div>
-                
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">
-                        <i class="fas fa-user-md"></i>
-                    </div>
-                    <h3>Indian Name Detection</h3>
-                    <p>Smart recognition of Indian names with automatic gender detection. Supports Hindi, Telugu, Tamil, and regional naming patterns.</p>
-                </div>
-                
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">
-                        <i class="fas fa-download"></i>
-                    </div>
-                    <h3>Professional Downloads</h3>
-                    <p>Generate hospital-ready .docx reports with proper formatting, radiologist signatures, and UHID generation for immediate clinical use.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Demo Section -->
-    <section class="demo-section" id="demo">
-        <div class="container">
-            <div class="section-title fade-in">
-                <h2>Live Medical AI Demo</h2>
-                <p>Experience professional radiology report generation. Click microphone and speak naturally!</p>
-                <div class="tips-box">
-                    <strong>💡 Demo Examples:</strong> Try saying "Patient Rajesh Kumar, 45-year-old male, CT brain shows normal findings" or "MRI cervical spine for Priya Sharma, 32-year-old female, curvature well maintained"
-                </div>
-            </div>
-            
-            <div class="demo-container">
-                <div class="demo-interface">
-                    <div class="demo-title">🎤 Professional Medical Voice AI</div>
-                    
-                    <button class="mic-button" id="micButton">
+                <div class="mic-container">
+                    <button class="mic-button" id="micButton" aria-label="Start voice recording">
                         <i class="fas fa-microphone" id="micIcon"></i>
+                        <div class="recording-indicator" id="recordingIndicator" style="display: none;"></div>
                     </button>
-                    
-                    <div class="demo-status" id="demoStatus">Click microphone to start recording</div>
-                    
-                    <div class="demo-output" id="demoOutput" style="display: none;">
-                        <div class="detected-info">
-                            <div class="info-card">
-                                <div class="info-label">Patient Name</div>
-                                <div class="info-value" id="patientName">Detecting...</div>
-                            </div>
-                            <div class="info-card">
-                                <div class="info-label">Exam Type</div>
-                                <div class="info-value" id="examType">Analyzing...</div>
-                            </div>
-                            <div class="info-card">
-                                <div class="info-label">Gender</div>
-                                <div class="info-value" id="detectedGender">Auto-detecting...</div>
-                            </div>
-                            <div class="info-card">
-                                <div class="info-label">Status</div>
-                                <div class="info-value" id="processingStatus">Processing...</div>
-                            </div>
-                        </div>
-                        
-                        <div class="demo-grid">
-                            <div class="demo-left">
-                                <h4><i class="fas fa-list-alt"></i> Extracted Parameters</h4>
-                                <div class="parameters-list" id="parametersList">
-                                    <div class="parameter-item">
-                                        <span class="parameter-name">Listening for parameters...</span>
-                                        <span class="parameter-value">--</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="demo-right">
-                                <h4><i class="fas fa-file-medical"></i> Live Report Preview</h4>
-                                <div class="document-preview" id="documentPreview">
-Professional medical report will generate automatically once patient name and exam type are detected...
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="transcript-box">
-                            <div class="transcript-text" id="transcriptText">
-                                Live transcript will appear here as you speak...
+                </div>
+
+                <div class="mic-status" id="micStatus">
+                    Tap microphone to start voice documentation
+                </div>
+
+                <div class="quick-actions">
+                    <button class="action-btn btn-secondary" id="clearBtn">
+                        <i class="fas fa-trash"></i>
+                        Clear All
+                    </button>
+                    <button class="action-btn btn-primary" id="downloadBtn" style="display: none;">
+                        <i class="fas fa-download"></i>
+                        Download Report
+                    </button>
+                    <button class="action-btn btn-secondary" id="copyBtn" style="display: none;">
+                        <i class="fas fa-copy"></i>
+                        Copy Text
+                    </button>
+                </div>
+            </section>
+
+            <!-- Output Panel -->
+            <section class="output-panel">
+                <div class="output-header">
+                    <h2 class="output-title">
+                        <i class="fas fa-file-medical"></i>
+                        Live Documentation
+                    </h2>
+                </div>
+
+                <!-- Patient Information -->
+                <div class="patient-info">
+                    <div class="info-card">
+                        <div class="info-label">Patient Name</div>
+                        <div class="info-value detecting" id="patientName">Listening...</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-label">Exam Type</div>
+                        <div class="info-value detecting" id="examType">Detecting...</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-label">Gender</div>
+                        <div class="info-value detecting" id="detectedGender">Auto-detect</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-label">Age</div>
+                        <div class="info-value detecting" id="patientAge">--</div>
+                    </div>
+                </div>
+
+                <!-- Live Output -->
+                <div class="live-output">
+                    <div class="parameters-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-list-check"></i>
+                            Extracted Parameters
+                        </h3>
+                        <div class="parameters-list" id="parametersList">
+                            <div class="parameter-item">
+                                <span class="parameter-name">🎤 Ready for voice input...</span>
+                                <span class="parameter-value">--</span>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- How It Works -->
-    <section class="how-it-works" id="how-it-works">
-        <div class="container">
-            <div class="section-title fade-in">
-                <h2>How It Works</h2>
-                <p>Professional medical documentation in three simple steps</p>
-            </div>
-            
-            <div class="steps-grid">
-                <div class="step-card fade-in">
-                    <div class="step-number">1</div>
-                    <h3>Speak Naturally</h3>
-                    <p>Just speak about your findings - "Patient Rajesh Kumar, CT brain shows normal grey matter, basal ganglia normal"</p>
-                </div>
-                
-                <div class="step-card fade-in">
-                    <div class="step-number">2</div>
-                    <h3>AI Processes</h3>
-                    <p>Advanced medical AI detects exam type, extracts parameters, and auto-fills professional report templates</p>
-                </div>
-                
-                <div class="step-card fade-in">
-                    <div class="step-number">3</div>
-                    <h3>Download Report</h3>
-                    <p>Get hospital-ready .docx reports with radiologist signature, proper formatting, and UHID for immediate use</p>
-                </div>
-            </div>
-        </div>
-    </section>
+                    <div class="document-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-file-alt"></i>
+                            Live Report Preview
+                        </h3>
+                        <div class="document-preview" id="documentPreview">
+Professional medical report will generate automatically as you speak...
 
-    <!-- Final CTA -->
-    <section class="final-cta">
-        <div class="container">
-            <h2>Ready to Transform Your Radiology Reports?</h2>
-            <p>Join radiologists using MedVoice AI for faster, more accurate medical documentation</p>
-            <a href="#demo" class="btn-primary" style="font-size: 1.2rem; padding: 1.2rem 2.5rem;">
-                <i class="fas fa-rocket"></i> Start Free Trial
-            </a>
-        </div>
-    </section>
+Try saying:
+• "Patient Rajesh Kumar, 45-year-old male"
+• "CT brain shows normal findings"
+• "MRI cervical spine for Priya Sharma"
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Footer -->
-    <footer class="footer" id="contact">
-        <div class="footer-content">
-            <div class="footer-links">
-                <a href="#features">Features</a>
-                <a href="#demo">Demo</a>
-                <a href="#how-it-works">How It Works</a>
-                <a href="mailto:contact@medvoiceai.com">Contact</a>
-                <a href="/privacy">Privacy Policy</a>
-                <a href="/terms">Terms of Service</a>
-            </div>
-            <p>&copy; 2025 MedVoice AI. All rights reserved. Revolutionizing medical documentation with artificial intelligence.</p>
-        </div>
-    </footer>
+                <!-- Transcript -->
+                <div class="transcript-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-quote-left"></i>
+                        Live Transcript
+                    </h3>
+                    <div class="transcript-box">
+                        <div class="transcript-text" id="transcriptText">
+                            Your voice will be transcribed here in real-time...
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
 
     <script>
-        // Medical Voice AI Demo Class
-        class MedicalVoiceDemo {
+        class MedVoiceAI {
             constructor() {
                 this.isRecording = false;
                 this.recognition = null;
@@ -910,14 +713,67 @@ Professional medical report will generate automatically once patient name and ex
                 this.examType = '';
                 this.detectedGender = '';
                 this.parameters = {};
+                this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
                 
-                this.initializeDemo();
+                this.initializeApp();
+                this.setupEventListeners();
+                this.checkBrowserSupport();
             }
 
-            initializeDemo() {
-                const micButton = document.getElementById('micButton');
-                
-                micButton.addEventListener('click', () => {
+            initializeApp() {
+                // Initialize speech recognition
+                if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                    this.recognition = new SpeechRecognition();
+                    
+                    // Enhanced configuration for mobile
+                    this.recognition.continuous = true;
+                    this.recognition.interimResults = true;
+                    this.recognition.lang = 'en-US';
+                    this.recognition.maxAlternatives = 1;
+                    
+                    // Mobile optimizations
+                    if (this.isMobile) {
+                        this.recognition.continuous = false; // Better for mobile
+                    }
+                    
+                    this.recognition.onstart = () => {
+                        this.updateSystemStatus('recording', 'Recording Active');
+                    };
+                    
+                    this.recognition.onresult = (event) => {
+                        this.handleSpeechResult(event);
+                    };
+                    
+                    this.recognition.onerror = (event) => {
+                        this.handleSpeechError(event.error);
+                    };
+                    
+                    this.recognition.onend = () => {
+                        if (this.isRecording) {
+                            // Auto-restart for continuous listening (desktop only)
+                            if (!this.isMobile) {
+                                setTimeout(() => {
+                                    try {
+                                        this.recognition.start();
+                                    } catch (e) {
+                                        console.log('Recognition restart failed:', e);
+                                    }
+                                }, 100);
+                            } else {
+                                // On mobile, require manual restart
+                                this.updateMicStatus('Tap microphone to continue...');
+                            }
+                        }
+                    };
+                } else {
+                    this.showNotification('Speech recognition not supported in this browser. Please use Chrome or Safari.', 'warning');
+                }
+            }
+
+            setupEventListeners() {
+                // Microphone button
+                document.getElementById('micButton').addEventListener('click', () => {
                     if (this.isRecording) {
                         this.stopRecording();
                     } else {
@@ -925,67 +781,66 @@ Professional medical report will generate automatically once patient name and ex
                     }
                 });
 
-                // Initialize speech recognition
-                if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-                    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                    this.recognition = new SpeechRecognition();
-                    this.recognition.continuous = true;
-                    this.recognition.interimResults = true;
-                    this.recognition.lang = 'en-US';
-                    
-                    this.recognition.onresult = (event) => {
-                        this.handleSpeechResult(event);
-                    };
-                    
-                    this.recognition.onerror = (event) => {
-                        console.error('Speech recognition error:', event.error);
-                        this.handleSpeechError(event.error);
-                    };
-                    
-                    this.recognition.onend = () => {
-                        if (this.isRecording) {
-                            try {
-                                this.recognition.start();
-                            } catch (e) {
-                                console.log('Recognition restart failed:', e);
-                            }
-                        }
-                    };
-                }
-            }
+                // Action buttons
+                document.getElementById('clearBtn').addEventListener('click', () => {
+                    this.clearAll();
+                });
 
-            handleSpeechError(error) {
-                let errorMessage = 'Speech recognition error';
-                
-                switch(error) {
-                    case 'network':
-                        errorMessage = '🌐 Network error - Check internet connection';
-                        break;
-                    case 'not-allowed':
-                        errorMessage = '🎤 Microphone access denied - Please allow microphone';
-                        break;
-                    case 'no-speech':
-                        errorMessage = '🔇 No speech detected - Please speak louder';
-                        break;
-                    case 'audio-capture':
-                        errorMessage = '🎤 Microphone not working - Check device';
-                        break;
-                    default:
-                        errorMessage = `🔧 ${error} - Try refreshing the page`;
+                document.getElementById('downloadBtn').addEventListener('click', () => {
+                    this.downloadReport();
+                });
+
+                document.getElementById('copyBtn').addEventListener('click', () => {
+                    this.copyToClipboard();
+                });
+
+                // Mobile-specific optimizations
+                if (this.isMobile) {
+                    // Prevent zoom on double-tap
+                    document.addEventListener('touchstart', (e) => {
+                        if (e.touches.length > 1) {
+                            e.preventDefault();
+                        }
+                    });
+
+                    // Handle orientation changes
+                    window.addEventListener('orientationchange', () => {
+                        setTimeout(() => {
+                            this.adjustMobileLayout();
+                        }, 100);
+                    });
                 }
-                
-                this.updateStatus(errorMessage);
-                
-                setTimeout(() => {
-                    if (this.isRecording && this.recognition) {
-                        this.updateStatus('🔄 Restarting speech recognition...');
-                        try {
-                            this.recognition.start();
-                        } catch (e) {
-                            this.updateStatus('❌ Speech recognition unavailable - Try demo mode');
+
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    if (e.code === 'Space' && e.ctrlKey) {
+                        e.preventDefault();
+                        if (this.isRecording) {
+                            this.stopRecording();
+                        } else {
+                            this.startRecording();
                         }
                     }
-                }, 2000);
+                });
+            }
+
+            checkBrowserSupport() {
+                const isSupported = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
+                
+                if (!isSupported) {
+                    this.updateSystemStatus('error', 'Speech Recognition Not Supported');
+                    this.updateMicStatus('Please use Chrome, Safari, or Edge browser');
+                    document.getElementById('micButton').disabled = true;
+                    return false;
+                }
+
+                // Check for HTTPS requirement
+                if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+                    this.showNotification('HTTPS required for microphone access', 'warning');
+                }
+
+                this.updateSystemStatus('ready', 'System Ready');
+                return true;
             }
 
             startRecording() {
@@ -994,62 +849,103 @@ Professional medical report will generate automatically once patient name and ex
                     return;
                 }
 
+                // Request microphone permission on mobile
+                if (this.isMobile && !this.micPermissionGranted) {
+                    this.requestMicrophonePermission();
+                }
+
                 this.isRecording = true;
-                this.resetData();
-                
-                document.getElementById('micButton').classList.add('recording');
-                document.getElementById('micIcon').className = 'fas fa-stop';
-                document.getElementById('demoOutput').style.display = 'block';
-                document.getElementById('demoOutput').classList.add('active');
-                
-                this.updateStatus('🎤 Recording - Speak naturally about your findings!');
-                
+                this.updateRecordingUI(true);
+                this.updateMicStatus('🎤 Listening... Speak clearly');
+
                 try {
                     this.recognition.start();
                 } catch (e) {
+                    console.error('Failed to start recognition:', e);
                     this.simulateDemo();
                 }
             }
 
             stopRecording() {
                 this.isRecording = false;
-                
+                this.updateRecordingUI(false);
+                this.updateSystemStatus('ready', 'System Ready');
+                this.updateMicStatus('Processing complete - Tap to record again');
+
                 if (this.recognition) {
                     this.recognition.stop();
                 }
-                
-                document.getElementById('micButton').classList.remove('recording');
-                document.getElementById('micIcon').className = 'fas fa-microphone';
-                
-                this.updateStatus('✅ Processing complete - Ready for new recording');
             }
 
-            resetData() {
-                this.transcript = '';
-                this.patientName = '';
-                this.examType = '';
-                this.detectedGender = '';
-                this.parameters = {};
+            requestMicrophonePermission() {
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    navigator.mediaDevices.getUserMedia({ audio: true })
+                        .then(() => {
+                            this.micPermissionGranted = true;
+                            this.showNotification('Microphone access granted', 'success');
+                        })
+                        .catch(() => {
+                            this.showNotification('Microphone access denied. Please enable in browser settings.', 'error');
+                        });
+                }
             }
 
             handleSpeechResult(event) {
                 let finalTranscript = '';
-                
+                let interimTranscript = '';
+
                 for (let i = event.resultIndex; i < event.results.length; i++) {
                     const transcript = event.results[i][0].transcript;
-                    
+
                     if (event.results[i].isFinal) {
                         finalTranscript += transcript + ' ';
                         this.transcript += transcript + ' ';
-                        
                         this.processTranscript(transcript);
-                        this.updateProcessingStatus();
+                    } else {
+                        interimTranscript += transcript;
                     }
                 }
-                
+
                 if (finalTranscript) {
                     this.updateTranscript();
                     this.updateDisplay();
+                    this.updateMicStatus('🎤 Processing... Continue speaking');
+                }
+
+                // Show interim results for better feedback
+                if (interimTranscript) {
+                    this.showInterimTranscript(interimTranscript);
+                }
+            }
+
+            handleSpeechError(error) {
+                console.error('Speech recognition error:', error);
+                
+                const errorMessages = {
+                    'network': '🌐 Network error - Check internet connection',
+                    'not-allowed': '🎤 Microphone access denied - Check browser permissions',
+                    'no-speech': '🔇 No speech detected - Please speak louder',
+                    'audio-capture': '🎤 Microphone not working - Check device',
+                    'service-not-allowed': '🔒 Speech service not allowed - Try refreshing page',
+                    'bad-grammar': '🗣️ Speech not recognized - Try speaking more clearly',
+                    'language-not-supported': '🌍 Language not supported - Using English only'
+                };
+
+                const message = errorMessages[error] || `🔧 ${error} - Please try again`;
+                this.updateMicStatus(message);
+                this.showNotification(message, 'error');
+
+                // Auto-retry on certain errors
+                if (['network', 'service-not-allowed'].includes(error) && this.isRecording) {
+                    setTimeout(() => {
+                        if (this.isRecording) {
+                            try {
+                                this.recognition.start();
+                            } catch (e) {
+                                this.updateMicStatus('❌ Please refresh page and try again');
+                            }
+                        }
+                    }, 2000);
                 }
             }
 
@@ -1062,12 +958,12 @@ Professional medical report will generate automatically once patient name and ex
 
             extractPatientName(text) {
                 if (this.patientName) return;
-                
+
                 const namePatterns = [
                     /patient\s+(?:name\s+(?:is\s+)?)?([A-Za-z]+(?:\s+[A-Za-z]+)*)/i,
                     /(?:this\s+is|examining)\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)/i,
                     /([A-Za-z]+(?:\s+[A-Za-z]+)*)\s+(?:is\s+)?(?:the\s+)?patient/i,
-                    /(?:mr\.?|ms\.?|mrs\.?)\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)/i,
+                    /(?:mr\.?|ms\.?|mrs\.?|dr\.?)\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)/i,
                     /patient\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)\s+is\s+here/i,
                     /([A-Za-z]+(?:\s+[A-Za-z]+)*)\s+is\s+here\s+for/i,
                     /(?:mri|ct|scan)\s+(?:for\s+)?([A-Za-z]+(?:\s+[A-Za-z]+)*)/i
@@ -1080,6 +976,7 @@ Professional medical report will generate automatically once patient name and ex
                         if (this.isValidName(name)) {
                             this.patientName = name;
                             this.detectedGender = this.guessGenderFromIndianName(name) || 'Unknown';
+                            this.showNotification(`Patient detected: ${name}`, 'success');
                             break;
                         }
                     }
@@ -1088,24 +985,23 @@ Professional medical report will generate automatically once patient name and ex
 
             isValidName(name) {
                 const exclusions = [
-                    'patient', 'exam', 'blood', 'pressure', 'heart', 'rate', 'normal', 
+                    'patient', 'exam', 'blood', 'pressure', 'heart', 'rate', 'normal',
                     'examination', 'scan', 'study', 'brain', 'chest', 'abdomen',
                     'year', 'old', 'male', 'female', 'doctor', 'imaging', 'cervical',
-                    'spine', 'protocol', 'findings', 'shows'
+                    'spine', 'protocol', 'findings', 'shows', 'appears', 'seen'
                 ];
                 const nameLower = name.toLowerCase();
-                return !exclusions.some(word => nameLower.includes(word)) && 
-                       name.length >= 2 && 
+                return !exclusions.some(word => nameLower.includes(word)) &&
+                       name.length >= 2 &&
                        name.length <= 50 &&
                        /^[A-Za-z\s]+$/.test(name);
             }
 
             guessGenderFromIndianName(name) {
                 if (!name) return null;
-                
+
                 const nameLower = name.toLowerCase();
-                
-                // Enhanced Indian name patterns
+
                 const malePatterns = [
                     'raj', 'kumar', 'dev', 'singh', 'sharma', 'anil', 'sunil', 'vinod', 'manoj',
                     'ajay', 'vijay', 'sanjay', 'rakesh', 'mahesh', 'ramesh', 'suresh', 'dinesh',
@@ -1116,7 +1012,7 @@ Professional medical report will generate automatically once patient name and ex
                     'ashok', 'alok', 'abhishek', 'akhil', 'nikhil', 'sachin', 'rahul', 'kapil',
                     'aman', 'naman', 'chaman', 'gagan', 'raman', 'shyam', 'harish', 'manish'
                 ];
-                
+
                 const femalePatterns = [
                     'priya', 'rani', 'devi', 'kumari', 'bai', 'mata', 'sita', 'gita', 'rita',
                     'neeta', 'seeta', 'maya', 'asha', 'usha', 'nisha', 'rekha', 'lata', 'shanta',
@@ -1127,31 +1023,29 @@ Professional medical report will generate automatically once patient name and ex
                     'laxmi', 'saraswati', 'parvati', 'durga', 'tara', 'mira', 'indira', 'kamala',
                     'vimala', 'nirmala', 'shobha', 'sneha', 'neha', 'megha', 'renu', 'manu'
                 ];
-                
-                // Check for patterns
+
                 for (let pattern of malePatterns) {
                     if (nameLower.includes(pattern)) return 'M';
                 }
-                
+
                 for (let pattern of femalePatterns) {
                     if (nameLower.includes(pattern)) return 'F';
                 }
-                
-                // Common endings
+
                 if (nameLower.endsWith('a') && !nameLower.endsWith('ma') && !nameLower.endsWith('na')) {
                     return 'F';
                 }
-                
+
                 if (nameLower.endsWith('i') || nameLower.endsWith('ya')) {
                     return 'F';
                 }
-                
+
                 return null;
             }
 
             detectExamType(text) {
                 if (this.examType) return;
-                
+
                 const examKeywords = {
                     'CT Brain': [
                         'ct brain', 'brain ct', 'ct head', 'head ct', 'computed tomography brain',
@@ -1183,10 +1077,10 @@ Professional medical report will generate automatically once patient name and ex
                 let detectedExam = '';
 
                 for (let [exam, keywords] of Object.entries(examKeywords)) {
-                    const score = keywords.filter(keyword => 
+                    const score = keywords.filter(keyword =>
                         text.toLowerCase().includes(keyword.toLowerCase())
                     ).length;
-                    
+
                     if (score > maxScore) {
                         maxScore = score;
                         detectedExam = exam;
@@ -1195,12 +1089,12 @@ Professional medical report will generate automatically once patient name and ex
 
                 if (maxScore >= 1) {
                     this.examType = detectedExam;
+                    this.showNotification(`Exam type: ${detectedExam}`, 'success');
                 }
             }
 
             extractParameters(text) {
                 const paramPatterns = {
-                    // General Parameters
                     'Age': [
                         /(?:age\s+(?:is\s+)?|patient\s+is\s+|(?:\d+\s+)?(?:year\s+old\s+)?(?:male|female)\s+)(\d+)\s*(?:years?\s+old)?/i,
                         /(\d+)[\s-]year[\s-]old/i,
@@ -1208,8 +1102,6 @@ Professional medical report will generate automatically once patient name and ex
                         /age\s+(\d+)/i,
                         /(\d+)\s+years?\s+old/i
                     ],
-                    
-                    // CT Brain Parameters
                     'Cerebral Matter': [
                         /cerebral\s+grey\s+and\s+white\s+matter\s+(.+?)(?:\.|basal|findings)/i,
                         /grey\s+matter\s+(.+?)(?:\.|white|basal)/i,
@@ -1240,8 +1132,6 @@ Professional medical report will generate automatically once patient name and ex
                         /(no\s+herniations)/i,
                         /midline\s+shift\s+(.+?)(?:\.|skull)/i
                     ],
-                    
-                    // MRI Brain/Stroke Parameters
                     'Diffusion Weighted': [
                         /(no\s+restriction\s+(?:is\s+)?seen\s+on\s+diffusion\s+weighted\s+images)/i,
                         /diffusion\s+weighted\s+(.+?)(?:\.|acute)/i,
@@ -1253,30 +1143,14 @@ Professional medical report will generate automatically once patient name and ex
                         /basilar\s+artery\s+(.+?)(?:\.|vertebral)/i,
                         /vertebral\s+arteries\s+(.+?)(?:\.|impression)/i
                     ],
-                    
-                    // MRI Spine Parameters
                     'Curvature': [
                         /curvature\s+of\s+spine\s+is\s+(.+?)(?:\.|canal)/i,
                         /curvature\s+(?:is\s+)?(.+?)(?:\.|canal)/i
-                    ],
-                    'Canal Diameters': [
-                        /canal\s+diameters\s+(.+?)(?:\.|whole)/i,
-                        /c2[\s-]c3\s+(\d+\.?\d*)/i,
-                        /c3[\s-]c4\s+(\d+\.?\d*)/i,
-                        /c4[\s-]c5\s+(\d+\.?\d*)/i,
-                        /c5[\s-]c6\s+(\d+\.?\d*)/i,
-                        /c6[\s-]c7\s+(\d+\.?\d*)/i
                     ],
                     'Vertebral Bodies': [
                         /vertebral\s+bodies\s+(?:are\s+)?(.+?)(?:\.|configuration)/i,
                         /alignment\s*,?\s*heights\s+(?:and\s+bone\s+marrow\s+signal\s+intensity\s+)?(.+?)(?:\.|configuration)/i
                     ],
-                    'Disc Configuration': [
-                        /configuration\s+of\s+(?:rest\s+of\s+the\s+)?discs\s*,?\s*thecal\s+sac\s+(.+?)(?:\.|impression)/i,
-                        /discs\s*,?\s*thecal\s+sac\s+(.+?)(?:\.|neural)/i
-                    ],
-                    
-                    // CT Abdomen Parameters
                     'Liver': [
                         /liver\s+is\s+(.+?)(?:\.|cbd|gallbladder)/i,
                         /liver\s+(.+?)(?:\.|normal\s+in)/i
@@ -1293,32 +1167,24 @@ Professional medical report will generate automatically once patient name and ex
                         /(?:both\s+)?kidneys\s+(?:are\s+)?(.+?)(?:\.|adrenal|aorta)/i,
                         /kidneys\s+(.+?)(?:\.|normal)/i
                     ],
-                    'Spleen': [
-                        /spleen\s+is\s+(.+?)(?:\.|mesentery|normal)/i
-                    ],
-                    
-                    // Common Findings
                     'Impression': [
                         /impression\s*:?\s*(.+?)(?:consultant|dr\.|radiologist)/i,
                         /conclusion\s*:?\s*(.+?)(?:consultant|dr\.)/i
                     ]
                 };
 
-                // Process each parameter
                 for (let [paramName, patterns] of Object.entries(paramPatterns)) {
                     if (this.parameters[paramName]) continue;
-                    
+
                     for (let pattern of patterns) {
                         const match = text.match(pattern);
                         if (match) {
                             let value = match[1] || match[0];
-                            
-                            // Clean up the value
                             value = value.trim();
                             if (value.endsWith('.')) {
                                 value = value.slice(0, -1);
                             }
-                            
+
                             this.parameters[paramName] = value;
                             break;
                         }
@@ -1326,54 +1192,39 @@ Professional medical report will generate automatically once patient name and ex
                 }
             }
 
-            updateProcessingStatus() {
-                const patientDetected = !!this.patientName;
-                const examDetected = !!this.examType;
-                const paramsCount = Object.keys(this.parameters).length;
-                
-                if (patientDetected && examDetected && paramsCount > 0) {
-                    this.updateStatus(`🎯 Full automation active! ${paramsCount} parameters extracted`);
-                } else if (patientDetected && examDetected) {
-                    this.updateStatus('✅ Patient and exam detected - Listening for findings...');
-                } else if (patientDetected) {
-                    this.updateStatus('👤 Patient detected - Analyzing exam type...');
-                } else if (examDetected) {
-                    this.updateStatus('🏥 Exam type detected - Listening for patient name...');
-                } else {
-                    this.updateStatus('🎤 Processing speech - Detecting patient and exam type...');
-                }
-            }
-
             updateDisplay() {
-                // Update patient info
-                document.getElementById('patientName').textContent = 
-                    this.patientName || 'Listening...';
-                
-                document.getElementById('examType').textContent = 
-                    this.examType || 'Analyzing...';
-                    
-                document.getElementById('detectedGender').textContent = 
-                    this.detectedGender || 'Auto-detecting...';
-                
-                // Update status
-                if (this.patientName && this.examType) {
-                    document.getElementById('processingStatus').textContent = 'Report generating!';
-                } else {
-                    document.getElementById('processingStatus').textContent = 'Detecting...';
+                // Update patient information
+                document.getElementById('patientName').textContent = this.patientName || 'Listening...';
+                document.getElementById('examType').textContent = this.examType || 'Detecting...';
+                document.getElementById('detectedGender').textContent = this.detectedGender || 'Auto-detect';
+                document.getElementById('patientAge').textContent = this.parameters['Age'] || '--';
+
+                // Remove detecting class when data is found
+                if (this.patientName) {
+                    document.getElementById('patientName').classList.remove('detecting');
                 }
-                
-                // Update parameters and document
+                if (this.examType) {
+                    document.getElementById('examType').classList.remove('detecting');
+                }
+                if (this.detectedGender && this.detectedGender !== 'Unknown') {
+                    document.getElementById('detectedGender').classList.remove('detecting');
+                }
+                if (this.parameters['Age']) {
+                    document.getElementById('patientAge').classList.remove('detecting');
+                }
+
                 this.updateParametersList();
                 this.updateDocumentPreview();
+                this.showActionButtons();
             }
 
             updateParametersList() {
                 const paramsList = document.getElementById('parametersList');
-                
+
                 if (Object.keys(this.parameters).length === 0) {
                     paramsList.innerHTML = `
                         <div class="parameter-item">
-                            <span class="parameter-name">🎤 Listening for medical findings...</span>
+                            <span class="parameter-name">🎤 Listening for medical parameters...</span>
                             <span class="parameter-value">--</span>
                         </div>
                     `;
@@ -1381,38 +1232,41 @@ Professional medical report will generate automatically once patient name and ex
                 }
 
                 paramsList.innerHTML = '';
-                
-                // Display parameters in order of importance
+
                 for (let [name, value] of Object.entries(this.parameters)) {
-                    paramsList.innerHTML += `
-                        <div class="parameter-item" style="animation: fadeInScale 0.5s ease-out;">
-                            <span class="parameter-name">✅ ${name}</span>
-                            <span class="parameter-value">${value}</span>
-                        </div>
+                    const parameterItem = document.createElement('div');
+                    parameterItem.className = 'parameter-item detected';
+                    parameterItem.innerHTML = `
+                        <span class="parameter-name">✅ ${name}</span>
+                        <span class="parameter-value">${value}</span>
                     `;
+                    paramsList.appendChild(parameterItem);
                 }
             }
 
             updateDocumentPreview() {
                 const preview = document.getElementById('documentPreview');
-                
+
                 if (!this.patientName || !this.examType) {
-                    preview.textContent = 'Professional medical report will generate automatically once patient name and exam type are detected...';
+                    preview.textContent = `Professional medical report will generate automatically as you speak...
+
+Try saying:
+• "Patient Rajesh Kumar, 45-year-old male"
+• "CT brain shows normal findings"
+• "MRI cervical spine for Priya Sharma"`;
+                    preview.classList.remove('active');
                     return;
                 }
 
                 const documentContent = this.generateMedicalReport();
                 preview.textContent = documentContent;
-                
-                // Show download button
-                const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
-                const filename = `${this.patientName.replace(/\s+/g, '_')}_${this.examType.replace(/\s+/g, '_').toLowerCase()}_${timestamp}`;
-                this.showDownloadButton(filename, documentContent);
+                preview.classList.add('active');
+                this.currentReport = documentContent;
             }
 
             generateMedicalReport() {
                 const todayDate = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
-                
+
                 switch (this.examType) {
                     case 'CT Brain':
                         return this.generateCTBrainReport(todayDate);
@@ -1433,7 +1287,7 @@ Professional medical report will generate automatically once patient name and ex
                 const age = this.parameters['Age'] || '[Age]';
                 const sex = this.detectedGender || 'M';
                 const uhid = `UH${Math.floor(Math.random() * 900000) + 100000}`;
-                
+
                 return `**Name: ${this.patientName || '[Patient Name]'}                      Sex: ${sex}           Age: ${age} Yrs                    Date: ${date}**
 **Reff.By: Dr. Rajesh Kumar                                                                     UHID: ${uhid}**
 ** **
@@ -1473,7 +1327,7 @@ Skull bones are unremarkable.
                 const age = this.parameters['Age'] || '[Age]';
                 const sex = this.detectedGender || 'M';
                 const uhid = `UH${Math.floor(Math.random() * 900000) + 100000}`;
-                
+
                 return `**Name: ${this.patientName || '[Patient Name]'}               Sex: ${sex}                Age: ${age} Yrs      Date: ${date}**
 **Reff.By: Dr. Rajesh Kumar                                                     UHID: ${uhid}**
 ** **
@@ -1516,7 +1370,7 @@ ${this.parameters['MR Angiography'] || 'Bilateral intracranial internal carotid 
                 const age = this.parameters['Age'] || '[Age]';
                 const sex = this.detectedGender || 'M';
                 const uhid = `UH${Math.floor(Math.random() * 900000) + 100000}`;
-                
+
                 return `**Name: ${this.patientName || '[Patient Name]'}                       Sex: ${sex}                  Age: ${age} Yrs                             Date: ${date}**
 **Reff.By: Dr. Emergency Medicine                                                                                             UHID: ${uhid}**
 ** **
@@ -1559,7 +1413,7 @@ ${this.parameters['MR Angiography'] || 'Bilateral intracranial internal carotid 
                 const age = this.parameters['Age'] || '[Age]';
                 const sex = this.detectedGender || 'M';
                 const uhid = `UH${Math.floor(Math.random() * 900000) + 100000}`;
-                
+
                 return `** **
 **Name: ${this.patientName || '[Patient Name]'}                                   Sex: ${sex}                Age: ${age} Yrs                  Date: ${date}**
 **Reff.By.Dr: Orthopedic Surgery                                                                                       UHID: ${uhid}**
@@ -1600,7 +1454,7 @@ ${this.parameters['Disc Configuration'] || 'Configuration of rest of the discs, 
                 const age = this.parameters['Age'] || '[Age]';
                 const sex = this.detectedGender || 'M';
                 const uhid = `UH${Math.floor(Math.random() * 900000) + 100000}`;
-                
+
                 return `**Name: ${this.patientName || '[Patient Name]'}                       Sex: ${sex}                   Age: ${age} Yrs                   Date: ${date}**
 **Reff.By.Dr: Internal Medicine                                                                                       UHID: ${uhid}**
 ** **
@@ -1646,7 +1500,7 @@ No free fluid in the peritoneal cavity.
             generateGeneralReport(date) {
                 const age = this.parameters['Age'] || '[Age]';
                 const sex = this.detectedGender || 'M';
-                
+
                 return `# Medical Examination Report
 
 **Patient:** ${this.patientName || '[Patient Name]'}
@@ -1665,128 +1519,266 @@ ${this.transcript}
 *Generated automatically: ${date}*`;
             }
 
-            showDownloadButton(filename, content) {
-                // Remove existing button
-                const existingBtn = document.getElementById('downloadBtn');
-                if (existingBtn) existingBtn.remove();
-
-                // Create download button
-                const downloadBtn = document.createElement('button');
-                downloadBtn.id = 'downloadBtn';
-                downloadBtn.style.cssText = `
-                    margin-top: 1rem;
-                    padding: 0.75rem 1.5rem;
-                    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
-                    color: white;
-                    border: none;
-                    border-radius: 8px;
-                    font-weight: 600;
-                    cursor: pointer;
-                    transition: all 0.3s ease;
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                `;
-                downloadBtn.innerHTML = '<i class="fas fa-download"></i>Download Medical Report (.docx)';
-                
-                downloadBtn.onmouseover = () => {
-                    downloadBtn.style.transform = 'translateY(-2px)';
-                    downloadBtn.style.boxShadow = '0 8px 25px rgba(34, 197, 94, 0.4)';
-                };
-                
-                downloadBtn.onmouseout = () => {
-                    downloadBtn.style.transform = 'translateY(0)';
-                    downloadBtn.style.boxShadow = 'none';
-                };
-                
-                downloadBtn.onclick = () => {
-                    this.downloadFile(filename + '.docx', content);
-                };
-
-                // Add button after document preview
-                const preview = document.getElementById('documentPreview');
-                preview.parentNode.appendChild(downloadBtn);
+            showActionButtons() {
+                if (this.patientName && this.examType) {
+                    document.getElementById('downloadBtn').style.display = 'flex';
+                    document.getElementById('copyBtn').style.display = 'flex';
+                }
             }
 
-            downloadFile(filename, content) {
-                // Create RTF format for better Word compatibility
-                const rtfContent = this.convertToRTF(content);
-                
-                const blob = new Blob([rtfContent], { 
-                    type: 'application/rtf' 
+            downloadReport() {
+                if (!this.currentReport) {
+                    this.showNotification('No report to download', 'warning');
+                    return;
+                }
+
+                const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+                const filename = `${this.patientName.replace(/\s+/g, '_')}_${this.examType.replace(/\s+/g, '_').toLowerCase()}_${timestamp}.doc`;
+
+                this.downloadWordDocument(filename, this.currentReport);
+            }
+
+            downloadWordDocument(filename, content) {
+                const wordHTML = this.generateWordHTML(content);
+
+                const blob = new Blob([wordHTML], {
+                    type: 'application/msword'
                 });
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = filename.replace('.docx', '.rtf');
+                a.download = filename;
                 document.body.appendChild(a);
                 a.click();
                 window.URL.revokeObjectURL(url);
                 document.body.removeChild(a);
-                
-                this.showSuccessMessage(`Medical Report downloaded: ${filename.replace('.docx', '.rtf')}`);
+
+                this.showNotification(`Word Document downloaded: ${filename}`, 'success');
             }
 
-            convertToRTF(content) {
-                // Convert to RTF format for better compatibility with Word
-                let rtfContent = content;
-                
-                // Replace **bold** with RTF bold formatting
-                rtfContent = rtfContent.replace(/\*\*(.*?)\*\*/g, '\\b $1\\b0 ');
-                
-                // Add RTF header and footer
-                const rtfDocument = `{\\rtf1\\ansi\\deff0 {\\fonttbl {\\f0 Times New Roman;}}
-\\f0\\fs24 ${rtfContent.replace(/\n/g, '\\par\n')}
-}`;
-                
-                return rtfDocument;
+            generateWordHTML(content) {
+                let htmlContent = content
+                    .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+                    .split('\n')
+                    .map(line => {
+                        if (line.trim() === '') {
+                            return '<p>&nbsp;</p>';
+                        }
+                        return `<p>${line}</p>`;
+                    })
+                    .join('\n');
+
+                return `
+<!DOCTYPE html>
+<html xmlns:o="urn:schemas-microsoft-com:office:office" 
+      xmlns:w="urn:schemas-microsoft-com:office:word" 
+      xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+    <meta charset="utf-8">
+    <meta name="ProgId" content="Word.Document">
+    <meta name="Generator" content="Microsoft Word 15">
+    <meta name="Originator" content="Microsoft Word 15">
+    <title>Medical Report</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 1in;
+        }
+        body {
+            font-family: 'Times New Roman', serif;
+            font-size: 12pt;
+            line-height: 1.2;
+            margin: 0;
+            padding: 0;
+        }
+        p {
+            margin: 0;
+            padding: 0;
+            margin-bottom: 6pt;
+        }
+        b, strong {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    ${htmlContent}
+</body>
+</html>`;
             }
 
-            showSuccessMessage(message) {
-                const notification = document.createElement('div');
-                notification.style.cssText = `
-                    position: fixed;
-                    top: 20px;
-                    right: 20px;
-                    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
-                    color: white;
-                    padding: 1rem 1.5rem;
-                    border-radius: 8px;
-                    box-shadow: 0 10px 25px rgba(34, 197, 94, 0.3);
-                    z-index: 1000;
-                    font-weight: 600;
+            copyToClipboard() {
+                if (!this.currentReport) {
+                    this.showNotification('No report to copy', 'warning');
+                    return;
+                }
+
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(this.currentReport).then(() => {
+                        this.showNotification('Report copied to clipboard!', 'success');
+                    }).catch(() => {
+                        this.fallbackCopyToClipboard();
+                    });
+                } else {
+                    this.fallbackCopyToClipboard();
+                }
+            }
+
+            fallbackCopyToClipboard() {
+                const textArea = document.createElement('textarea');
+                textArea.value = this.currentReport;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-999999px';
+                textArea.style.top = '-999999px';
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+
+                try {
+                    document.execCommand('copy');
+                    this.showNotification('Report copied to clipboard!', 'success');
+                } catch (err) {
+                    this.showNotification('Could not copy text. Please copy manually from preview.', 'error');
+                }
+
+                document.body.removeChild(textArea);
+            }
+
+            clearAll() {
+                this.transcript = '';
+                this.patientName = '';
+                this.examType = '';
+                this.detectedGender = '';
+                this.parameters = {};
+                this.currentReport = '';
+
+                // Reset UI
+                document.getElementById('patientName').textContent = 'Listening...';
+                document.getElementById('examType').textContent = 'Detecting...';
+                document.getElementById('detectedGender').textContent = 'Auto-detect';
+                document.getElementById('patientAge').textContent = '--';
+
+                // Add detecting classes back
+                document.getElementById('patientName').classList.add('detecting');
+                document.getElementById('examType').classList.add('detecting');
+                document.getElementById('detectedGender').classList.add('detecting');
+                document.getElementById('patientAge').classList.add('detecting');
+
+                document.getElementById('parametersList').innerHTML = `
+                    <div class="parameter-item">
+                        <span class="parameter-name">🎤 Ready for voice input...</span>
+                        <span class="parameter-value">--</span>
+                    </div>
                 `;
-                notification.innerHTML = `<i class="fas fa-check-circle" style="margin-right: 0.5rem;"></i>${message}`;
-                
-                document.body.appendChild(notification);
-                
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.parentNode.removeChild(notification);
-                    }
-                }, 4000);
+
+                document.getElementById('documentPreview').textContent = `Professional medical report will generate automatically as you speak...
+
+Try saying:
+• "Patient Rajesh Kumar, 45-year-old male"
+• "CT brain shows normal findings"
+• "MRI cervical spine for Priya Sharma"`;
+
+                document.getElementById('documentPreview').classList.remove('active');
+
+                document.getElementById('transcriptText').textContent = 'Your voice will be transcribed here in real-time...';
+
+                // Hide action buttons
+                document.getElementById('downloadBtn').style.display = 'none';
+                document.getElementById('copyBtn').style.display = 'none';
+
+                this.showNotification('All data cleared', 'success');
+            }
+
+            updateRecordingUI(recording) {
+                const micButton = document.getElementById('micButton');
+                const micIcon = document.getElementById('micIcon');
+                const recordingIndicator = document.getElementById('recordingIndicator');
+
+                if (recording) {
+                    micButton.classList.add('recording');
+                    micIcon.className = 'fas fa-stop';
+                    recordingIndicator.style.display = 'block';
+                } else {
+                    micButton.classList.remove('recording');
+                    micIcon.className = 'fas fa-microphone';
+                    recordingIndicator.style.display = 'none';
+                }
+            }
+
+            updateSystemStatus(status, text) {
+                const statusIndicator = document.getElementById('systemStatus');
+                statusIndicator.className = `status-indicator ${status}`;
+
+                const icons = {
+                    ready: 'fas fa-check-circle',
+                    recording: 'fas fa-circle',
+                    error: 'fas fa-exclamation-triangle'
+                };
+
+                statusIndicator.innerHTML = `
+                    <i class="${icons[status] || 'fas fa-info-circle'}"></i>
+                    <span>${text}</span>
+                `;
+            }
+
+            updateMicStatus(status) {
+                document.getElementById('micStatus').textContent = status;
             }
 
             updateTranscript() {
-                document.getElementById('transcriptText').textContent = 
-                    this.transcript || 'Live transcript will appear here as you speak...';
+                const transcriptText = document.getElementById('transcriptText');
+                transcriptText.textContent = this.transcript || 'Your voice will be transcribed here in real-time...';
+                transcriptText.scrollTop = transcriptText.scrollHeight;
             }
 
-            updateStatus(status) {
-                document.getElementById('demoStatus').textContent = status;
+            showInterimTranscript(interim) {
+                const transcriptText = document.getElementById('transcriptText');
+                transcriptText.innerHTML = `${this.transcript}<span style="color: #999; font-style: italic;">${interim}</span>`;
+                transcriptText.scrollTop = transcriptText.scrollHeight;
             }
 
-            // Enhanced simulation for demo
+            adjustMobileLayout() {
+                if (window.innerHeight < window.innerWidth) {
+                    // Landscape mode
+                    document.body.style.height = '100vh';
+                } else {
+                    // Portrait mode
+                    document.body.style.height = 'auto';
+                }
+            }
+
+            showNotification(message, type = 'success') {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                    ${message}
+                `;
+
+                document.body.appendChild(notification);
+
+                // Trigger animation
+                setTimeout(() => {
+                    notification.classList.add('show');
+                }, 100);
+
+                // Remove notification
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.parentNode.removeChild(notification);
+                        }
+                    }, 300);
+                }, 4000);
+            }
+
             simulateDemo() {
                 this.isRecording = true;
-                document.getElementById('micButton').classList.add('recording');
-                document.getElementById('micIcon').className = 'fas fa-stop';
-                document.getElementById('demoOutput').style.display = 'block';
-                document.getElementById('demoOutput').classList.add('active');
-                
-                this.updateStatus('🎤 Demo Mode - Simulating medical voice input...');
-                
-                // Multiple demo scenarios
+                this.updateRecordingUI(true);
+                this.updateSystemStatus('recording', 'Demo Mode Active');
+                this.updateMicStatus('🎤 Demo Mode - Simulating medical voice input...');
+
                 const demoScenarios = [
                     [
                         "Patient Rajesh Kumar is here for CT brain examination",
@@ -1808,20 +1800,11 @@ ${this.transcript}
                         "Vertebral bodies show normal alignment",
                         "Disc configuration appears normal",
                         "No significant spinal abnormality"
-                    ],
-                    [
-                        "CT abdomen for Arjun Singh",
-                        "28-year-old male",
-                        "Liver is normal in size and attenuation",
-                        "Gallbladder appears normal",
-                        "Pancreas shows normal configuration",
-                        "Both kidneys are normal",
-                        "No significant abdominal abnormality"
                     ]
                 ];
-                
+
                 const selectedScenario = demoScenarios[Math.floor(Math.random() * demoScenarios.length)];
-                
+
                 let index = 0;
                 const interval = setInterval(() => {
                     if (index < selectedScenario.length && this.isRecording) {
@@ -1830,21 +1813,21 @@ ${this.transcript}
                         this.processTranscript(text);
                         this.updateTranscript();
                         this.updateDisplay();
-                        this.updateProcessingStatus();
                         index++;
                     } else {
                         clearInterval(interval);
                         if (this.isRecording) {
-                            this.updateStatus('✅ Demo complete - Professional medical report generated!');
+                            this.updateMicStatus('✅ Demo complete - Professional medical report generated!');
+                            this.updateSystemStatus('ready', 'Demo Complete');
                         }
                     }
-                }, 2000); // Slower for better medical demonstration
+                }, 2000);
             }
         }
 
-        // Initialize demo when DOM loads
+        // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
-            new MedicalVoiceDemo();
+            new MedVoiceAI();
         });
     </script>
 </body>

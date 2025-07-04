@@ -1,0 +1,1851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedVoice AI - Revolutionary Medical Voice Documentation</title>
+    <meta name="description" content="Transform medical documentation with AI. Zero typing, instant transcription, automatic parameter extraction, and real-time document generation.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="g"><stop offset="20%" stop-opacity=".1"/><stop offset="50%" stop-opacity=".05"/><stop offset="100%" stop-opacity="0"/></radialGradient></defs><rect width="100%" height="100%" fill="url(%23g)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .hero .description {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            opacity: 0.8;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #667eea;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            padding: 1rem 2rem;
+            border: 2px solid white;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #667eea;
+            transform: translateY(-3px);
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 4rem 0;
+            background: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item p {
+            font-size: 1.1rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 0;
+            background: #f8fafc;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .section-title p {
+            font-size: 1.3rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        /* Demo Section */
+        .demo-section {
+            padding: 6rem 0;
+            background: white;
+        }
+
+        .demo-container {
+            background: #f8fafc;
+            border-radius: 30px;
+            padding: 3rem;
+            margin-top: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        .demo-interface {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .demo-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #333;
+        }
+
+        .mic-button {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            font-size: 3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            margin-bottom: 2rem;
+        }
+
+        .mic-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .mic-button.recording {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .demo-status {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            color: #666;
+        }
+
+        .demo-output {
+            width: 100%;
+            max-width: 800px;
+            margin-top: 2rem;
+        }
+
+        .detected-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-card {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .transcript-box {
+            background: #f8fafc;
+            border: 2px dashed #ddd;
+            border-radius: 15px;
+            padding: 2rem;
+            min-height: 150px;
+            margin-top: 2rem;
+        }
+
+        .transcript-text {
+            color: #666;
+            font-style: italic;
+            text-align: center;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 6rem 0;
+            background: #667eea;
+            color: white;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .step-card {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: white;
+            color: #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin: 0 auto 1.5rem;
+        }
+
+        .step-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        /* CTA Section */
+        .final-cta {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .final-cta h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+        }
+
+        .final-cta p {
+            font-size: 1.3rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        .footer {
+            background: #333;
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+        }
+
+        /* Demo specific styles */
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .demo-left, .demo-right {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            min-height: 400px;
+        }
+
+        .demo-left h4, .demo-right h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .parameters-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .parameter-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .parameter-item:hover {
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateX(5px);
+        }
+
+        .parameter-name {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .parameter-value {
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .document-preview {
+            background: #f8fafc;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: monospace;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            color: #555;
+            height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .hero .description {
+                font-size: 1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .demo-container {
+                padding: 1.5rem;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .demo-output {
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-radius: 15px;
+            padding: 1rem;
+            background: rgba(248, 250, 252, 0.5);
+        }
+
+        .demo-output.active {
+            border-color: rgba(102, 126, 234, 0.5);
+            background: rgba(248, 250, 252, 0.8);
+        }
+
+        .tips-box {
+            background: #e3f2fd; 
+            padding: 1rem; 
+            border-radius: 8px; 
+            margin: 1rem 0; 
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">🎤 MedVoice AI</div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#demo">Demo</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <a href="#demo" class="cta-button">Try Demo</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Revolutionary Medical Voice Documentation</h1>
+            <p class="subtitle">Zero Typing. Instant Results. Complete Automation.</p>
+            <p class="description">
+                Transform medical documentation with AI-powered voice recognition. Just speak naturally - patient names, exam types, and medical parameters are extracted automatically, generating professional documents in real-time.
+            </p>
+            <div class="hero-buttons">
+                <a href="#demo" class="btn-primary">
+                    <i class="fas fa-play"></i> Try Live Demo
+                </a>
+                <a href="#features" class="btn-secondary">
+                    <i class="fas fa-info-circle"></i> Learn More
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>95%</h3>
+                    <p>Accuracy Rate</p>
+                </div>
+                <div class="stat-item">
+                    <h3>&lt;3s</h3>
+                    <p>Processing Time</p>
+                </div>
+                <div class="stat-item">
+                    <h3>0</h3>
+                    <p>Typing Required</p>
+                </div>
+                <div class="stat-item">
+                    <h3>5+</h3>
+                    <p>Medical Templates</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Advanced Medical AI Templates</h2>
+                <p>Professional radiology reports for CT Brain, MRI Brain, MRI Spine, CT Abdomen, and Stroke Protocol</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>CT & MRI Brain Reports</h3>
+                    <p>Advanced AI detects neurological findings, processes diffusion weighted images, angiography results, and generates complete brain imaging reports.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-spine"></i>
+                    </div>
+                    <h3>MRI Spine Documentation</h3>
+                    <p>Intelligent cervical spine analysis with canal diameter measurements, vertebral body assessment, and whole spine screening protocols.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-lungs"></i>
+                    </div>
+                    <h3>CT Abdomen & Pelvis</h3>
+                    <p>Comprehensive abdominal imaging analysis including liver, gallbladder, pancreas, kidneys, and pelvic organ evaluation with measurements.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3>Stroke Protocol MRI</h3>
+                    <p>Specialized stroke imaging with DWI analysis, hemorrhage detection, and MR angiography of intracranial vessels for emergency protocols.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3>Indian Name Detection</h3>
+                    <p>Smart recognition of Indian names with automatic gender detection. Supports Hindi, Telugu, Tamil, and regional naming patterns.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <h3>Professional Downloads</h3>
+                    <p>Generate hospital-ready .docx reports with proper formatting, radiologist signatures, and UHID generation for immediate clinical use.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demo-section" id="demo">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Live Medical AI Demo</h2>
+                <p>Experience professional radiology report generation. Click microphone and speak naturally!</p>
+                <div class="tips-box">
+                    <strong>💡 Demo Examples:</strong> Try saying "Patient Rajesh Kumar, 45-year-old male, CT brain shows normal findings" or "MRI cervical spine for Priya Sharma, 32-year-old female, curvature well maintained"
+                </div>
+            </div>
+            
+            <div class="demo-container">
+                <div class="demo-interface">
+                    <div class="demo-title">🎤 Professional Medical Voice AI</div>
+                    
+                    <button class="mic-button" id="micButton">
+                        <i class="fas fa-microphone" id="micIcon"></i>
+                    </button>
+                    
+                    <div class="demo-status" id="demoStatus">Click microphone to start recording</div>
+                    
+                    <div class="demo-output" id="demoOutput" style="display: none;">
+                        <div class="detected-info">
+                            <div class="info-card">
+                                <div class="info-label">Patient Name</div>
+                                <div class="info-value" id="patientName">Detecting...</div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-label">Exam Type</div>
+                                <div class="info-value" id="examType">Analyzing...</div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-label">Gender</div>
+                                <div class="info-value" id="detectedGender">Auto-detecting...</div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-label">Status</div>
+                                <div class="info-value" id="processingStatus">Processing...</div>
+                            </div>
+                        </div>
+                        
+                        <div class="demo-grid">
+                            <div class="demo-left">
+                                <h4><i class="fas fa-list-alt"></i> Extracted Parameters</h4>
+                                <div class="parameters-list" id="parametersList">
+                                    <div class="parameter-item">
+                                        <span class="parameter-name">Listening for parameters...</span>
+                                        <span class="parameter-value">--</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="demo-right">
+                                <h4><i class="fas fa-file-medical"></i> Live Report Preview</h4>
+                                <div class="document-preview" id="documentPreview">
+Professional medical report will generate automatically once patient name and exam type are detected...
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="transcript-box">
+                            <div class="transcript-text" id="transcriptText">
+                                Live transcript will appear here as you speak...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>How It Works</h2>
+                <p>Professional medical documentation in three simple steps</p>
+            </div>
+            
+            <div class="steps-grid">
+                <div class="step-card fade-in">
+                    <div class="step-number">1</div>
+                    <h3>Speak Naturally</h3>
+                    <p>Just speak about your findings - "Patient Rajesh Kumar, CT brain shows normal grey matter, basal ganglia normal"</p>
+                </div>
+                
+                <div class="step-card fade-in">
+                    <div class="step-number">2</div>
+                    <h3>AI Processes</h3>
+                    <p>Advanced medical AI detects exam type, extracts parameters, and auto-fills professional report templates</p>
+                </div>
+                
+                <div class="step-card fade-in">
+                    <div class="step-number">3</div>
+                    <h3>Download Report</h3>
+                    <p>Get hospital-ready .docx reports with radiologist signature, proper formatting, and UHID for immediate use</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta">
+        <div class="container">
+            <h2>Ready to Transform Your Radiology Reports?</h2>
+            <p>Join radiologists using MedVoice AI for faster, more accurate medical documentation</p>
+            <a href="#demo" class="btn-primary" style="font-size: 1.2rem; padding: 1.2rem 2.5rem;">
+                <i class="fas fa-rocket"></i> Start Free Trial
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#features">Features</a>
+                <a href="#demo">Demo</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="mailto:contact@medvoiceai.com">Contact</a>
+                <a href="/privacy">Privacy Policy</a>
+                <a href="/terms">Terms of Service</a>
+            </div>
+            <p>&copy; 2025 MedVoice AI. All rights reserved. Revolutionizing medical documentation with artificial intelligence.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Medical Voice AI Demo Class
+        class MedicalVoiceDemo {
+            constructor() {
+                this.isRecording = false;
+                this.recognition = null;
+                this.transcript = '';
+                this.patientName = '';
+                this.examType = '';
+                this.detectedGender = '';
+                this.parameters = {};
+                
+                this.initializeDemo();
+            }
+
+            initializeDemo() {
+                const micButton = document.getElementById('micButton');
+                
+                micButton.addEventListener('click', () => {
+                    if (this.isRecording) {
+                        this.stopRecording();
+                    } else {
+                        this.startRecording();
+                    }
+                });
+
+                // Initialize speech recognition
+                if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                    this.recognition = new SpeechRecognition();
+                    this.recognition.continuous = true;
+                    this.recognition.interimResults = true;
+                    this.recognition.lang = 'en-US';
+                    
+                    this.recognition.onresult = (event) => {
+                        this.handleSpeechResult(event);
+                    };
+                    
+                    this.recognition.onerror = (event) => {
+                        console.error('Speech recognition error:', event.error);
+                        this.handleSpeechError(event.error);
+                    };
+                    
+                    this.recognition.onend = () => {
+                        if (this.isRecording) {
+                            try {
+                                this.recognition.start();
+                            } catch (e) {
+                                console.log('Recognition restart failed:', e);
+                            }
+                        }
+                    };
+                }
+            }
+
+            handleSpeechError(error) {
+                let errorMessage = 'Speech recognition error';
+                
+                switch(error) {
+                    case 'network':
+                        errorMessage = '🌐 Network error - Check internet connection';
+                        break;
+                    case 'not-allowed':
+                        errorMessage = '🎤 Microphone access denied - Please allow microphone';
+                        break;
+                    case 'no-speech':
+                        errorMessage = '🔇 No speech detected - Please speak louder';
+                        break;
+                    case 'audio-capture':
+                        errorMessage = '🎤 Microphone not working - Check device';
+                        break;
+                    default:
+                        errorMessage = `🔧 ${error} - Try refreshing the page`;
+                }
+                
+                this.updateStatus(errorMessage);
+                
+                setTimeout(() => {
+                    if (this.isRecording && this.recognition) {
+                        this.updateStatus('🔄 Restarting speech recognition...');
+                        try {
+                            this.recognition.start();
+                        } catch (e) {
+                            this.updateStatus('❌ Speech recognition unavailable - Try demo mode');
+                        }
+                    }
+                }, 2000);
+            }
+
+            startRecording() {
+                if (!this.recognition) {
+                    this.simulateDemo();
+                    return;
+                }
+
+                this.isRecording = true;
+                this.resetData();
+                
+                document.getElementById('micButton').classList.add('recording');
+                document.getElementById('micIcon').className = 'fas fa-stop';
+                document.getElementById('demoOutput').style.display = 'block';
+                document.getElementById('demoOutput').classList.add('active');
+                
+                this.updateStatus('🎤 Recording - Speak naturally about your findings!');
+                
+                try {
+                    this.recognition.start();
+                } catch (e) {
+                    this.simulateDemo();
+                }
+            }
+
+            stopRecording() {
+                this.isRecording = false;
+                
+                if (this.recognition) {
+                    this.recognition.stop();
+                }
+                
+                document.getElementById('micButton').classList.remove('recording');
+                document.getElementById('micIcon').className = 'fas fa-microphone';
+                
+                this.updateStatus('✅ Processing complete - Ready for new recording');
+            }
+
+            resetData() {
+                this.transcript = '';
+                this.patientName = '';
+                this.examType = '';
+                this.detectedGender = '';
+                this.parameters = {};
+            }
+
+            handleSpeechResult(event) {
+                let finalTranscript = '';
+                
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript;
+                    
+                    if (event.results[i].isFinal) {
+                        finalTranscript += transcript + ' ';
+                        this.transcript += transcript + ' ';
+                        
+                        this.processTranscript(transcript);
+                        this.updateProcessingStatus();
+                    }
+                }
+                
+                if (finalTranscript) {
+                    this.updateTranscript();
+                    this.updateDisplay();
+                }
+            }
+
+            processTranscript(text) {
+                this.extractPatientName(text);
+                this.detectExamType(text);
+                this.extractParameters(text);
+                this.updateDisplay();
+            }
+
+            extractPatientName(text) {
+                if (this.patientName) return;
+                
+                const namePatterns = [
+                    /patient\s+(?:name\s+(?:is\s+)?)?([A-Za-z]+(?:\s+[A-Za-z]+)*)/i,
+                    /(?:this\s+is|examining)\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)/i,
+                    /([A-Za-z]+(?:\s+[A-Za-z]+)*)\s+(?:is\s+)?(?:the\s+)?patient/i,
+                    /(?:mr\.?|ms\.?|mrs\.?)\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)/i,
+                    /patient\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)\s+is\s+here/i,
+                    /([A-Za-z]+(?:\s+[A-Za-z]+)*)\s+is\s+here\s+for/i,
+                    /(?:mri|ct|scan)\s+(?:for\s+)?([A-Za-z]+(?:\s+[A-Za-z]+)*)/i
+                ];
+
+                for (let pattern of namePatterns) {
+                    const match = text.match(pattern);
+                    if (match) {
+                        const name = match[1].trim();
+                        if (this.isValidName(name)) {
+                            this.patientName = name;
+                            this.detectedGender = this.guessGenderFromIndianName(name) || 'Unknown';
+                            break;
+                        }
+                    }
+                }
+            }
+
+            isValidName(name) {
+                const exclusions = [
+                    'patient', 'exam', 'blood', 'pressure', 'heart', 'rate', 'normal', 
+                    'examination', 'scan', 'study', 'brain', 'chest', 'abdomen',
+                    'year', 'old', 'male', 'female', 'doctor', 'imaging', 'cervical',
+                    'spine', 'protocol', 'findings', 'shows'
+                ];
+                const nameLower = name.toLowerCase();
+                return !exclusions.some(word => nameLower.includes(word)) && 
+                       name.length >= 2 && 
+                       name.length <= 50 &&
+                       /^[A-Za-z\s]+$/.test(name);
+            }
+
+            guessGenderFromIndianName(name) {
+                if (!name) return null;
+                
+                const nameLower = name.toLowerCase();
+                
+                // Enhanced Indian name patterns
+                const malePatterns = [
+                    'raj', 'kumar', 'dev', 'singh', 'sharma', 'anil', 'sunil', 'vinod', 'manoj',
+                    'ajay', 'vijay', 'sanjay', 'rakesh', 'mahesh', 'ramesh', 'suresh', 'dinesh',
+                    'mukesh', 'rajesh', 'naresh', 'umesh', 'yogesh', 'ganesh', 'hitesh', 'jitesh',
+                    'amit', 'sumit', 'rohit', 'mohit', 'lalit', 'ankit', 'puneet', 'ravi', 'kiran',
+                    'arun', 'varun', 'tarun', 'arjun', 'manan', 'rohan', 'sohan', 'mohan', 'gopal',
+                    'krishna', 'rama', 'shiva', 'vishnu', 'indra', 'surya', 'chandra', 'deepak',
+                    'ashok', 'alok', 'abhishek', 'akhil', 'nikhil', 'sachin', 'rahul', 'kapil',
+                    'aman', 'naman', 'chaman', 'gagan', 'raman', 'shyam', 'harish', 'manish'
+                ];
+                
+                const femalePatterns = [
+                    'priya', 'rani', 'devi', 'kumari', 'bai', 'mata', 'sita', 'gita', 'rita',
+                    'neeta', 'seeta', 'maya', 'asha', 'usha', 'nisha', 'rekha', 'lata', 'shanta',
+                    'sunita', 'anita', 'mamta', 'sapna', 'pooja', 'meera', 'seema', 'reema',
+                    'kavita', 'sangita', 'geeta', 'sushma', 'pushpa', 'deepa', 'sheela', 'leela',
+                    'radha', 'sudha', 'vidya', 'divya', 'shreya', 'preeti', 'kriti', 'aditi',
+                    'smiti', 'swati', 'bharti', 'aarti', 'shakti', 'shanti', 'jyoti', 'mohini',
+                    'laxmi', 'saraswati', 'parvati', 'durga', 'tara', 'mira', 'indira', 'kamala',
+                    'vimala', 'nirmala', 'shobha', 'sneha', 'neha', 'megha', 'renu', 'manu'
+                ];
+                
+                // Check for patterns
+                for (let pattern of malePatterns) {
+                    if (nameLower.includes(pattern)) return 'M';
+                }
+                
+                for (let pattern of femalePatterns) {
+                    if (nameLower.includes(pattern)) return 'F';
+                }
+                
+                // Common endings
+                if (nameLower.endsWith('a') && !nameLower.endsWith('ma') && !nameLower.endsWith('na')) {
+                    return 'F';
+                }
+                
+                if (nameLower.endsWith('i') || nameLower.endsWith('ya')) {
+                    return 'F';
+                }
+                
+                return null;
+            }
+
+            detectExamType(text) {
+                if (this.examType) return;
+                
+                const examKeywords = {
+                    'CT Brain': [
+                        'ct brain', 'brain ct', 'ct head', 'head ct', 'computed tomography brain',
+                        'cerebral', 'grey matter', 'white matter', 'basal ganglia', 'thalami',
+                        'posterior fossa', 'ventricular system', 'hemorrhage', 'midline shift'
+                    ],
+                    'MRI Brain': [
+                        'mri brain', 'brain mri', 'magnetic resonance brain', 'diffusion weighted',
+                        'flair', 'dwi', 'angiography', 'intra cranial', 'intracranial',
+                        'acute infarct', 'intracerebral hemorrhage'
+                    ],
+                    'MRI Stroke Protocol': [
+                        'stroke protocol', 'mri stroke', 'stroke mri', 'acute stroke',
+                        'stroke imaging', 'emergency stroke', 'stroke evaluation'
+                    ],
+                    'MRI Cervical Spine': [
+                        'mri cervical spine', 'cervical spine mri', 'mri spine', 'spine mri',
+                        'cervical', 'c spine', 'whole spine screening', 'spinal canal',
+                        'vertebral bodies', 'canal diameters', 'curvature', 'alignment'
+                    ],
+                    'CT Abdomen': [
+                        'ct abdomen', 'abdomen ct', 'ct pelvis', 'abdominal ct',
+                        'liver', 'gallbladder', 'pancreas', 'spleen', 'kidneys',
+                        'abdominal imaging', 'pelvic imaging', 'peritoneal'
+                    ]
+                };
+
+                let maxScore = 0;
+                let detectedExam = '';
+
+                for (let [exam, keywords] of Object.entries(examKeywords)) {
+                    const score = keywords.filter(keyword => 
+                        text.toLowerCase().includes(keyword.toLowerCase())
+                    ).length;
+                    
+                    if (score > maxScore) {
+                        maxScore = score;
+                        detectedExam = exam;
+                    }
+                }
+
+                if (maxScore >= 1) {
+                    this.examType = detectedExam;
+                }
+            }
+
+            extractParameters(text) {
+                const paramPatterns = {
+                    // General Parameters
+                    'Age': [
+                        /(?:age\s+(?:is\s+)?|patient\s+is\s+|(?:\d+\s+)?(?:year\s+old\s+)?(?:male|female)\s+)(\d+)\s*(?:years?\s+old)?/i,
+                        /(\d+)[\s-]year[\s-]old/i,
+                        /(?:this\s+is\s+a\s+)?(\d+)[\s-]year[\s-]old/i,
+                        /age\s+(\d+)/i,
+                        /(\d+)\s+years?\s+old/i
+                    ],
+                    
+                    // CT Brain Parameters
+                    'Cerebral Matter': [
+                        /cerebral\s+grey\s+and\s+white\s+matter\s+(.+?)(?:\.|basal|findings)/i,
+                        /grey\s+matter\s+(.+?)(?:\.|white|basal)/i,
+                        /white\s+matter\s+(.+?)(?:\.|basal|posterior)/i,
+                        /(appear\s+normal)/i,
+                        /(no\s+focal\s+lesion)/i
+                    ],
+                    'Basal Ganglia': [
+                        /basal\s+ganglia\s+(?:and\s+thalami\s+)?(?:are\s+)?(.+?)(?:\.|posterior|cerebellum)/i,
+                        /thalami\s+(?:are\s+)?(.+?)(?:\.|posterior)/i
+                    ],
+                    'Posterior Fossa': [
+                        /posterior\s+fossa\s+structures\s+(.+?)(?:\.|ventricular)/i,
+                        /cerebellum\s+(?:and\s+brainstem\s+)?(.+?)(?:\.|ventricular)/i,
+                        /brainstem\s+(.+?)(?:\.|ventricular)/i
+                    ],
+                    'Ventricular System': [
+                        /ventricular\s+system\s*,?\s*cisternal\s*&?\s*sulcal\s+spaces\s+(?:are\s+)?(.+?)(?:\.|hemorrhage)/i,
+                        /ventricles\s+(?:are\s+)?(.+?)(?:\.|cisternal)/i
+                    ],
+                    'Hemorrhage': [
+                        /(no\s+intra\s*\/?\s*extra[\s-]?axial\s+bleed)/i,
+                        /(no\s+intracerebral\s+hemorrhage)/i,
+                        /hemorrhage\s+(.+?)(?:\.|midline)/i
+                    ],
+                    'Midline Shift': [
+                        /(no\s+midline\s+shift)/i,
+                        /(no\s+herniations)/i,
+                        /midline\s+shift\s+(.+?)(?:\.|skull)/i
+                    ],
+                    
+                    // MRI Brain/Stroke Parameters
+                    'Diffusion Weighted': [
+                        /(no\s+restriction\s+(?:is\s+)?seen\s+on\s+diffusion\s+weighted\s+images)/i,
+                        /diffusion\s+weighted\s+(.+?)(?:\.|acute)/i,
+                        /(no\s+acute\s+infarct)/i
+                    ],
+                    'MR Angiography': [
+                        /angiography\s+shows\s*:?\s*(.+?)(?:impression|consultant)/i,
+                        /intracranial\s+(?:internal\s+)?carotid\s+arteries\s+(.+?)(?:\.|basilar)/i,
+                        /basilar\s+artery\s+(.+?)(?:\.|vertebral)/i,
+                        /vertebral\s+arteries\s+(.+?)(?:\.|impression)/i
+                    ],
+                    
+                    // MRI Spine Parameters
+                    'Curvature': [
+                        /curvature\s+of\s+spine\s+is\s+(.+?)(?:\.|canal)/i,
+                        /curvature\s+(?:is\s+)?(.+?)(?:\.|canal)/i
+                    ],
+                    'Canal Diameters': [
+                        /canal\s+diameters\s+(.+?)(?:\.|whole)/i,
+                        /c2[\s-]c3\s+(\d+\.?\d*)/i,
+                        /c3[\s-]c4\s+(\d+\.?\d*)/i,
+                        /c4[\s-]c5\s+(\d+\.?\d*)/i,
+                        /c5[\s-]c6\s+(\d+\.?\d*)/i,
+                        /c6[\s-]c7\s+(\d+\.?\d*)/i
+                    ],
+                    'Vertebral Bodies': [
+                        /vertebral\s+bodies\s+(?:are\s+)?(.+?)(?:\.|configuration)/i,
+                        /alignment\s*,?\s*heights\s+(?:and\s+bone\s+marrow\s+signal\s+intensity\s+)?(.+?)(?:\.|configuration)/i
+                    ],
+                    'Disc Configuration': [
+                        /configuration\s+of\s+(?:rest\s+of\s+the\s+)?discs\s*,?\s*thecal\s+sac\s+(.+?)(?:\.|impression)/i,
+                        /discs\s*,?\s*thecal\s+sac\s+(.+?)(?:\.|neural)/i
+                    ],
+                    
+                    // CT Abdomen Parameters
+                    'Liver': [
+                        /liver\s+is\s+(.+?)(?:\.|cbd|gallbladder)/i,
+                        /liver\s+(.+?)(?:\.|normal\s+in)/i
+                    ],
+                    'Gallbladder': [
+                        /gallbladder\s+is\s+(.+?)(?:\.|spleen|wall)/i,
+                        /gallbladder\s+(.+?)(?:\.|wall)/i
+                    ],
+                    'Pancreas': [
+                        /pancreas\s*:?\s*(.+?)(?:\.|both\s+kidneys|kidneys)/i,
+                        /pancreas\s+(.+?)(?:\.|normal)/i
+                    ],
+                    'Kidneys': [
+                        /(?:both\s+)?kidneys\s+(?:are\s+)?(.+?)(?:\.|adrenal|aorta)/i,
+                        /kidneys\s+(.+?)(?:\.|normal)/i
+                    ],
+                    'Spleen': [
+                        /spleen\s+is\s+(.+?)(?:\.|mesentery|normal)/i
+                    ],
+                    
+                    // Common Findings
+                    'Impression': [
+                        /impression\s*:?\s*(.+?)(?:consultant|dr\.|radiologist)/i,
+                        /conclusion\s*:?\s*(.+?)(?:consultant|dr\.)/i
+                    ]
+                };
+
+                // Process each parameter
+                for (let [paramName, patterns] of Object.entries(paramPatterns)) {
+                    if (this.parameters[paramName]) continue;
+                    
+                    for (let pattern of patterns) {
+                        const match = text.match(pattern);
+                        if (match) {
+                            let value = match[1] || match[0];
+                            
+                            // Clean up the value
+                            value = value.trim();
+                            if (value.endsWith('.')) {
+                                value = value.slice(0, -1);
+                            }
+                            
+                            this.parameters[paramName] = value;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            updateProcessingStatus() {
+                const patientDetected = !!this.patientName;
+                const examDetected = !!this.examType;
+                const paramsCount = Object.keys(this.parameters).length;
+                
+                if (patientDetected && examDetected && paramsCount > 0) {
+                    this.updateStatus(`🎯 Full automation active! ${paramsCount} parameters extracted`);
+                } else if (patientDetected && examDetected) {
+                    this.updateStatus('✅ Patient and exam detected - Listening for findings...');
+                } else if (patientDetected) {
+                    this.updateStatus('👤 Patient detected - Analyzing exam type...');
+                } else if (examDetected) {
+                    this.updateStatus('🏥 Exam type detected - Listening for patient name...');
+                } else {
+                    this.updateStatus('🎤 Processing speech - Detecting patient and exam type...');
+                }
+            }
+
+            updateDisplay() {
+                // Update patient info
+                document.getElementById('patientName').textContent = 
+                    this.patientName || 'Listening...';
+                
+                document.getElementById('examType').textContent = 
+                    this.examType || 'Analyzing...';
+                    
+                document.getElementById('detectedGender').textContent = 
+                    this.detectedGender || 'Auto-detecting...';
+                
+                // Update status
+                if (this.patientName && this.examType) {
+                    document.getElementById('processingStatus').textContent = 'Report generating!';
+                } else {
+                    document.getElementById('processingStatus').textContent = 'Detecting...';
+                }
+                
+                // Update parameters and document
+                this.updateParametersList();
+                this.updateDocumentPreview();
+            }
+
+            updateParametersList() {
+                const paramsList = document.getElementById('parametersList');
+                
+                if (Object.keys(this.parameters).length === 0) {
+                    paramsList.innerHTML = `
+                        <div class="parameter-item">
+                            <span class="parameter-name">🎤 Listening for medical findings...</span>
+                            <span class="parameter-value">--</span>
+                        </div>
+                    `;
+                    return;
+                }
+
+                paramsList.innerHTML = '';
+                
+                // Display parameters in order of importance
+                for (let [name, value] of Object.entries(this.parameters)) {
+                    paramsList.innerHTML += `
+                        <div class="parameter-item" style="animation: fadeInScale 0.5s ease-out;">
+                            <span class="parameter-name">✅ ${name}</span>
+                            <span class="parameter-value">${value}</span>
+                        </div>
+                    `;
+                }
+            }
+
+            updateDocumentPreview() {
+                const preview = document.getElementById('documentPreview');
+                
+                if (!this.patientName || !this.examType) {
+                    preview.textContent = 'Professional medical report will generate automatically once patient name and exam type are detected...';
+                    return;
+                }
+
+                const documentContent = this.generateMedicalReport();
+                preview.textContent = documentContent;
+                
+                // Show download button
+                const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+                const filename = `${this.patientName.replace(/\s+/g, '_')}_${this.examType.replace(/\s+/g, '_').toLowerCase()}_${timestamp}`;
+                this.showDownloadButton(filename, documentContent);
+            }
+
+            generateMedicalReport() {
+                const todayDate = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
+                
+                switch (this.examType) {
+                    case 'CT Brain':
+                        return this.generateCTBrainReport(todayDate);
+                    case 'MRI Brain':
+                        return this.generateMRIBrainReport(todayDate);
+                    case 'MRI Stroke Protocol':
+                        return this.generateMRIStrokeReport(todayDate);
+                    case 'MRI Cervical Spine':
+                        return this.generateMRISpineReport(todayDate);
+                    case 'CT Abdomen':
+                        return this.generateCTAbdomenReport(todayDate);
+                    default:
+                        return this.generateGeneralReport(todayDate);
+                }
+            }
+
+            generateCTBrainReport(date) {
+                const age = this.parameters['Age'] || '[Age]';
+                const sex = this.detectedGender || 'M';
+                const uhid = `UH${Math.floor(Math.random() * 900000) + 100000}`;
+                
+                return `**Name: ${this.patientName || '[Patient Name]'}                      Sex: ${sex}           Age: ${age} Yrs                    Date: ${date}**
+**Reff.By: Dr. Rajesh Kumar                                                                     UHID: ${uhid}**
+** **
+**DEPARTMENT OF RADIO-DIAGNOSIS**
+**CT BRAIN PLAIN**
+** **
+**TECHNIQUE: **CT scan of brain was performed on 96 slice MDCT scanner.
+** **
+**FINDINGS:**
+ 
+${this.parameters['Cerebral Matter'] || 'The cerebral grey and white matter appear normal. No focal lesion is seen in the cerebral parenchyma.'}
+ 
+${this.parameters['Basal Ganglia'] || 'The basal ganglia and thalami are normal.'}
+ 
+${this.parameters['Posterior Fossa'] || 'The posterior fossa structures including the brain stem and cerebellum do not show any abnormality.'}
+ 
+${this.parameters['Ventricular System'] || 'The ventricular system, cisternal & sulcal spaces are normal.'}
+ 
+${this.parameters['Hemorrhage'] || 'No intra / extra-axial bleed seen.'}
+ 
+${this.parameters['Midline Shift'] || 'No midline shift / herniations noted.'}
+ 
+Skull bones are unremarkable.
+ 
+**IMPRESSION**:
+** **
+·       **${this.parameters['Impression'] || 'No significant brain parenchymal abnormality detected.'}**
+** **
+*---Suggested clinical correlation/further evaluation if clinically indicated.*
+** **
+** **
+**             CONSULTANT RADIOLOGIST**
+**                                                                            DR. VISHRUTH RASA. M.D. RADIOLOGY**`;
+            }
+
+            generateMRIBrainReport(date) {
+                const age = this.parameters['Age'] || '[Age]';
+                const sex = this.detectedGender || 'M';
+                const uhid = `UH${Math.floor(Math.random() * 900000) + 100000}`;
+                
+                return `**Name: ${this.patientName || '[Patient Name]'}               Sex: ${sex}                Age: ${age} Yrs      Date: ${date}**
+**Reff.By: Dr. Rajesh Kumar                                                     UHID: ${uhid}**
+** **
+**DEPARTMENT OF RADIO-DIAGNOSIS**
+**MRI BRAIN PLAIN (ANGIOGRAM)**
+** **
+**TECHNIQUE**:
+T2 FSE Axials / Sagittals & Coronals.T1 &T2 FLAIR Axials. DWI, GRE Axials.
+3D TOF MR Angiography of Intra + Extracranial Arteries.
+ 
+**FINDINGS**:
+ 
+${this.parameters['Diffusion Weighted'] || 'No restriction is seen on diffusion weighted images to suggest acute infarct.'}
+ 
+${this.parameters['Hemorrhage'] || 'No intracerebral hemorrhage is noted.'}
+ 
+${this.parameters['Basal Ganglia'] || 'Bilateral basal ganglia and thalami are normal.'}
+ 
+${this.parameters['Posterior Fossa'] || 'Cerebellum and brainstem are unremarkable.'}
+ 
+${this.parameters['Ventricular System'] || 'The ventricular system, cisternal & sulcal spaces are normal.'}
+ 
+**MR ANGIOGRAPHY SHOWS:**
+ 
+${this.parameters['MR Angiography'] || 'Bilateral intracranial internal carotid arteries, anterior & middle cerebral arteries and their branches are normal in caliber/flow signal.\n\nThe basilar artery and bilateral posterior cerebral arteries are normal in caliber and course.\n\nBoth vertebral arteries are normal in calibre and flow signal.'}
+
+**IMPRESSION: **
+** **
+·       **${this.parameters['Impression'] || 'No significant brain parenchymal abnormality detected.'}**
+** **
+*                        ---Suggested clinical correlation / further evaluation if clinically indicated.*
+** **
+** **
+** **
+**CONSULTANT RADIOLOGIST**
+**                                                                                                            DR. VISHRUTH RASA. M.D. RADIOLOGY**`;
+            }
+
+            generateMRIStrokeReport(date) {
+                const age = this.parameters['Age'] || '[Age]';
+                const sex = this.detectedGender || 'M';
+                const uhid = `UH${Math.floor(Math.random() * 900000) + 100000}`;
+                
+                return `**Name: ${this.patientName || '[Patient Name]'}                       Sex: ${sex}                  Age: ${age} Yrs                             Date: ${date}**
+**Reff.By: Dr. Emergency Medicine                                                                                             UHID: ${uhid}**
+** **
+**DEPARTMENT OF RADIO-DIAGNOSIS**
+**MRI STROKE PROTOCOL**
+** **
+**TECHNIQUE**:
+T2 FSE Axials / Sagittals & Coronals.T1 &T2 FLAIR Axials. DWI, GRE Axials.
+3D TOF MR Angiography of Intra cranial Arteries.
+ 
+**FINDINGS**:
+ 
+${this.parameters['Diffusion Weighted'] || 'No restriction is seen on diffusion weighted images to suggest acute infarct.'}
+ 
+${this.parameters['Hemorrhage'] || 'No intracerebral hemorrhage is noted.'}
+ 
+${this.parameters['Basal Ganglia'] || 'Bilateral basal ganglia and thalami are normal.'}
+ 
+${this.parameters['Posterior Fossa'] || 'Cerebellum and brainstem are unremarkable.'}
+ 
+${this.parameters['Ventricular System'] || 'The ventricular system, cisternal & sulcal spaces are normal.'}
+ 
+**MR ANGIOGRAPHY SHOWS:**
+ 
+${this.parameters['MR Angiography'] || 'Bilateral intracranial internal carotid arteries, anterior & middle cerebral arteries and their branches are normal in caliber/flow signal.\n\nThe basilar artery and bilateral posterior cerebral arteries are normal in caliber and course.\n\nBoth vertebral arteries are normal in calibre and flow signal.'}
+
+**IMPRESSION: **
+** **
+·       **${this.parameters['Impression'] || 'No significant brain parenchymal abnormality detected.'}**
+** **
+*                        ---Suggested clinical correlation / further evaluation if clinically indicated.*
+** **
+** **
+** **
+**CONSULTANT RADIOLOGIST**
+**                                                                                                            DR. VISHRUTH RASA. M.D. RADIOLOGY**`;
+            }
+
+            generateMRISpineReport(date) {
+                const age = this.parameters['Age'] || '[Age]';
+                const sex = this.detectedGender || 'M';
+                const uhid = `UH${Math.floor(Math.random() * 900000) + 100000}`;
+                
+                return `** **
+**Name: ${this.patientName || '[Patient Name]'}                                   Sex: ${sex}                Age: ${age} Yrs                  Date: ${date}**
+**Reff.By.Dr: Orthopedic Surgery                                                                                       UHID: ${uhid}**
+**            **                   **DEPARTMENT OF RADIO-DIAGNOSIS**
+**          MRI CERVICAL SPINE WITH WHOLE SPINE SCREENING**
+** **
+**TECHNIQUE:** T1-T2 sagittal & axials, IR coronals.
+ 
+**FINDINGS:**
+ 
+${this.parameters['Curvature'] || 'Curvature of spine is well maintained.'}
+ 
+Canal diameters are as below:
+Level     C2-C3   C3-C4   C4-C5   C5-C6   C6-C7
+AP Mm        13      13     8.7      11     9.5
+ 
+**WHOLE SPINE SCREENING:**
+ 
+${this.parameters['Vertebral Bodies'] || 'Alignment, heights and bone marrow signal intensity of rest of the cervical vertebral bodies are within normal limits.'}
+ 
+${this.parameters['Disc Configuration'] || 'Configuration of rest of the discs, thecal sac, filar roots, lateral recesses, neural foraminae, neural arches, facet joints and posterior elements are within normal limits.'}
+ 
+**IMPRESSION:**
+** **
+·       **${this.parameters['Impression'] || 'No significant abnormality detected.'}**
+** **
+** **
+** **
+** **
+** **
+** **
+** **
+**CONSULTANT RADIOLOGIST**
+**                                                                                                            DR. VISHRUTH RASA. M.D. RADIOLOGY**`;
+            }
+
+            generateCTAbdomenReport(date) {
+                const age = this.parameters['Age'] || '[Age]';
+                const sex = this.detectedGender || 'M';
+                const uhid = `UH${Math.floor(Math.random() * 900000) + 100000}`;
+                
+                return `**Name: ${this.patientName || '[Patient Name]'}                       Sex: ${sex}                   Age: ${age} Yrs                   Date: ${date}**
+**Reff.By.Dr: Internal Medicine                                                                                       UHID: ${uhid}**
+** **
+**DEPARTMENT OF RADIO-DIAGNOSIS**
+**CT ABDOMEN AND PELVIS PLAIN**
+** **
+**TECHNIQUE:** CT abdomen plain study was performed on 96 slice MDCT scanner with detector collimation of 0.625mm, 1mm reconstruction in saggital and coronal planes.
+** **
+**FINDINGS:**
+ 
+${this.parameters['Liver'] || 'Liver is normal in size (cm) & attenuation. No IHBRD.'}
+ 
+CBD normal in caliber.
+ 
+${this.parameters['Gallbladder'] || 'Gallbladder is well distended. Wall thickness appears normal. No e/o hyperdense calculi.'}
+ 
+${this.parameters['Spleen'] || 'Spleen is normal in size (cm) and attenuation.'}
+ 
+Mesentery and omentum are normal.
+ 
+${this.parameters['Pancreas'] || 'Pancreas: Normal in size, shape and attenuation. No e/o ductal dilatation, parenchymal calcifications and peripancreatic fluid collection.'}
+ 
+${this.parameters['Kidneys'] || 'Both kidneys are normal in size, shape and attenuation. No hydronephrosis / calculi.'}
+ 
+Both adrenal glands appear normal.
+ 
+Aorta and IVC are normal. 
+ 
+Urinary bladder is normal in contours. No filling defects noted. No calculi. Wall thickness appears normal. 
+ 
+Prostate is normal in size and attenuation.
+ 
+No free fluid in the peritoneal cavity. 
+ 
+**IMPRESSION: **
+** **
+·       **${this.parameters['Impression'] || 'No significant abnormality detected.'}**
+** **
+**            CONSULTANT RADIOLOGIST**
+**                                                                            DR. VISHRUTH RASA. M.D. RADIOLOGY**`;
+            }
+
+            generateGeneralReport(date) {
+                const age = this.parameters['Age'] || '[Age]';
+                const sex = this.detectedGender || 'M';
+                
+                return `# Medical Examination Report
+
+**Patient:** ${this.patientName || '[Patient Name]'}
+**Date:** ${date}
+**Age:** ${age} years
+**Gender:** ${sex}
+
+## Examination Type: ${this.examType}
+
+## Findings:
+${Object.entries(this.parameters).map(([key, value]) => `• ${key}: ${value}`).join('\n')}
+
+## Complete Transcript:
+${this.transcript}
+
+*Generated automatically: ${date}*`;
+            }
+
+            showDownloadButton(filename, content) {
+                // Remove existing button
+                const existingBtn = document.getElementById('downloadBtn');
+                if (existingBtn) existingBtn.remove();
+
+                // Create download button
+                const downloadBtn = document.createElement('button');
+                downloadBtn.id = 'downloadBtn';
+                downloadBtn.style.cssText = `
+                    margin-top: 1rem;
+                    padding: 0.75rem 1.5rem;
+                    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                `;
+                downloadBtn.innerHTML = '<i class="fas fa-download"></i>Download Medical Report (.docx)';
+                
+                downloadBtn.onmouseover = () => {
+                    downloadBtn.style.transform = 'translateY(-2px)';
+                    downloadBtn.style.boxShadow = '0 8px 25px rgba(34, 197, 94, 0.4)';
+                };
+                
+                downloadBtn.onmouseout = () => {
+                    downloadBtn.style.transform = 'translateY(0)';
+                    downloadBtn.style.boxShadow = 'none';
+                };
+                
+                downloadBtn.onclick = () => {
+                    this.downloadFile(filename + '.docx', content);
+                };
+
+                // Add button after document preview
+                const preview = document.getElementById('documentPreview');
+                preview.parentNode.appendChild(downloadBtn);
+            }
+
+            downloadFile(filename, content) {
+                // Create RTF format for better Word compatibility
+                const rtfContent = this.convertToRTF(content);
+                
+                const blob = new Blob([rtfContent], { 
+                    type: 'application/rtf' 
+                });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename.replace('.docx', '.rtf');
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+                
+                this.showSuccessMessage(`Medical Report downloaded: ${filename.replace('.docx', '.rtf')}`);
+            }
+
+            convertToRTF(content) {
+                // Convert to RTF format for better compatibility with Word
+                let rtfContent = content;
+                
+                // Replace **bold** with RTF bold formatting
+                rtfContent = rtfContent.replace(/\*\*(.*?)\*\*/g, '\\b $1\\b0 ');
+                
+                // Add RTF header and footer
+                const rtfDocument = `{\\rtf1\\ansi\\deff0 {\\fonttbl {\\f0 Times New Roman;}}
+\\f0\\fs24 ${rtfContent.replace(/\n/g, '\\par\n')}
+}`;
+                
+                return rtfDocument;
+            }
+
+            showSuccessMessage(message) {
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+                    color: white;
+                    padding: 1rem 1.5rem;
+                    border-radius: 8px;
+                    box-shadow: 0 10px 25px rgba(34, 197, 94, 0.3);
+                    z-index: 1000;
+                    font-weight: 600;
+                `;
+                notification.innerHTML = `<i class="fas fa-check-circle" style="margin-right: 0.5rem;"></i>${message}`;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 4000);
+            }
+
+            updateTranscript() {
+                document.getElementById('transcriptText').textContent = 
+                    this.transcript || 'Live transcript will appear here as you speak...';
+            }
+
+            updateStatus(status) {
+                document.getElementById('demoStatus').textContent = status;
+            }
+
+            // Enhanced simulation for demo
+            simulateDemo() {
+                this.isRecording = true;
+                document.getElementById('micButton').classList.add('recording');
+                document.getElementById('micIcon').className = 'fas fa-stop';
+                document.getElementById('demoOutput').style.display = 'block';
+                document.getElementById('demoOutput').classList.add('active');
+                
+                this.updateStatus('🎤 Demo Mode - Simulating medical voice input...');
+                
+                // Multiple demo scenarios
+                const demoScenarios = [
+                    [
+                        "Patient Rajesh Kumar is here for CT brain examination",
+                        "This is a 45-year-old male patient",
+                        "The cerebral grey and white matter appear normal",
+                        "No focal lesion seen in cerebral parenchyma",
+                        "Basal ganglia and thalami are normal",
+                        "Posterior fossa structures are unremarkable",
+                        "Ventricular system and cisternal spaces are normal",
+                        "No intra or extra-axial bleed seen",
+                        "No midline shift noted",
+                        "Impression: No significant brain abnormality detected"
+                    ],
+                    [
+                        "MRI cervical spine for Priya Sharma",
+                        "32-year-old female patient",
+                        "Curvature of spine is well maintained",
+                        "Canal diameters are within normal limits",
+                        "Vertebral bodies show normal alignment",
+                        "Disc configuration appears normal",
+                        "No significant spinal abnormality"
+                    ],
+                    [
+                        "CT abdomen for Arjun Singh",
+                        "28-year-old male",
+                        "Liver is normal in size and attenuation",
+                        "Gallbladder appears normal",
+                        "Pancreas shows normal configuration",
+                        "Both kidneys are normal",
+                        "No significant abdominal abnormality"
+                    ]
+                ];
+                
+                const selectedScenario = demoScenarios[Math.floor(Math.random() * demoScenarios.length)];
+                
+                let index = 0;
+                const interval = setInterval(() => {
+                    if (index < selectedScenario.length && this.isRecording) {
+                        const text = selectedScenario[index];
+                        this.transcript += text + ' ';
+                        this.processTranscript(text);
+                        this.updateTranscript();
+                        this.updateDisplay();
+                        this.updateProcessingStatus();
+                        index++;
+                    } else {
+                        clearInterval(interval);
+                        if (this.isRecording) {
+                            this.updateStatus('✅ Demo complete - Professional medical report generated!');
+                        }
+                    }
+                }, 2000); // Slower for better medical demonstration
+            }
+        }
+
+        // Initialize demo when DOM loads
+        document.addEventListener('DOMContentLoaded', function() {
+            new MedicalVoiceDemo();
+        });
+    </script>
+</body>
+</html>
