@@ -1709,19 +1709,37 @@ ${this.transcript}
             }
 
             downloadFile(filename, content) {
-                const blob = new Blob([content], { 
-                    type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' 
+                // Create RTF format for better Word compatibility
+                const rtfContent = this.convertToRTF(content);
+                
+                const blob = new Blob([rtfContent], { 
+                    type: 'application/rtf' 
                 });
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = filename;
+                a.download = filename.replace('.docx', '.rtf');
                 document.body.appendChild(a);
                 a.click();
                 window.URL.revokeObjectURL(url);
                 document.body.removeChild(a);
                 
-                this.showSuccessMessage(`Medical Report downloaded: ${filename}`);
+                this.showSuccessMessage(`Medical Report downloaded: ${filename.replace('.docx', '.rtf')}`);
+            }
+
+            convertToRTF(content) {
+                // Convert to RTF format for better compatibility with Word
+                let rtfContent = content;
+                
+                // Replace **bold** with RTF bold formatting
+                rtfContent = rtfContent.replace(/\*\*(.*?)\*\*/g, '\\b $1\\b0 ');
+                
+                // Add RTF header and footer
+                const rtfDocument = `{\\rtf1\\ansi\\deff0 {\\fonttbl {\\f0 Times New Roman;}}
+\\f0\\fs24 ${rtfContent.replace(/\n/g, '\\par\n')}
+}`;
+                
+                return rtfDocument;
             }
 
             showSuccessMessage(message) {
