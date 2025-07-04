@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>MedVoice AI - Professional Medical Voice Report</title>
-    <meta name="description" content="Professional medical voice Report system. Zero typing, instant reports, hospital-ready formats.">
+    <title>MedVoice AI - Professional Medical Voice Documentation</title>
+    <meta name="description" content="Professional medical voice documentation system. Zero typing, instant reports, hospital-ready formats.">
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -594,7 +594,7 @@
         <main class="main-content">
             <!-- Control Panel -->
             <section class="control-panel">
-                <h1 class="app-title">Voice Medical Report</h1>
+                <h1 class="app-title">Voice Medical Documentation</h1>
                 <p class="app-subtitle">
                     Professional radiology reports generated instantly from voice input. 
                     Support for CT Brain, MRI Brain, MRI Spine, CT Abdomen, and Stroke Protocols.
@@ -608,7 +608,7 @@
                 </div>
 
                 <div class="mic-status" id="micStatus">
-                    Tap microphone to start voice Report
+                    Tap microphone to start voice documentation
                 </div>
 
                 <div class="quick-actions">
@@ -617,8 +617,8 @@
                         Clear All
                     </button>
                     <button class="action-btn btn-primary" id="downloadBtn" style="display: none;">
-                        <i class="fas fa-download"></i>
-                        Download Report
+                        <i class="fas fa-file-word"></i>
+                        Download .docx
                     </button>
                     <button class="action-btn btn-secondary" id="copyBtn" style="display: none;">
                         <i class="fas fa-copy"></i>
@@ -632,7 +632,7 @@
                 <div class="output-header">
                     <h2 class="output-title">
                         <i class="fas fa-file-medical"></i>
-                        Live Report
+                        Live Documentation
                     </h2>
                 </div>
 
@@ -680,24 +680,20 @@
 Professional medical report will generate automatically as you speak...
 
 Try saying:
-• "Patient Rajesh Kumar, 45-years age"
+• "Patient Rajesh Kumar, 45-year-old"
 • "MRI CERVICAL SPINE WITH WHOLE SPINE SCREENING
- 
 TECHNIQUE: T1-T2 sagittal & axials, IR coronals.
- 
-FINDINGS: Curvature of spine is well maintained.
- 
+FINDINGS:
+Curvature of spine is well maintained.
 Canal diameters are as below:
 Level     C2-C3   C3-C4   C4-C5   C5-C6   C6-C7
-AP Mm        11      12    8.7      11     9.5
- 
+AP Mm        13      13     8.7      11     9.5
 WHOLE SPINE SCREENING:
 Alignment, heights and bone marrow signal intensity of rest of the cervical vertebral bodies are within normal limits.
 Configuration of rest of the discs, thecal sac, filar roots, lateral recesses, neural foraminae, neural arches, facet joints and posterior elements are within normal limits.
- 
-IMPRESSION: No significant abnormality detected.
+IMPRESSION:No significant abnormality detected.
 "
-• "MRI cervical spine for Priya Sharma"
+• "MRI cervical spine for Priya Sharma ... etc"
                         </div>
                     </div>
                 </div>
@@ -1267,24 +1263,7 @@ IMPRESSION: No significant abnormality detected.
 
 Try saying:
 • "Patient Rajesh Kumar, 45-year-old male"
-• "MRI CERVICAL SPINE WITH WHOLE SPINE SCREENING
- 
-TECHNIQUE: T1-T2 sagittal & axials, IR coronals.
- 
-FINDINGS: Curvature of spine is well maintained.
- 
-Canal diameters are as below:
-Level     C2-C3   C3-C4   C4-C5   C5-C6   C6-C7
-AP Mm        13      13     8.7      11     9.5
- 
-WHOLE SPINE SCREENING:
- 
-Alignment, heights and bone marrow signal intensity of rest of the cervical vertebral bodies are within normal limits.
- 
-Configuration of rest of the discs, thecal sac, filar roots, lateral recesses, neural foraminae, neural arches, facet joints and posterior elements are within normal limits.
- 
-IMPRESSION: No significant abnormality detected.
-"
+• "CT brain shows normal findings"
 • "MRI cervical spine for Priya Sharma"`;
                     preview.classList.remove('active');
                     return;
@@ -1565,16 +1544,17 @@ ${this.transcript}
                 }
 
                 const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
-                const filename = `${this.patientName.replace(/\s+/g, '_')}_${this.examType.replace(/\s+/g, '_').toLowerCase()}_${timestamp}.doc`;
+                const filename = `${this.patientName.replace(/\s+/g, '_')}_${this.examType.replace(/\s+/g, '_').toLowerCase()}_${timestamp}.docx`;
 
-                this.downloadWordDocument(filename, this.currentReport);
+                this.downloadFile(filename, this.currentReport);
             }
 
-            downloadWordDocument(filename, content) {
-                const wordHTML = this.generateWordHTML(content);
-
-                const blob = new Blob([wordHTML], {
-                    type: 'application/msword'
+            downloadFile(filename, content) {
+                // Generate proper Word document
+                const wordContent = this.generateWordDocument(content);
+                
+                const blob = new Blob([wordContent], { 
+                    type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' 
                 });
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
@@ -1584,59 +1564,106 @@ ${this.transcript}
                 a.click();
                 window.URL.revokeObjectURL(url);
                 document.body.removeChild(a);
-
-                this.showNotification(`Word Document downloaded: ${filename}`, 'success');
+                
+                this.showNotification(`Medical Report downloaded: ${filename}`, 'success');
             }
 
-            generateWordHTML(content) {
-                let htmlContent = content
-                    .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
-                    .split('\n')
-                    .map(line => {
-                        if (line.trim() === '') {
-                            return '<p>&nbsp;</p>';
-                        }
-                        return `<p>${line}</p>`;
-                    })
-                    .join('\n');
+            generateWordDocument(content) {
+                // Create proper Word XML structure
+                const wordXML = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?mso-application progid="Word.Document"?>
+<pkg:package xmlns:pkg="http://schemas.microsoft.com/office/2006/xmlPackage">
+<pkg:part pkg:name="/_rels/.rels" pkg:contentType="application/vnd.openxmlformats-package.relationships+xml">
+<pkg:xmlData>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
+</Relationships>
+</pkg:xmlData>
+</pkg:part>
+<pkg:part pkg:name="/word/_rels/document.xml.rels" pkg:contentType="application/vnd.openxmlformats-package.relationships+xml">
+<pkg:xmlData>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+</Relationships>
+</pkg:xmlData>
+</pkg:part>
+<pkg:part pkg:name="/word/document.xml" pkg:contentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml">
+<pkg:xmlData>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
+<w:body>
+${this.convertToWordXML(content)}
+<w:sectPr>
+<w:pgSz w:w="12240" w:h="15840"/>
+<w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440"/>
+</w:sectPr>
+</w:body>
+</w:document>
+</pkg:xmlData>
+</pkg:part>
+</pkg:package>`;
+                
+                return wordXML;
+            }
 
-                return `
-<!DOCTYPE html>
-<html xmlns:o="urn:schemas-microsoft-com:office:office" 
-      xmlns:w="urn:schemas-microsoft-com:office:word" 
-      xmlns="http://www.w3.org/TR/REC-html40">
-<head>
-    <meta charset="utf-8">
-    <meta name="ProgId" content="Word.Document">
-    <meta name="Generator" content="Microsoft Word 15">
-    <meta name="Originator" content="Microsoft Word 15">
-    <title>Medical Report</title>
-    <style>
-        @page {
-            size: A4;
-            margin: 1in;
-        }
-        body {
-            font-family: 'Times New Roman', serif;
-            font-size: 12pt;
-            line-height: 1.2;
-            margin: 0;
-            padding: 0;
-        }
-        p {
-            margin: 0;
-            padding: 0;
-            margin-bottom: 6pt;
-        }
-        b, strong {
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
-    ${htmlContent}
-</body>
-</html>`;
+            convertToWordXML(content) {
+                let xmlContent = '';
+                const lines = content.split('\n');
+                
+                lines.forEach(line => {
+                    line = line.trim();
+                    if (line === '') {
+                        // Empty line
+                        xmlContent += '<w:p><w:pPr></w:pPr></w:p>';
+                        return;
+                    }
+                    
+                    // Check if line contains bold formatting
+                    if (line.includes('**')) {
+                        xmlContent += '<w:p><w:pPr></w:pPr>';
+                        
+                        // Process bold text
+                        const boldRegex = /\*\*(.*?)\*\*/g;
+                        let lastIndex = 0;
+                        let match;
+                        
+                        while ((match = boldRegex.exec(line)) !== null) {
+                            // Add text before bold
+                            if (match.index > lastIndex) {
+                                const beforeText = line.substring(lastIndex, match.index);
+                                if (beforeText) {
+                                    xmlContent += `<w:r><w:t xml:space="preserve">${this.escapeXML(beforeText)}</w:t></w:r>`;
+                                }
+                            }
+                            
+                            // Add bold text
+                            xmlContent += `<w:r><w:rPr><w:b/></w:rPr><w:t xml:space="preserve">${this.escapeXML(match[1])}</w:t></w:r>`;
+                            lastIndex = boldRegex.lastIndex;
+                        }
+                        
+                        // Add remaining text
+                        if (lastIndex < line.length) {
+                            const remainingText = line.substring(lastIndex);
+                            if (remainingText) {
+                                xmlContent += `<w:r><w:t xml:space="preserve">${this.escapeXML(remainingText)}</w:t></w:r>`;
+                            }
+                        }
+                        
+                        xmlContent += '</w:p>';
+                    } else {
+                        // Regular line
+                        xmlContent += `<w:p><w:pPr></w:pPr><w:r><w:t xml:space="preserve">${this.escapeXML(line)}</w:t></w:r></w:p>`;
+                    }
+                });
+                
+                return xmlContent;
+            }
+
+            escapeXML(text) {
+                return text
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&apos;');
             }
 
             copyToClipboard() {
