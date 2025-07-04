@@ -511,87 +511,6 @@
             opacity: 1;
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero .subtitle {
-                font-size: 1.2rem;
-            }
-
-            .hero .description {
-                font-size: 1rem;
-            }
-
-            .hero-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .demo-container {
-                padding: 1.5rem;
-            }
-
-            .section-title h2 {
-                font-size: 2rem;
-            }
-        }
-
-        @keyframes fadeInScale {
-            0% {
-                opacity: 0;
-                transform: scale(0.8) translateY(10px);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
-
-        .parameter-item {
-            transition: all 0.3s ease;
-        }
-
-        .parameter-item:hover {
-            background: rgba(102, 126, 234, 0.1);
-            transform: translateX(5px);
-        }
-
-        /* Better visual feedback for recording */
-        .recording-indicator {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            width: 20px;
-            height: 20px;
-            background: #ef4444;
-            border-radius: 50%;
-            animation: pulse 1.5s infinite;
-        }
-
-        /* Enhanced demo output styling */
-        .demo-output {
-            border: 2px solid rgba(102, 126, 234, 0.2);
-            border-radius: 15px;
-            padding: 1rem;
-            background: rgba(248, 250, 252, 0.5);
-        }
-
-        .demo-output.active {
-            border-color: rgba(102, 126, 234, 0.5);
-            background: rgba(248, 250, 252, 0.8);
-        }
-
         /* Demo specific styles */
         .demo-grid {
             display: grid;
@@ -631,6 +550,12 @@
             background: #f8fafc;
             border-radius: 8px;
             font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .parameter-item:hover {
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateX(5px);
         }
 
         .parameter-name {
@@ -654,12 +579,78 @@
             color: #555;
             height: 300px;
             overflow-y: auto;
+            white-space: pre-wrap;
         }
 
+        /* Responsive Design */
         @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .hero .description {
+                font-size: 1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .demo-container {
+                padding: 1.5rem;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
             .demo-grid {
                 grid-template-columns: 1fr;
             }
+        }
+
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .demo-output {
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-radius: 15px;
+            padding: 1rem;
+            background: rgba(248, 250, 252, 0.5);
+        }
+
+        .demo-output.active {
+            border-color: rgba(102, 126, 234, 0.5);
+            background: rgba(248, 250, 252, 0.8);
+        }
+
+        .tips-box {
+            background: #e3f2fd; 
+            padding: 1rem; 
+            border-radius: 8px; 
+            margin: 1rem 0; 
+            font-size: 0.9rem;
         }
     </style>
 </head>
@@ -714,8 +705,8 @@
                     <p>Typing Required</p>
                 </div>
                 <div class="stat-item">
-                    <h3>100%</h3>
-                    <p>Automation</p>
+                    <h3>5+</h3>
+                    <p>Medical Templates</p>
                 </div>
             </div>
         </div>
@@ -725,57 +716,57 @@
     <section class="features" id="features">
         <div class="container">
             <div class="section-title fade-in">
-                <h2>Cutting-Edge AI Features</h2>
-                <p>Advanced medical AI that understands context, extracts parameters, and generates documents automatically</p>
+                <h2>Advanced Medical AI Templates</h2>
+                <p>Professional radiology reports for CT Brain, MRI Brain, MRI Spine, CT Abdomen, and Stroke Protocol</p>
             </div>
             
             <div class="features-grid">
                 <div class="feature-card fade-in">
                     <div class="feature-icon">
-                        <i class="fas fa-microphone"></i>
-                    </div>
-                    <h3>Smart Voice Recognition</h3>
-                    <p>Advanced AI automatically detects patient names, exam types, and medical terminology from natural speech with 95%+ accuracy.</p>
-                </div>
-                
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">
                         <i class="fas fa-brain"></i>
                     </div>
-                    <h3>Intelligent Parameter Extraction</h3>
-                    <p>Instantly extracts vital signs, measurements, and medical observations in real-time as you speak naturally.</p>
+                    <h3>CT & MRI Brain Reports</h3>
+                    <p>Advanced AI detects neurological findings, processes diffusion weighted images, angiography results, and generates complete brain imaging reports.</p>
                 </div>
                 
                 <div class="feature-card fade-in">
                     <div class="feature-icon">
-                        <i class="fas fa-file-medical"></i>
+                        <i class="fas fa-spine"></i>
                     </div>
-                    <h3>Auto Document Generation</h3>
-                    <p>Generates professional medical documents automatically with smart file naming: patient_name_exam_type_timestamp.docx</p>
+                    <h3>MRI Spine Documentation</h3>
+                    <p>Intelligent cervical spine analysis with canal diameter measurements, vertebral body assessment, and whole spine screening protocols.</p>
                 </div>
                 
                 <div class="feature-card fade-in">
                     <div class="feature-icon">
-                        <i class="fas fa-database"></i>
+                        <i class="fas fa-lungs"></i>
                     </div>
-                    <h3>JSON Data Export</h3>
-                    <p>Structured data export in JSON format for integration with EMR systems, analytics, and medical databases.</p>
+                    <h3>CT Abdomen & Pelvis</h3>
+                    <p>Comprehensive abdominal imaging analysis including liver, gallbladder, pancreas, kidneys, and pelvic organ evaluation with measurements.</p>
                 </div>
                 
                 <div class="feature-card fade-in">
                     <div class="feature-icon">
-                        <i class="fas fa-bolt"></i>
+                        <i class="fas fa-heartbeat"></i>
                     </div>
-                    <h3>Real-Time Processing</h3>
-                    <p>Live transcription and parameter extraction with parallel processing - everything happens as you speak.</p>
+                    <h3>Stroke Protocol MRI</h3>
+                    <p>Specialized stroke imaging with DWI analysis, hemorrhage detection, and MR angiography of intracranial vessels for emergency protocols.</p>
                 </div>
                 
                 <div class="feature-card fade-in">
                     <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
+                        <i class="fas fa-user-md"></i>
                     </div>
-                    <h3>HIPAA Ready</h3>
-                    <p>Built with medical-grade security, compliance features, and privacy protection for patient data.</p>
+                    <h3>Indian Name Detection</h3>
+                    <p>Smart recognition of Indian names with automatic gender detection. Supports Hindi, Telugu, Tamil, and regional naming patterns.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <h3>Professional Downloads</h3>
+                    <p>Generate hospital-ready .docx reports with proper formatting, radiologist signatures, and UHID generation for immediate clinical use.</p>
                 </div>
             </div>
         </div>
@@ -785,13 +776,16 @@
     <section class="demo-section" id="demo">
         <div class="container">
             <div class="section-title fade-in">
-                <h2>Live Interactive Demo</h2>
-                <p>Experience the power of AI-driven medical documentation. Just click the microphone and start speaking!</p>
+                <h2>Live Medical AI Demo</h2>
+                <p>Experience professional radiology report generation. Click microphone and speak naturally!</p>
+                <div class="tips-box">
+                    <strong>💡 Demo Examples:</strong> Try saying "Patient Rajesh Kumar, 45-year-old male, CT brain shows normal findings" or "MRI cervical spine for Priya Sharma, 32-year-old female, curvature well maintained"
+                </div>
             </div>
             
             <div class="demo-container">
                 <div class="demo-interface">
-                    <div class="demo-title">🎤 Medical Voice AI Demo</div>
+                    <div class="demo-title">🎤 Professional Medical Voice AI</div>
                     
                     <button class="mic-button" id="micButton">
                         <i class="fas fa-microphone" id="micIcon"></i>
@@ -808,6 +802,10 @@
                             <div class="info-card">
                                 <div class="info-label">Exam Type</div>
                                 <div class="info-value" id="examType">Analyzing...</div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-label">Gender</div>
+                                <div class="info-value" id="detectedGender">Auto-detecting...</div>
                             </div>
                             <div class="info-card">
                                 <div class="info-label">Status</div>
@@ -827,9 +825,9 @@
                             </div>
                             
                             <div class="demo-right">
-                                <h4><i class="fas fa-file-alt"></i> Live Document Preview</h4>
+                                <h4><i class="fas fa-file-medical"></i> Live Report Preview</h4>
                                 <div class="document-preview" id="documentPreview">
-                                    Document will generate automatically once patient name and exam type are detected...
+Professional medical report will generate automatically once patient name and exam type are detected...
                                 </div>
                             </div>
                         </div>
@@ -850,26 +848,26 @@
         <div class="container">
             <div class="section-title fade-in">
                 <h2>How It Works</h2>
-                <p>Simple three-step process for complete medical documentation automation</p>
+                <p>Professional medical documentation in three simple steps</p>
             </div>
             
             <div class="steps-grid">
                 <div class="step-card fade-in">
                     <div class="step-number">1</div>
-                    <h3>Press & Speak</h3>
-                    <p>Click the microphone button and start speaking naturally about your examination. No forms, no typing required.</p>
+                    <h3>Speak Naturally</h3>
+                    <p>Just speak about your findings - "Patient Rajesh Kumar, CT brain shows normal grey matter, basal ganglia normal"</p>
                 </div>
                 
                 <div class="step-card fade-in">
                     <div class="step-number">2</div>
                     <h3>AI Processes</h3>
-                    <p>Advanced AI automatically detects patient name, exam type, and extracts medical parameters in real-time.</p>
+                    <p>Advanced medical AI detects exam type, extracts parameters, and auto-fills professional report templates</p>
                 </div>
                 
                 <div class="step-card fade-in">
                     <div class="step-number">3</div>
-                    <h3>Files Generated</h3>
-                    <p>Professional documents and JSON data files are created automatically with smart naming for immediate use.</p>
+                    <h3>Download Report</h3>
+                    <p>Get hospital-ready .docx reports with radiologist signature, proper formatting, and UHID for immediate use</p>
                 </div>
             </div>
         </div>
@@ -878,8 +876,8 @@
     <!-- Final CTA -->
     <section class="final-cta">
         <div class="container">
-            <h2>Ready to Transform Your Medical Documentation?</h2>
-            <p>Join thousands of healthcare professionals already using MedVoice AI to save time and improve accuracy.</p>
+            <h2>Ready to Transform Your Radiology Reports?</h2>
+            <p>Join radiologists using MedVoice AI for faster, more accurate medical documentation</p>
             <a href="#demo" class="btn-primary" style="font-size: 1.2rem; padding: 1.2rem 2.5rem;">
                 <i class="fas fa-rocket"></i> Start Free Trial
             </a>
@@ -902,29 +900,7 @@
     </footer>
 
     <script>
-        // Smooth scrolling animation
-        document.addEventListener('DOMContentLoaded', function() {
-            // Intersection Observer for animations
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-
-            const observer = new IntersectionObserver(function(entries) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, observerOptions);
-
-            // Observe all fade-in elements
-            document.querySelectorAll('.fade-in').forEach(el => {
-                observer.observe(el);
-            });
-        });
-
-        // Demo functionality
+        // Medical Voice AI Demo Class
         class MedicalVoiceDemo {
             constructor() {
                 this.isRecording = false;
@@ -932,6 +908,7 @@
                 this.transcript = '';
                 this.patientName = '';
                 this.examType = '';
+                this.detectedGender = '';
                 this.parameters = {};
                 
                 this.initializeDemo();
@@ -939,7 +916,6 @@
 
             initializeDemo() {
                 const micButton = document.getElementById('micButton');
-                const micIcon = document.getElementById('micIcon');
                 
                 micButton.addEventListener('click', () => {
                     if (this.isRecording) {
@@ -949,7 +925,7 @@
                     }
                 });
 
-                // Initialize speech recognition if available
+                // Initialize speech recognition
                 if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
                     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
                     this.recognition = new SpeechRecognition();
@@ -963,49 +939,53 @@
                     
                     this.recognition.onerror = (event) => {
                         console.error('Speech recognition error:', event.error);
-                        let errorMessage = 'Speech recognition error';
-                        
-                        switch(event.error) {
-                            case 'network':
-                                errorMessage = '🌐 Network error - Check internet connection';
-                                break;
-                            case 'not-allowed':
-                                errorMessage = '🎤 Microphone access denied - Please allow microphone';
-                                break;
-                            case 'no-speech':
-                                errorMessage = '🔇 No speech detected - Please speak louder';
-                                break;
-                            case 'audio-capture':
-                                errorMessage = '🎤 Microphone not working - Check device';
-                                break;
-                            default:
-                                errorMessage = `🔧 ${event.error} - Try refreshing the page`;
-                        }
-                        
-                        this.updateStatus(errorMessage);
-                        
-                        // Auto-restart recognition after brief pause
-                        setTimeout(() => {
-                            if (this.isRecording && this.recognition) {
-                                this.updateStatus('🔄 Restarting speech recognition...');
-                                try {
-                                    this.recognition.start();
-                                } catch (e) {
-                                    console.log('Could not restart recognition:', e);
-                                    this.updateStatus('❌ Speech recognition unavailable - Try demo mode');
-                                }
-                            }
-                        }, 2000);
+                        this.handleSpeechError(event.error);
                     };
                     
                     this.recognition.onend = () => {
                         if (this.isRecording) {
-                            this.recognition.start(); // Auto-restart
+                            try {
+                                this.recognition.start();
+                            } catch (e) {
+                                console.log('Recognition restart failed:', e);
+                            }
                         }
                     };
-                } else {
-                    this.updateStatus('Speech recognition not supported - try Chrome browser');
                 }
+            }
+
+            handleSpeechError(error) {
+                let errorMessage = 'Speech recognition error';
+                
+                switch(error) {
+                    case 'network':
+                        errorMessage = '🌐 Network error - Check internet connection';
+                        break;
+                    case 'not-allowed':
+                        errorMessage = '🎤 Microphone access denied - Please allow microphone';
+                        break;
+                    case 'no-speech':
+                        errorMessage = '🔇 No speech detected - Please speak louder';
+                        break;
+                    case 'audio-capture':
+                        errorMessage = '🎤 Microphone not working - Check device';
+                        break;
+                    default:
+                        errorMessage = `🔧 ${error} - Try refreshing the page`;
+                }
+                
+                this.updateStatus(errorMessage);
+                
+                setTimeout(() => {
+                    if (this.isRecording && this.recognition) {
+                        this.updateStatus('🔄 Restarting speech recognition...');
+                        try {
+                            this.recognition.start();
+                        } catch (e) {
+                            this.updateStatus('❌ Speech recognition unavailable - Try demo mode');
+                        }
+                    }
+                }, 2000);
             }
 
             startRecording() {
@@ -1015,17 +995,20 @@
                 }
 
                 this.isRecording = true;
-                this.transcript = '';
-                this.patientName = '';
-                this.examType = '';
-                this.parameters = {};
+                this.resetData();
                 
                 document.getElementById('micButton').classList.add('recording');
                 document.getElementById('micIcon').className = 'fas fa-stop';
                 document.getElementById('demoOutput').style.display = 'block';
+                document.getElementById('demoOutput').classList.add('active');
                 
-                this.updateStatus('🎤 Recording - Speak naturally!');
-                this.recognition.start();
+                this.updateStatus('🎤 Recording - Speak naturally about your findings!');
+                
+                try {
+                    this.recognition.start();
+                } catch (e) {
+                    this.simulateDemo();
+                }
             }
 
             stopRecording() {
@@ -1038,12 +1021,19 @@
                 document.getElementById('micButton').classList.remove('recording');
                 document.getElementById('micIcon').className = 'fas fa-microphone';
                 
-                this.updateStatus('Processing complete - Ready for new recording');
+                this.updateStatus('✅ Processing complete - Ready for new recording');
+            }
+
+            resetData() {
+                this.transcript = '';
+                this.patientName = '';
+                this.examType = '';
+                this.detectedGender = '';
+                this.parameters = {};
             }
 
             handleSpeechResult(event) {
                 let finalTranscript = '';
-                let interimTranscript = '';
                 
                 for (let i = event.resultIndex; i < event.results.length; i++) {
                     const transcript = event.results[i][0].transcript;
@@ -1052,13 +1042,8 @@
                         finalTranscript += transcript + ' ';
                         this.transcript += transcript + ' ';
                         
-                        // Process each sentence for better accuracy
                         this.processTranscript(transcript);
-                        
-                        // Update status based on what's been detected
                         this.updateProcessingStatus();
-                    } else {
-                        interimTranscript += transcript;
                     }
                 }
                 
@@ -1068,60 +1053,24 @@
                 }
             }
 
-            updateProcessingStatus() {
-                const patientDetected = !!this.patientName;
-                const examDetected = !!this.examType;
-                const paramsCount = Object.keys(this.parameters).length;
-                
-                if (patientDetected && examDetected && paramsCount > 0) {
-                    this.updateStatus(`🎯 Full automation active! ${paramsCount} parameters extracted`);
-                } else if (patientDetected && examDetected) {
-                    this.updateStatus('✅ Patient and exam detected - Listening for parameters...');
-                } else if (patientDetected) {
-                    this.updateStatus('👤 Patient detected - Analyzing exam type...');
-                } else if (examDetected) {
-                    this.updateStatus('🏥 Exam type detected - Listening for patient name...');
-                } else {
-                    this.updateStatus('🎤 Processing speech - Detecting patient and exam type...');
-                }
-            }
-
             processTranscript(text) {
-                // Show immediate feedback for detected terms
-                this.showLiveDetection(text);
-                
-                // Simulate AI processing with more realistic timing
                 this.extractPatientName(text);
                 this.detectExamType(text);
                 this.extractParameters(text);
                 this.updateDisplay();
             }
 
-            showLiveDetection(text) {
-                // Highlight detected medical terms in real-time
-                const medicalTerms = [
-                    'ultrasound', 'echocardiogram', 'biparietal', 'diameter', 
-                    'heart rate', 'blood pressure', 'gestational', 'placenta',
-                    'ejection fraction', 'ventricular', 'patient', 'examination'
-                ];
-                
-                const detectedTerms = medicalTerms.filter(term => 
-                    text.toLowerCase().includes(term)
-                );
-                
-                if (detectedTerms.length > 0) {
-                    console.log('🎯 Detected medical terms:', detectedTerms);
-                    // Could add visual feedback here for detected terms
-                }
-            }
-
             extractPatientName(text) {
                 if (this.patientName) return;
                 
                 const namePatterns = [
-                    /patient\s+(?:name\s+)?(?:is\s+)?([A-Za-z]+(?:\s+[A-Za-z]+)*)/i,
+                    /patient\s+(?:name\s+(?:is\s+)?)?([A-Za-z]+(?:\s+[A-Za-z]+)*)/i,
                     /(?:this\s+is|examining)\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)/i,
-                    /([A-Za-z]+(?:\s+[A-Za-z]+)*)\s+(?:is\s+)?(?:the\s+)?patient/i
+                    /([A-Za-z]+(?:\s+[A-Za-z]+)*)\s+(?:is\s+)?(?:the\s+)?patient/i,
+                    /(?:mr\.?|ms\.?|mrs\.?)\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)/i,
+                    /patient\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)\s+is\s+here/i,
+                    /([A-Za-z]+(?:\s+[A-Za-z]+)*)\s+is\s+here\s+for/i,
+                    /(?:mri|ct|scan)\s+(?:for\s+)?([A-Za-z]+(?:\s+[A-Za-z]+)*)/i
                 ];
 
                 for (let pattern of namePatterns) {
@@ -1130,6 +1079,7 @@
                         const name = match[1].trim();
                         if (this.isValidName(name)) {
                             this.patientName = name;
+                            this.detectedGender = this.guessGenderFromIndianName(name) || 'Unknown';
                             break;
                         }
                     }
@@ -1137,54 +1087,95 @@
             }
 
             isValidName(name) {
-                const exclusions = ['patient', 'exam', 'blood', 'pressure', 'heart', 'rate', 'normal'];
-                return !exclusions.some(word => name.toLowerCase().includes(word));
+                const exclusions = [
+                    'patient', 'exam', 'blood', 'pressure', 'heart', 'rate', 'normal', 
+                    'examination', 'scan', 'study', 'brain', 'chest', 'abdomen',
+                    'year', 'old', 'male', 'female', 'doctor', 'imaging', 'cervical',
+                    'spine', 'protocol', 'findings', 'shows'
+                ];
+                const nameLower = name.toLowerCase();
+                return !exclusions.some(word => nameLower.includes(word)) && 
+                       name.length >= 2 && 
+                       name.length <= 50 &&
+                       /^[A-Za-z\s]+$/.test(name);
+            }
+
+            guessGenderFromIndianName(name) {
+                if (!name) return null;
+                
+                const nameLower = name.toLowerCase();
+                
+                // Enhanced Indian name patterns
+                const malePatterns = [
+                    'raj', 'kumar', 'dev', 'singh', 'sharma', 'anil', 'sunil', 'vinod', 'manoj',
+                    'ajay', 'vijay', 'sanjay', 'rakesh', 'mahesh', 'ramesh', 'suresh', 'dinesh',
+                    'mukesh', 'rajesh', 'naresh', 'umesh', 'yogesh', 'ganesh', 'hitesh', 'jitesh',
+                    'amit', 'sumit', 'rohit', 'mohit', 'lalit', 'ankit', 'puneet', 'ravi', 'kiran',
+                    'arun', 'varun', 'tarun', 'arjun', 'manan', 'rohan', 'sohan', 'mohan', 'gopal',
+                    'krishna', 'rama', 'shiva', 'vishnu', 'indra', 'surya', 'chandra', 'deepak',
+                    'ashok', 'alok', 'abhishek', 'akhil', 'nikhil', 'sachin', 'rahul', 'kapil',
+                    'aman', 'naman', 'chaman', 'gagan', 'raman', 'shyam', 'harish', 'manish'
+                ];
+                
+                const femalePatterns = [
+                    'priya', 'rani', 'devi', 'kumari', 'bai', 'mata', 'sita', 'gita', 'rita',
+                    'neeta', 'seeta', 'maya', 'asha', 'usha', 'nisha', 'rekha', 'lata', 'shanta',
+                    'sunita', 'anita', 'mamta', 'sapna', 'pooja', 'meera', 'seema', 'reema',
+                    'kavita', 'sangita', 'geeta', 'sushma', 'pushpa', 'deepa', 'sheela', 'leela',
+                    'radha', 'sudha', 'vidya', 'divya', 'shreya', 'preeti', 'kriti', 'aditi',
+                    'smiti', 'swati', 'bharti', 'aarti', 'shakti', 'shanti', 'jyoti', 'mohini',
+                    'laxmi', 'saraswati', 'parvati', 'durga', 'tara', 'mira', 'indira', 'kamala',
+                    'vimala', 'nirmala', 'shobha', 'sneha', 'neha', 'megha', 'renu', 'manu'
+                ];
+                
+                // Check for patterns
+                for (let pattern of malePatterns) {
+                    if (nameLower.includes(pattern)) return 'M';
+                }
+                
+                for (let pattern of femalePatterns) {
+                    if (nameLower.includes(pattern)) return 'F';
+                }
+                
+                // Common endings
+                if (nameLower.endsWith('a') && !nameLower.endsWith('ma') && !nameLower.endsWith('na')) {
+                    return 'F';
+                }
+                
+                if (nameLower.endsWith('i') || nameLower.endsWith('ya')) {
+                    return 'F';
+                }
+                
+                return null;
             }
 
             detectExamType(text) {
                 if (this.examType) return;
                 
                 const examKeywords = {
-                    'Ultrasound': [
-                        'ultrasound', 'sonogram', 'gestational', 'pregnancy', 'fetal', 'prenatal',
-                        'biparietal', 'diameter', 'bpd', 'head circumference', 'abdominal circumference',
-                        'femur length', 'estimated fetal weight', 'placenta', 'amniotic', 'weeks pregnant',
-                        'GA', 'HC', 'AC', 'FL', 'EFW', 'prenatal ultrasound', 'obstetric'
-                    ],
-                    'MRI Brain': [
-                        'mri brain', 'brain mri', 'magnetic resonance', 'brain angiogram', 'angio',
-                        'flair', 'dwi', 'diffusion weighted', 'basal ganglia', 'thalami', 'cerebellum',
-                        'brainstem', 'ventricular system', 'intracerebral', 'angiography', 'tof'
-                    ],
-                    'CT Chest': [
-                        'ct chest', 'chest ct', 'hrct', 'computed tomography chest', 'lung',
-                        'trachea', 'bronchi', 'mediastinal', 'lymphadenopathy', 'parenchyma',
-                        'alveolar', 'interstitial', 'pleural', 'thorax'
-                    ],
-                    'CT Abdomen': [
-                        'ct abdomen', 'abdomen ct', 'ct pelvis', 'abdominal ct', 'liver',
-                        'gallbladder', 'pancreas', 'spleen', 'kidneys', 'adrenal', 'aorta',
-                        'ivc', 'bladder', 'prostate', 'peritoneal'
-                    ],
                     'CT Brain': [
                         'ct brain', 'brain ct', 'ct head', 'head ct', 'computed tomography brain',
-                        'cerebral', 'grey matter', 'white matter', 'focal lesion', 'parenchyma',
-                        'posterior fossa', 'intra-axial', 'extra-axial', 'midline shift'
+                        'cerebral', 'grey matter', 'white matter', 'basal ganglia', 'thalami',
+                        'posterior fossa', 'ventricular system', 'hemorrhage', 'midline shift'
                     ],
-                    'MRI Spine': [
-                        'mri spine', 'spine mri', 'cervical spine', 'c spine', 'mri cervical',
-                        'whole spine screening', 'spinal canal', 'vertebral bodies', 'discs',
-                        'thecal sac', 'neural foraminae', 'facet joints'
+                    'MRI Brain': [
+                        'mri brain', 'brain mri', 'magnetic resonance brain', 'diffusion weighted',
+                        'flair', 'dwi', 'angiography', 'intra cranial', 'intracranial',
+                        'acute infarct', 'intracerebral hemorrhage'
                     ],
-                    'Echocardiogram': [
-                        'echocardiogram', 'echo', 'cardiac', 'heart', 'ejection fraction', 'ventricular',
-                        'valve', 'aortic', 'mitral', 'tricuspid', 'pulmonary', 'cardiology', 'ef',
-                        'left ventricular', 'right ventricular', 'cardiac function', 'heart function'
+                    'MRI Stroke Protocol': [
+                        'stroke protocol', 'mri stroke', 'stroke mri', 'acute stroke',
+                        'stroke imaging', 'emergency stroke', 'stroke evaluation'
                     ],
-                    'General Exam': [
-                        'physical exam', 'examination', 'vital signs', 'blood pressure', 'temperature',
-                        'weight', 'height', 'pulse', 'general', 'checkup', 'routine', 'physical',
-                        'vitals', 'assessment', 'wellness', 'health check'
+                    'MRI Cervical Spine': [
+                        'mri cervical spine', 'cervical spine mri', 'mri spine', 'spine mri',
+                        'cervical', 'c spine', 'whole spine screening', 'spinal canal',
+                        'vertebral bodies', 'canal diameters', 'curvature', 'alignment'
+                    ],
+                    'CT Abdomen': [
+                        'ct abdomen', 'abdomen ct', 'ct pelvis', 'abdominal ct',
+                        'liver', 'gallbladder', 'pancreas', 'spleen', 'kidneys',
+                        'abdominal imaging', 'pelvic imaging', 'peritoneal'
                     ]
                 };
 
@@ -1202,287 +1193,177 @@
                     }
                 }
 
-                // Lower threshold for detection and add context scoring
                 if (maxScore >= 1) {
-                    // Additional context scoring
-                    const textLower = text.toLowerCase();
-                    
-                    // Boost ultrasound score if pregnancy terms present
-                    if (detectedExam === 'Ultrasound' && 
-                        (textLower.includes('week') || textLower.includes('prenatal') || 
-                         textLower.includes('fetal') || textLower.includes('pregnancy'))) {
-                        maxScore += 2;
-                    }
-                    
-                    // Boost echo score if cardiac terms present  
-                    if (detectedExam === 'Echocardiogram' &&
-                        (textLower.includes('ef') || textLower.includes('fraction') ||
-                         textLower.includes('cardiac') || textLower.includes('valve'))) {
-                        maxScore += 2;
-                    }
-                    
-                    if (maxScore >= 1) {
-                        this.examType = detectedExam;
-                    }
+                    this.examType = detectedExam;
                 }
             }
 
             extractParameters(text) {
-                // Enhanced patterns for better medical parameter extraction
                 const paramPatterns = {
-                    // General Vitals
-                    'Blood Pressure': [
-                        /(?:blood\s+pressure|BP)\s*(?:is\s+)?(\d+)(?:\s*over\s*|\s*\/\s*)(\d+)/i,
-                        /BP\s*(\d+)\/(\d+)/i,
-                        /(\d+)\s*over\s*(\d+)/i
-                    ],
-                    'Heart Rate': [
-                        /(?:heart\s+rate|HR|pulse|FHR|fetal\s+heart\s+rate)\s*(?:is\s+)?(\d+)\s*(?:bpm|beats\s+per\s+minute|beats)?/i,
-                        /(?:heart\s+rate|HR)\s*(\d+)/i,
-                        /(\d+)\s*(?:bpm|beats\s+per\s+minute)/i
-                    ],
-                    'Temperature': [
-                        /temperature\s*(?:is\s+)?(\d+\.?\d*)\s*(?:degrees?|°)?(?:\s*[CF])?/i,
-                        /temp\s*(\d+\.?\d*)/i
-                    ],
-                    'Weight': [
-                        /(?:weight|wt)\s*(?:is\s+)?(\d+\.?\d*)\s*(?:kg|kilograms?|lbs?|pounds?|grams?|g)?/i,
-                        /(\d+\.?\d*)\s*(?:kg|kilograms?|grams?|g)\b/i
-                    ],
-                    'Height': [
-                        /height\s*(?:is\s+)?(\d+\.?\d*)\s*(?:cm|centimeters?|ft|feet|inches?|in)?/i,
-                        /(\d+\.?\d*)\s*(?:cm|centimeters?)/i
-                    ],
+                    // General Parameters
                     'Age': [
-                        /(?:age\s+(?:is\s+)?|patient\s+is\s+|(?:year\s+old\s+)?(?:male|female)\s+)(\d+)\s*(?:years?\s+old)?/i,
-                        /(\d+)[\s-]year[\s-]old/i
-                    ],
-
-                    // Ultrasound Specific
-                    'Gestational Age': [
-                        /(?:gestational\s+age|GA)\s*(?:is\s+)?(\d+)\s*(?:weeks?)?\s*(?:(\d+)\s*days?)?/i,
-                        /(\d+)[\s-]week\s+(?:ultrasound|prenatal|pregnancy)/i,
-                        /(\d+)\s*weeks?\s*(\d+)?\s*days?\s*pregnant/i
-                    ],
-                    'Biparietal Diameter': [
-                        /(?:biparietal\s+diameter|BPD)\s*(?:is\s+)?(?:measures\s+)?(\d+\.?\d*)\s*(?:mm|millimeters?)?/i,
-                        /BPD\s*(\d+\.?\d*)/i,
-                        /biparietal\s+(\d+\.?\d*)/i
-                    ],
-                    'Head Circumference': [
-                        /(?:head\s+circumference|HC)\s*(?:is\s+)?(\d+\.?\d*)\s*(?:mm|millimeters?)?/i,
-                        /HC\s*(\d+\.?\d*)/i,
-                        /head\s+circumference\s+(\d+\.?\d*)/i
-                    ],
-                    'Abdominal Circumference': [
-                        /(?:abdominal\s+circumference|AC)\s*(?:is\s+)?(\d+\.?\d*)\s*(?:mm|millimeters?)?/i,
-                        /AC\s*(\d+\.?\d*)/i,
-                        /abdominal\s+(\d+\.?\d*)/i
-                    ],
-                    'Femur Length': [
-                        /(?:femur\s+length|FL)\s*(?:is\s+)?(\d+\.?\d*)\s*(?:mm|millimeters?)?/i,
-                        /FL\s*(\d+\.?\d*)/i,
-                        /femur\s+(\d+\.?\d*)/i
-                    ],
-                    'Estimated Fetal Weight': [
-                        /(?:estimated\s+fetal\s+weight|EFW)\s*(?:is\s+)?(\d+\.?\d*)\s*(?:grams?|g)?/i,
-                        /EFW\s*(\d+\.?\d*)/i,
-                        /fetal\s+weight\s+(\d+\.?\d*)/i,
-                        /estimated\s+weight\s+(\d+\.?\d*)/i
-                    ],
-                    'Placenta Location': [
-                        /placenta\s+(?:is\s+)?(?:located\s+)?(?:at\s+)?(\w+)/i,
-                        /placenta\s+(\w+)/i
-                    ],
-                    'Amniotic Fluid': [
-                        /amniotic\s+fluid\s+(?:is\s+)?(\w+)/i,
-                        /amniotic\s+(\w+)/i,
-                        /fluid\s+(?:is\s+)?(\w+)/i
-                    ],
-                    'Presentation': [
-                        /(?:fetal\s+)?presentation\s+(?:is\s+)?(\w+)/i,
-                        /presentation\s+(\w+)/i
-                    ],
-
-                    // Cardiac Specific
-                    'Ejection Fraction': [
-                        /(?:ejection\s+fraction|EF)\s*(?:is\s+)?(\d+\.?\d*)\s*(?:%|percent)?/i,
-                        /EF\s*(\d+\.?\d*)/i
-                    ],
-                    'Left Ventricular Function': [
-                        /(?:left\s+ventricular?|LV)\s+function\s+(?:is\s+)?(\w+)/i,
-                        /LV\s+function\s+(\w+)/i,
-                        /left\s+ventricular\s+(\w+)/i
-                    ],
-
-                    // Radiology Specific Parameters
-                    'Sex': [
-                        /(?:sex|gender)\s*(?:is\s+)?(\w+)/i,
-                        /(male|female|M|F)\s*patient/i,
-                        /patient\s+is\s+(male|female)/i
-                    ],
-                    'Technique': [
-                        /technique\s*:?\s*(.+?)(?:\.|findings|impression)/i,
-                        /performed\s+using\s+(.+?)(?:\.|findings)/i,
-                        /scanner\s+(.+?)(?:\.|findings)/i
-                    ],
-                    
-                    // MRI Brain Parameters
-                    'Basal Ganglia': [
-                        /basal\s+ganglia\s+(?:and\s+thalami\s+)?(?:are\s+)?(\w+)/i,
-                        /bilateral\s+basal\s+ganglia\s+(\w+)/i
-                    ],
-                    'Cerebellum': [
-                        /cerebellum\s+(?:and\s+brainstem\s+)?(?:are\s+)?(\w+)/i,
-                        /posterior\s+fossa\s+(\w+)/i
-                    ],
-                    'Ventricular System': [
-                        /ventricular\s+system\s*,?\s*cisternal\s*&?\s*sulcal\s+spaces\s+(?:are\s+)?(\w+)/i,
-                        /ventricles\s+(?:are\s+)?(\w+)/i
-                    ],
-                    'Angiography': [
-                        /angiography\s+shows?\s*:?\s*(.+?)(?:impression|consultant)/i,
-                        /arteries\s+(?:are\s+)?(\w+)/i
-                    ],
-                    
-                    // CT Chest Parameters
-                    'Trachea': [
-                        /trachea\s+(?:and\s+main\s+bronchi\s+)?(?:are\s+)?(\w+)/i,
-                        /bronchi\s+(?:are\s+)?(\w+)/i
-                    ],
-                    'Mediastinum': [
-                        /mediastinal\s+(.+?)(?:\.|no)/i,
-                        /lymphadenopathy\s+(\w+)/i
-                    ],
-                    'Lung Parenchyma': [
-                        /lung\s+parenchyma\s+(.+?)(?:\.|no)/i,
-                        /bilateral\s+lung\s+fields\s+(.+?)(?:\.|no)/i
-                    ],
-                    'Pleural': [
-                        /pleural\s+(.+?)(?:\.|soft)/i,
-                        /pleural\s+collection\s+(\w+)/i
-                    ],
-                    
-                    // CT Abdomen Parameters
-                    'Liver': [
-                        /liver\s+is\s+(.+?)(?:\.|cbd|gallbladder)/i,
-                        /liver\s+(.+?)(?:size|attenuation)/i
-                    ],
-                    'Gallbladder': [
-                        /gallbladder\s+(.+?)(?:\.|spleen|pancreas)/i,
-                        /gb\s+(.+?)(?:\.|spleen)/i
-                    ],
-                    'Pancreas': [
-                        /pancreas\s*:?\s*(.+?)(?:\.|both\s+kidneys|kidneys)/i
-                    ],
-                    'Kidneys': [
-                        /(?:both\s+)?kidneys\s+(?:are\s+)?(.+?)(?:\.|adrenal|aorta)/i,
-                        /renal\s+(.+?)(?:\.|adrenal)/i
-                    ],
-                    'Spleen': [
-                        /spleen\s+is\s+(.+?)(?:\.|mesentery|pancreas)/i
+                        /(?:age\s+(?:is\s+)?|patient\s+is\s+|(?:\d+\s+)?(?:year\s+old\s+)?(?:male|female)\s+)(\d+)\s*(?:years?\s+old)?/i,
+                        /(\d+)[\s-]year[\s-]old/i,
+                        /(?:this\s+is\s+a\s+)?(\d+)[\s-]year[\s-]old/i,
+                        /age\s+(\d+)/i,
+                        /(\d+)\s+years?\s+old/i
                     ],
                     
                     // CT Brain Parameters
                     'Cerebral Matter': [
-                        /cerebral\s+grey\s+and\s+white\s+matter\s+(.+?)(?:\.|basal)/i,
-                        /cerebral\s+parenchyma\s+(.+?)(?:\.|basal)/i
+                        /cerebral\s+grey\s+and\s+white\s+matter\s+(.+?)(?:\.|basal|findings)/i,
+                        /grey\s+matter\s+(.+?)(?:\.|white|basal)/i,
+                        /white\s+matter\s+(.+?)(?:\.|basal|posterior)/i,
+                        /(appear\s+normal)/i,
+                        /(no\s+focal\s+lesion)/i
+                    ],
+                    'Basal Ganglia': [
+                        /basal\s+ganglia\s+(?:and\s+thalami\s+)?(?:are\s+)?(.+?)(?:\.|posterior|cerebellum)/i,
+                        /thalami\s+(?:are\s+)?(.+?)(?:\.|posterior)/i
                     ],
                     'Posterior Fossa': [
                         /posterior\s+fossa\s+structures\s+(.+?)(?:\.|ventricular)/i,
-                        /brain\s+stem\s+and\s+cerebellum\s+(.+?)(?:\.|ventricular)/i
+                        /cerebellum\s+(?:and\s+brainstem\s+)?(.+?)(?:\.|ventricular)/i,
+                        /brainstem\s+(.+?)(?:\.|ventricular)/i
+                    ],
+                    'Ventricular System': [
+                        /ventricular\s+system\s*,?\s*cisternal\s*&?\s*sulcal\s+spaces\s+(?:are\s+)?(.+?)(?:\.|hemorrhage)/i,
+                        /ventricles\s+(?:are\s+)?(.+?)(?:\.|cisternal)/i
+                    ],
+                    'Hemorrhage': [
+                        /(no\s+intra\s*\/?\s*extra[\s-]?axial\s+bleed)/i,
+                        /(no\s+intracerebral\s+hemorrhage)/i,
+                        /hemorrhage\s+(.+?)(?:\.|midline)/i
+                    ],
+                    'Midline Shift': [
+                        /(no\s+midline\s+shift)/i,
+                        /(no\s+herniations)/i,
+                        /midline\s+shift\s+(.+?)(?:\.|skull)/i
+                    ],
+                    
+                    // MRI Brain/Stroke Parameters
+                    'Diffusion Weighted': [
+                        /(no\s+restriction\s+(?:is\s+)?seen\s+on\s+diffusion\s+weighted\s+images)/i,
+                        /diffusion\s+weighted\s+(.+?)(?:\.|acute)/i,
+                        /(no\s+acute\s+infarct)/i
+                    ],
+                    'MR Angiography': [
+                        /angiography\s+shows\s*:?\s*(.+?)(?:impression|consultant)/i,
+                        /intracranial\s+(?:internal\s+)?carotid\s+arteries\s+(.+?)(?:\.|basilar)/i,
+                        /basilar\s+artery\s+(.+?)(?:\.|vertebral)/i,
+                        /vertebral\s+arteries\s+(.+?)(?:\.|impression)/i
                     ],
                     
                     // MRI Spine Parameters
                     'Curvature': [
                         /curvature\s+of\s+spine\s+is\s+(.+?)(?:\.|canal)/i,
-                        /spinal\s+curvature\s+(.+?)(?:\.|canal)/i
+                        /curvature\s+(?:is\s+)?(.+?)(?:\.|canal)/i
                     ],
                     'Canal Diameters': [
-                        /canal\s+diameters\s+(.+?)(?:mm|whole\s+spine)/i,
-                        /ap\s+(\d+\.?\d*)\s*mm/i
+                        /canal\s+diameters\s+(.+?)(?:\.|whole)/i,
+                        /c2[\s-]c3\s+(\d+\.?\d*)/i,
+                        /c3[\s-]c4\s+(\d+\.?\d*)/i,
+                        /c4[\s-]c5\s+(\d+\.?\d*)/i,
+                        /c5[\s-]c6\s+(\d+\.?\d*)/i,
+                        /c6[\s-]c7\s+(\d+\.?\d*)/i
                     ],
                     'Vertebral Bodies': [
-                        /vertebral\s+bodies\s+(.+?)(?:\.|configuration)/i,
-                        /alignment\s*,?\s*heights\s+(.+?)(?:\.|configuration)/i
+                        /vertebral\s+bodies\s+(?:are\s+)?(.+?)(?:\.|configuration)/i,
+                        /alignment\s*,?\s*heights\s+(?:and\s+bone\s+marrow\s+signal\s+intensity\s+)?(.+?)(?:\.|configuration)/i
                     ],
-                    'Discs': [
-                        /discs?\s*,?\s*thecal\s+sac\s+(.+?)(?:\.|impression)/i,
-                        /disc\s+(.+?)(?:\.|thecal)/i
+                    'Disc Configuration': [
+                        /configuration\s+of\s+(?:rest\s+of\s+the\s+)?discs\s*,?\s*thecal\s+sac\s+(.+?)(?:\.|impression)/i,
+                        /discs\s*,?\s*thecal\s+sac\s+(.+?)(?:\.|neural)/i
                     ],
                     
-                    // Impression (common to all)
+                    // CT Abdomen Parameters
+                    'Liver': [
+                        /liver\s+is\s+(.+?)(?:\.|cbd|gallbladder)/i,
+                        /liver\s+(.+?)(?:\.|normal\s+in)/i
+                    ],
+                    'Gallbladder': [
+                        /gallbladder\s+is\s+(.+?)(?:\.|spleen|wall)/i,
+                        /gallbladder\s+(.+?)(?:\.|wall)/i
+                    ],
+                    'Pancreas': [
+                        /pancreas\s*:?\s*(.+?)(?:\.|both\s+kidneys|kidneys)/i,
+                        /pancreas\s+(.+?)(?:\.|normal)/i
+                    ],
+                    'Kidneys': [
+                        /(?:both\s+)?kidneys\s+(?:are\s+)?(.+?)(?:\.|adrenal|aorta)/i,
+                        /kidneys\s+(.+?)(?:\.|normal)/i
+                    ],
+                    'Spleen': [
+                        /spleen\s+is\s+(.+?)(?:\.|mesentery|normal)/i
+                    ],
+                    
+                    // Common Findings
                     'Impression': [
                         /impression\s*:?\s*(.+?)(?:consultant|dr\.|radiologist)/i,
                         /conclusion\s*:?\s*(.+?)(?:consultant|dr\.)/i
                     ]
                 };
 
-                // Process each parameter with multiple patterns
+                // Process each parameter
                 for (let [paramName, patterns] of Object.entries(paramPatterns)) {
-                    // Skip if already found
                     if (this.parameters[paramName]) continue;
                     
                     for (let pattern of patterns) {
                         const match = text.match(pattern);
                         if (match) {
-                            let value;
+                            let value = match[1] || match[0];
                             
-                            // Handle special cases
-                            if (paramName === 'Blood Pressure' && match[2]) {
-                                value = `${match[1]}/${match[2]}`;
-                            } else if (paramName === 'Gestational Age' && match[2]) {
-                                value = `${match[1]} weeks ${match[2]} days`;
-                            } else if (paramName === 'Gestational Age' && match[1]) {
-                                value = `${match[1]} weeks`;
-                            } else {
-                                value = match[1];
-                            }
-                            
-                            // Add units for measurements
-                            if (['Biparietal Diameter', 'Head Circumference', 'Abdominal Circumference', 'Femur Length'].includes(paramName)) {
-                                value += ' mm';
-                            } else if (paramName === 'Estimated Fetal Weight') {
-                                value += ' grams';
-                            } else if (paramName === 'Heart Rate') {
-                                value += ' bpm';
-                            } else if (paramName === 'Ejection Fraction') {
-                                value += '%';
-                            } else if (paramName === 'Temperature') {
-                                value += '°F';
-                            } else if (paramName === 'Weight' && !text.toLowerCase().includes('gram')) {
-                                value += ' kg';
-                            } else if (paramName === 'Height') {
-                                value += ' cm';
+                            // Clean up the value
+                            value = value.trim();
+                            if (value.endsWith('.')) {
+                                value = value.slice(0, -1);
                             }
                             
                             this.parameters[paramName] = value;
-                            break; // Found match, move to next parameter
+                            break;
                         }
                     }
                 }
             }
 
+            updateProcessingStatus() {
+                const patientDetected = !!this.patientName;
+                const examDetected = !!this.examType;
+                const paramsCount = Object.keys(this.parameters).length;
+                
+                if (patientDetected && examDetected && paramsCount > 0) {
+                    this.updateStatus(`🎯 Full automation active! ${paramsCount} parameters extracted`);
+                } else if (patientDetected && examDetected) {
+                    this.updateStatus('✅ Patient and exam detected - Listening for findings...');
+                } else if (patientDetected) {
+                    this.updateStatus('👤 Patient detected - Analyzing exam type...');
+                } else if (examDetected) {
+                    this.updateStatus('🏥 Exam type detected - Listening for patient name...');
+                } else {
+                    this.updateStatus('🎤 Processing speech - Detecting patient and exam type...');
+                }
+            }
+
             updateDisplay() {
-                // Update patient name
+                // Update patient info
                 document.getElementById('patientName').textContent = 
                     this.patientName || 'Listening...';
                 
-                // Update exam type
                 document.getElementById('examType').textContent = 
                     this.examType || 'Analyzing...';
+                    
+                document.getElementById('detectedGender').textContent = 
+                    this.detectedGender || 'Auto-detecting...';
                 
                 // Update status
                 if (this.patientName && this.examType) {
-                    document.getElementById('processingStatus').textContent = 'Full automation active!';
+                    document.getElementById('processingStatus').textContent = 'Report generating!';
                 } else {
                     document.getElementById('processingStatus').textContent = 'Detecting...';
                 }
                 
-                // Update parameters
+                // Update parameters and document
                 this.updateParametersList();
-                
-                // Update document preview
                 this.updateDocumentPreview();
             }
 
@@ -1492,7 +1373,7 @@
                 if (Object.keys(this.parameters).length === 0) {
                     paramsList.innerHTML = `
                         <div class="parameter-item">
-                            <span class="parameter-name">🎤 Listening for medical parameters...</span>
+                            <span class="parameter-name">🎤 Listening for medical findings...</span>
                             <span class="parameter-value">--</span>
                         </div>
                     `;
@@ -1501,38 +1382,14 @@
 
                 paramsList.innerHTML = '';
                 
-                // Sort parameters by importance for medical display
-                const parameterOrder = [
-                    'Patient Name', 'Gestational Age', 'Biparietal Diameter', 
-                    'Head Circumference', 'Abdominal Circumference', 'Femur Length',
-                    'Estimated Fetal Weight', 'Heart Rate', 'Blood Pressure',
-                    'Ejection Fraction', 'Left Ventricular Function', 
-                    'Placenta Location', 'Amniotic Fluid', 'Presentation',
-                    'Temperature', 'Weight', 'Height', 'Age'
-                ];
-                
-                // Add found parameters in order
-                for (let paramName of parameterOrder) {
-                    if (this.parameters[paramName]) {
-                        paramsList.innerHTML += `
-                            <div class="parameter-item" style="animation: fadeInScale 0.5s ease-out;">
-                                <span class="parameter-name">✅ ${paramName}</span>
-                                <span class="parameter-value">${this.parameters[paramName]}</span>
-                            </div>
-                        `;
-                    }
-                }
-                
-                // Add any remaining parameters not in the order list
+                // Display parameters in order of importance
                 for (let [name, value] of Object.entries(this.parameters)) {
-                    if (!parameterOrder.includes(name)) {
-                        paramsList.innerHTML += `
-                            <div class="parameter-item" style="animation: fadeInScale 0.5s ease-out;">
-                                <span class="parameter-name">✅ ${name}</span>
-                                <span class="parameter-value">${value}</span>
-                            </div>
-                        `;
-                    }
+                    paramsList.innerHTML += `
+                        <div class="parameter-item" style="animation: fadeInScale 0.5s ease-out;">
+                            <span class="parameter-name">✅ ${name}</span>
+                            <span class="parameter-value">${value}</span>
+                        </div>
+                    `;
                 }
             }
 
@@ -1540,159 +1397,45 @@
                 const preview = document.getElementById('documentPreview');
                 
                 if (!this.patientName || !this.examType) {
-                    preview.textContent = 'Document will generate once patient and exam type are detected...';
+                    preview.textContent = 'Professional medical report will generate automatically once patient name and exam type are detected...';
                     return;
                 }
 
-                const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
-                const filename = `${this.patientName.replace(/\s+/g, '_')}_${this.examType.replace(/\s+/g, '_').toLowerCase()}_${timestamp}`;
-
-                let documentContent = this.generateMedicalReport();
+                const documentContent = this.generateMedicalReport();
                 preview.textContent = documentContent;
                 
                 // Show download button
+                const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+                const filename = `${this.patientName.replace(/\s+/g, '_')}_${this.examType.replace(/\s+/g, '_').toLowerCase()}_${timestamp}`;
                 this.showDownloadButton(filename, documentContent);
             }
 
             generateMedicalReport() {
-                const date = new Date().toLocaleDateString('en-IN');
-                const time = new Date().toLocaleTimeString('en-IN');
+                const todayDate = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
                 
                 switch (this.examType) {
-                    case 'MRI Brain':
-                        return this.generateMRIBrainReport(date, time);
-                    case 'CT Chest':
-                        return this.generateCTChestReport(date, time);
-                    case 'CT Abdomen':
-                        return this.generateCTAbdomenReport(date, time);
                     case 'CT Brain':
-                        return this.generateCTBrainReport(date, time);
-                    case 'MRI Spine':
-                        return this.generateMRISpineReport(date, time);
-                    case 'Ultrasound':
-                        return this.generateUltrasoundReport(date, time);
-                    case 'Echocardiogram':
-                        return this.generateEchoReport(date, time);
+                        return this.generateCTBrainReport(todayDate);
+                    case 'MRI Brain':
+                        return this.generateMRIBrainReport(todayDate);
+                    case 'MRI Stroke Protocol':
+                        return this.generateMRIStrokeReport(todayDate);
+                    case 'MRI Cervical Spine':
+                        return this.generateMRISpineReport(todayDate);
+                    case 'CT Abdomen':
+                        return this.generateCTAbdomenReport(todayDate);
                     default:
-                        return this.generateGeneralReport(date, time);
+                        return this.generateGeneralReport(todayDate);
                 }
             }
 
-            generateMRIBrainReport(date, time) {
+            generateCTBrainReport(date) {
                 const age = this.parameters['Age'] || '[Age]';
-                const sex = this.parameters['Sex'] || '[Sex]';
+                const sex = this.detectedGender || 'M';
+                const uhid = `UH${Math.floor(Math.random() * 900000) + 100000}`;
                 
-                return `**Name: ${this.patientName} Sex: ${sex} Age: ${age} Yrs Date: ${date}**
-
-**Reff.By: Dr. UHID: UH**
-
-**DEPARTMENT OF RADIO-DIAGNOSIS**
-
-**MRI BRAIN PLAIN (ANGIOGRAM)**
-
-**TECHNIQUE:**
-T2 FSE Axials / Sagittals & Coronals.T1 &T2 FLAIR Axials. DWI, GRE Axials.
-3D TOF MR Angiography of Intra + Extracranial Arteries.
-
-**FINDINGS:**
-No restriction is seen on diffusion weighted images to suggest acute infarct.
-No intracerebral hemorrhage is noted.
-Bilateral basal ganglia and thalami are ${this.parameters['Basal Ganglia'] || 'normal'}.
-Cerebellum and brainstem are ${this.parameters['Cerebellum'] || 'unremarkable'}.
-The ventricular system, cisternal & sulcal spaces are ${this.parameters['Ventricular System'] || 'normal'}.
-
-**MR ANGIOGRAPHY SHOWS:**
-${this.parameters['Angiography'] || 'Bilateral intracranial internal carotid arteries, anterior & middle cerebral arteries and their branches are normal in caliber/flow signal. The basilar artery and bilateral posterior cerebral arteries are normal in caliber and course. Both vertebral arteries are normal in calibre and flow signal.'}
-
-**IMPRESSION:**
-- ${this.parameters['Impression'] || 'No significant brain parenchymal abnormality detected.'}
-
----Suggested clinical correlation / further evaluation if clinically indicated.
-
-**CONSULTANT RADIOLOGIST**
-**DR. VISHRUTH RASA. M.D. RADIOLOGY**
-
-Generated: ${date} ${time}`;
-            }
-
-            generateCTChestReport(date, time) {
-                const age = this.parameters['Age'] || '[Age]';
-                const sex = this.parameters['Sex'] || 'F';
-                
-                return `**Name: ${this.patientName} Sex: ${sex} Age: ${age} Yrs Date: ${date}**
-
-**Reff.By: UHID: UH**
-
-**DEPARTMENT OF RADIO-DIAGNOSIS**
-
-**CT CHEST PLAIN**
-
-**TECHNIQUE:**
-CT scan of the chest was performed on 96 slice MDCT scanner using 0.625mm detector collimation. Coronal & sagittal reconstructions were performed at 2.5mm intervals.
-
-**FINDINGS:**
-Trachea and main bronchi are ${this.parameters['Trachea'] || 'normal in caliber and course with no endobronchial lesions seen'}.
-Mediastinal vascular structures are ${this.parameters['Mediastinum'] || 'within normal limits'}.
-No significant mediastinal lymphadenopathy seen.
-Lung parenchyma ${this.parameters['Lung Parenchyma'] || 'does not reveal any alveolar, interstitial or airway disease'}.
-${this.parameters['Pleural'] || 'No pleural collection seen'}.
-Soft tissues and bony cage are normal.
-
-**IMPRESSION:**
-- ${this.parameters['Impression'] || 'No focal lesions in bilateral lung fields.'}
-
----Suggested clinical correlation / further evaluation if clinically indicated.
-
-**CONSULTANT RADIOLOGIST**
-**DR. VISHRUTH RASA. M.D. RADIOLOGY**
-
-Generated: ${date} ${time}`;
-            }
-
-            generateCTAbdomenReport(date, time) {
-                const age = this.parameters['Age'] || '[Age]';
-                const sex = this.parameters['Sex'] || 'M/F';
-                
-                return `**Name: ${this.patientName} Sex: ${sex} Age: ${age} Yrs Date: ${date}**
-
-**Reff.By.Dr: UHID:**
-
-**DEPARTMENT OF RADIO-DIAGNOSIS**
-
-**CT ABDOMEN AND PELVIS PLAIN**
-
-**TECHNIQUE:** CT abdomen plain study was performed on 96 slice MDCT scanner with detector collimation of 0.625mm, 1mm reconstruction in saggital and coronal planes.
-
-**FINDINGS:**
-Liver is ${this.parameters['Liver'] || 'normal in size and attenuation. No IHBRD'}.
-CBD normal in caliber.
-Gallbladder ${this.parameters['Gallbladder'] || 'is well distended. Wall thickness appears normal. No e/o hyperdense calculi'}.
-Spleen is ${this.parameters['Spleen'] || 'normal in size and attenuation'}.
-Mesentery and omentum are normal.
-Pancreas: ${this.parameters['Pancreas'] || 'Normal in size, shape and attenuation. No e/o ductal dilatation, parenchymal calcifications and peripancreatic fluid collection'}.
-Both kidneys ${this.parameters['Kidneys'] || 'are normal in size, shape and attenuation. No hydronephrosis / calculi'}.
-Both adrenal glands appear normal.
-Aorta and IVC are normal.
-Urinary bladder is normal in contours. No filling defects noted. No calculi. Wall thickness appears normal.
-Prostate is normal in size and attenuation.
-No free fluid in the peritoneal cavity.
-
-**IMPRESSION:**
-- ${this.parameters['Impression'] || 'No significant abnormality detected.'}
-
-**CONSULTANT RADIOLOGIST**
-**DR. VISHRUTH RASA. M.D. RADIOLOGY**
-
-Generated: ${date} ${time}`;
-            }
-
-            generateCTBrainReport(date, time) {
-                const age = this.parameters['Age'] || '[Age]';
-                const sex = this.guessGenderFromIndianName(this.patientName) || this.parameters['Sex'] || 'M';
-                const todayDate = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
-                
-                return `**Name: ${this.patientName || '[Patient Name]'}                      Sex: ${sex}           Age: ${age} Yrs                    Date: ${todayDate}**
-**Reff.By: Dr. Rajesh Kumar                                                                     UHID: UH${Math.floor(Math.random() * 900000) + 100000}**
+                return `**Name: ${this.patientName || '[Patient Name]'}                      Sex: ${sex}           Age: ${age} Yrs                    Date: ${date}**
+**Reff.By: Dr. Rajesh Kumar                                                                     UHID: ${uhid}**
 ** **
 **DEPARTMENT OF RADIO-DIAGNOSIS**
 **CT BRAIN PLAIN**
@@ -1713,7 +1456,7 @@ ${this.parameters['Hemorrhage'] || 'No intra / extra-axial bleed seen.'}
  
 ${this.parameters['Midline Shift'] || 'No midline shift / herniations noted.'}
  
-${this.parameters['Skull Bones'] || 'Skull bones are unremarkable.'}
+Skull bones are unremarkable.
  
 **IMPRESSION**:
 ** **
@@ -1725,121 +1468,239 @@ ${this.parameters['Skull Bones'] || 'Skull bones are unremarkable.'}
 **             CONSULTANT RADIOLOGIST**
 **                                                                            DR. VISHRUTH RASA. M.D. RADIOLOGY**`;
             }
-            generateMRISpineReport(date, time) {
+
+            generateMRIBrainReport(date) {
                 const age = this.parameters['Age'] || '[Age]';
-                const sex = this.parameters['Sex'] || '[Sex]';
+                const sex = this.detectedGender || 'M';
+                const uhid = `UH${Math.floor(Math.random() * 900000) + 100000}`;
                 
-                return `**Name: ${this.patientName} Sex: ${sex} Age: ${age} Yrs Date: ${date}**
-
-**Reff.By.Dr: UHID:**
-
+                return `**Name: ${this.patientName || '[Patient Name]'}               Sex: ${sex}                Age: ${age} Yrs      Date: ${date}**
+**Reff.By: Dr. Rajesh Kumar                                                     UHID: ${uhid}**
+** **
 **DEPARTMENT OF RADIO-DIAGNOSIS**
+**MRI BRAIN PLAIN (ANGIOGRAM)**
+** **
+**TECHNIQUE**:
+T2 FSE Axials / Sagittals & Coronals.T1 &T2 FLAIR Axials. DWI, GRE Axials.
+3D TOF MR Angiography of Intra + Extracranial Arteries.
+ 
+**FINDINGS**:
+ 
+${this.parameters['Diffusion Weighted'] || 'No restriction is seen on diffusion weighted images to suggest acute infarct.'}
+ 
+${this.parameters['Hemorrhage'] || 'No intracerebral hemorrhage is noted.'}
+ 
+${this.parameters['Basal Ganglia'] || 'Bilateral basal ganglia and thalami are normal.'}
+ 
+${this.parameters['Posterior Fossa'] || 'Cerebellum and brainstem are unremarkable.'}
+ 
+${this.parameters['Ventricular System'] || 'The ventricular system, cisternal & sulcal spaces are normal.'}
+ 
+**MR ANGIOGRAPHY SHOWS:**
+ 
+${this.parameters['MR Angiography'] || 'Bilateral intracranial internal carotid arteries, anterior & middle cerebral arteries and their branches are normal in caliber/flow signal.\n\nThe basilar artery and bilateral posterior cerebral arteries are normal in caliber and course.\n\nBoth vertebral arteries are normal in calibre and flow signal.'}
 
-**MRI CERVICAL SPINE WITH WHOLE SPINE SCREENING**
-
-**TECHNIQUE:** T1-T2 sagittal & axials, IR coronals.
-
-**FINDINGS:**
-Curvature of spine is ${this.parameters['Curvature'] || 'well maintained'}.
-
-**Canal diameters are as below:**
-${this.parameters['Canal Diameters'] || `
-Level     C2-C3   C3-C4   C4-C5   C5-C6   C6-C7
-AP Mm     13      13      8.7     11      9.5`}
-
-**WHOLE SPINE SCREENING:**
-Alignment, heights and bone marrow signal intensity of rest of the cervical vertebral bodies ${this.parameters['Vertebral Bodies'] || 'are within normal limits'}.
-Configuration of rest of the discs, thecal sac, filar roots, lateral recesses, neural foraminae, neural arches, facet joints and posterior elements ${this.parameters['Discs'] || 'are within normal limits'}.
-
-**IMPRESSION:**
-- ${this.parameters['Impression'] || 'No significant abnormality detected.'}
-
+**IMPRESSION: **
+** **
+·       **${this.parameters['Impression'] || 'No significant brain parenchymal abnormality detected.'}**
+** **
+*                        ---Suggested clinical correlation / further evaluation if clinically indicated.*
+** **
+** **
+** **
 **CONSULTANT RADIOLOGIST**
-**DR. VISHRUTH RASA. M.D. RADIOLOGY**
-
-Generated: ${date} ${time}`;
+**                                                                                                            DR. VISHRUTH RASA. M.D. RADIOLOGY**`;
             }
 
-            generateUltrasoundReport(date, time) {
-                return `# Ultrasound Examination Report
+            generateMRIStrokeReport(date) {
+                const age = this.parameters['Age'] || '[Age]';
+                const sex = this.detectedGender || 'M';
+                const uhid = `UH${Math.floor(Math.random() * 900000) + 100000}`;
+                
+                return `**Name: ${this.patientName || '[Patient Name]'}                       Sex: ${sex}                  Age: ${age} Yrs                             Date: ${date}**
+**Reff.By: Dr. Emergency Medicine                                                                                             UHID: ${uhid}**
+** **
+**DEPARTMENT OF RADIO-DIAGNOSIS**
+**MRI STROKE PROTOCOL**
+** **
+**TECHNIQUE**:
+T2 FSE Axials / Sagittals & Coronals.T1 &T2 FLAIR Axials. DWI, GRE Axials.
+3D TOF MR Angiography of Intra cranial Arteries.
+ 
+**FINDINGS**:
+ 
+${this.parameters['Diffusion Weighted'] || 'No restriction is seen on diffusion weighted images to suggest acute infarct.'}
+ 
+${this.parameters['Hemorrhage'] || 'No intracerebral hemorrhage is noted.'}
+ 
+${this.parameters['Basal Ganglia'] || 'Bilateral basal ganglia and thalami are normal.'}
+ 
+${this.parameters['Posterior Fossa'] || 'Cerebellum and brainstem are unremarkable.'}
+ 
+${this.parameters['Ventricular System'] || 'The ventricular system, cisternal & sulcal spaces are normal.'}
+ 
+**MR ANGIOGRAPHY SHOWS:**
+ 
+${this.parameters['MR Angiography'] || 'Bilateral intracranial internal carotid arteries, anterior & middle cerebral arteries and their branches are normal in caliber/flow signal.\n\nThe basilar artery and bilateral posterior cerebral arteries are normal in caliber and course.\n\nBoth vertebral arteries are normal in calibre and flow signal.'}
 
-**Patient:** ${this.patientName}
-**Date:** ${date}
-**Time:** ${time}
-
-## Biometric Measurements
-${this.parameters['Gestational Age'] ? `• Gestational Age: ${this.parameters['Gestational Age']}` : ''}
-${this.parameters['Biparietal Diameter'] ? `• Biparietal Diameter (BPD): ${this.parameters['Biparietal Diameter']}` : ''}
-${this.parameters['Head Circumference'] ? `• Head Circumference (HC): ${this.parameters['Head Circumference']}` : ''}
-${this.parameters['Abdominal Circumference'] ? `• Abdominal Circumference (AC): ${this.parameters['Abdominal Circumference']}` : ''}
-${this.parameters['Femur Length'] ? `• Femur Length (FL): ${this.parameters['Femur Length']}` : ''}
-${this.parameters['Estimated Fetal Weight'] ? `• Estimated Fetal Weight: ${this.parameters['Estimated Fetal Weight']}` : ''}
-
-## Fetal Assessment
-${this.parameters['Heart Rate'] ? `• Heart Rate: ${this.parameters['Heart Rate']}` : ''}
-${this.parameters['Placenta Location'] ? `• Placenta Location: ${this.parameters['Placenta Location']}` : ''}
-${this.parameters['Amniotic Fluid'] ? `• Amniotic Fluid: ${this.parameters['Amniotic Fluid']}` : ''}
-
-## Complete Transcript
-${this.transcript}
-
-*Generated automatically: ${date} ${time}*`;
+**IMPRESSION: **
+** **
+·       **${this.parameters['Impression'] || 'No significant brain parenchymal abnormality detected.'}**
+** **
+*                        ---Suggested clinical correlation / further evaluation if clinically indicated.*
+** **
+** **
+** **
+**CONSULTANT RADIOLOGIST**
+**                                                                                                            DR. VISHRUTH RASA. M.D. RADIOLOGY**`;
             }
 
-            generateEchoReport(date, time) {
-                return `# Echocardiogram Report
-
-**Patient:** ${this.patientName}
-**Date:** ${date}
-
-## Cardiac Function  
-${this.parameters['Ejection Fraction'] ? `• Ejection Fraction: ${this.parameters['Ejection Fraction']}` : ''}
-${this.parameters['Left Ventricular Function'] ? `• LV Function: ${this.parameters['Left Ventricular Function']}` : ''}
-${this.parameters['Heart Rate'] ? `• Heart Rate: ${this.parameters['Heart Rate']}` : ''}
-${this.parameters['Blood Pressure'] ? `• Blood Pressure: ${this.parameters['Blood Pressure']}` : ''}
-
-## Complete Study
-${this.transcript}
-
-*Generated automatically: ${date} ${time}*`;
+            generateMRISpineReport(date) {
+                const age = this.parameters['Age'] || '[Age]';
+                const sex = this.detectedGender || 'M';
+                const uhid = `UH${Math.floor(Math.random() * 900000) + 100000}`;
+                
+                return `** **
+**Name: ${this.patientName || '[Patient Name]'}                                   Sex: ${sex}                Age: ${age} Yrs                  Date: ${date}**
+**Reff.By.Dr: Orthopedic Surgery                                                                                       UHID: ${uhid}**
+**            **                   **DEPARTMENT OF RADIO-DIAGNOSIS**
+**          MRI CERVICAL SPINE WITH WHOLE SPINE SCREENING**
+** **
+**TECHNIQUE:** T1-T2 sagittal & axials, IR coronals.
+ 
+**FINDINGS:**
+ 
+${this.parameters['Curvature'] || 'Curvature of spine is well maintained.'}
+ 
+Canal diameters are as below:
+Level     C2-C3   C3-C4   C4-C5   C5-C6   C6-C7
+AP Mm        13      13     8.7      11     9.5
+ 
+**WHOLE SPINE SCREENING:**
+ 
+${this.parameters['Vertebral Bodies'] || 'Alignment, heights and bone marrow signal intensity of rest of the cervical vertebral bodies are within normal limits.'}
+ 
+${this.parameters['Disc Configuration'] || 'Configuration of rest of the discs, thecal sac, filar roots, lateral recesses, neural foraminae, neural arches, facet joints and posterior elements are within normal limits.'}
+ 
+**IMPRESSION:**
+** **
+·       **${this.parameters['Impression'] || 'No significant abnormality detected.'}**
+** **
+** **
+** **
+** **
+** **
+** **
+** **
+**CONSULTANT RADIOLOGIST**
+**                                                                                                            DR. VISHRUTH RASA. M.D. RADIOLOGY**`;
             }
 
-            generateGeneralReport(date, time) {
+            generateCTAbdomenReport(date) {
+                const age = this.parameters['Age'] || '[Age]';
+                const sex = this.detectedGender || 'M';
+                const uhid = `UH${Math.floor(Math.random() * 900000) + 100000}`;
+                
+                return `**Name: ${this.patientName || '[Patient Name]'}                       Sex: ${sex}                   Age: ${age} Yrs                   Date: ${date}**
+**Reff.By.Dr: Internal Medicine                                                                                       UHID: ${uhid}**
+** **
+**DEPARTMENT OF RADIO-DIAGNOSIS**
+**CT ABDOMEN AND PELVIS PLAIN**
+** **
+**TECHNIQUE:** CT abdomen plain study was performed on 96 slice MDCT scanner with detector collimation of 0.625mm, 1mm reconstruction in saggital and coronal planes.
+** **
+**FINDINGS:**
+ 
+${this.parameters['Liver'] || 'Liver is normal in size (cm) & attenuation. No IHBRD.'}
+ 
+CBD normal in caliber.
+ 
+${this.parameters['Gallbladder'] || 'Gallbladder is well distended. Wall thickness appears normal. No e/o hyperdense calculi.'}
+ 
+${this.parameters['Spleen'] || 'Spleen is normal in size (cm) and attenuation.'}
+ 
+Mesentery and omentum are normal.
+ 
+${this.parameters['Pancreas'] || 'Pancreas: Normal in size, shape and attenuation. No e/o ductal dilatation, parenchymal calcifications and peripancreatic fluid collection.'}
+ 
+${this.parameters['Kidneys'] || 'Both kidneys are normal in size, shape and attenuation. No hydronephrosis / calculi.'}
+ 
+Both adrenal glands appear normal.
+ 
+Aorta and IVC are normal. 
+ 
+Urinary bladder is normal in contours. No filling defects noted. No calculi. Wall thickness appears normal. 
+ 
+Prostate is normal in size and attenuation.
+ 
+No free fluid in the peritoneal cavity. 
+ 
+**IMPRESSION: **
+** **
+·       **${this.parameters['Impression'] || 'No significant abnormality detected.'}**
+** **
+**            CONSULTANT RADIOLOGIST**
+**                                                                            DR. VISHRUTH RASA. M.D. RADIOLOGY**`;
+            }
+
+            generateGeneralReport(date) {
+                const age = this.parameters['Age'] || '[Age]';
+                const sex = this.detectedGender || 'M';
+                
                 return `# Medical Examination Report
 
-**Patient:** ${this.patientName}
+**Patient:** ${this.patientName || '[Patient Name]'}
 **Date:** ${date}
-**Time:** ${time}
+**Age:** ${age} years
+**Gender:** ${sex}
 
-## Vital Signs
-${this.parameters['Age'] ? `• Age: ${this.parameters['Age']} years` : ''}
-${this.parameters['Weight'] ? `• Weight: ${this.parameters['Weight']}` : ''}
-${this.parameters['Height'] ? `• Height: ${this.parameters['Height']}` : ''}
-${this.parameters['Blood Pressure'] ? `• Blood Pressure: ${this.parameters['Blood Pressure']}` : ''}
-${this.parameters['Heart Rate'] ? `• Heart Rate: ${this.parameters['Heart Rate']}` : ''}
-${this.parameters['Temperature'] ? `• Temperature: ${this.parameters['Temperature']}` : ''}
+## Examination Type: ${this.examType}
 
-## Examination Notes
+## Findings:
+${Object.entries(this.parameters).map(([key, value]) => `• ${key}: ${value}`).join('\n')}
+
+## Complete Transcript:
 ${this.transcript}
 
-*Generated automatically: ${date} ${time}*`;
+*Generated automatically: ${date}*`;
             }
 
             showDownloadButton(filename, content) {
-                // Remove existing download button
+                // Remove existing button
                 const existingBtn = document.getElementById('downloadBtn');
-                if (existingBtn) {
-                    existingBtn.remove();
-                }
+                if (existingBtn) existingBtn.remove();
 
                 // Create download button
                 const downloadBtn = document.createElement('button');
                 downloadBtn.id = 'downloadBtn';
-                downloadBtn.className = 'px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors flex items-center text-sm mt-4';
-                downloadBtn.innerHTML = '<i class="fas fa-download mr-2"></i>Download Report (.txt)';
+                downloadBtn.style.cssText = `
+                    margin-top: 1rem;
+                    padding: 0.75rem 1.5rem;
+                    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                `;
+                downloadBtn.innerHTML = '<i class="fas fa-download"></i>Download Medical Report (.docx)';
+                
+                downloadBtn.onmouseover = () => {
+                    downloadBtn.style.transform = 'translateY(-2px)';
+                    downloadBtn.style.boxShadow = '0 8px 25px rgba(34, 197, 94, 0.4)';
+                };
+                
+                downloadBtn.onmouseout = () => {
+                    downloadBtn.style.transform = 'translateY(0)';
+                    downloadBtn.style.boxShadow = 'none';
+                };
                 
                 downloadBtn.onclick = () => {
-                    this.downloadFile(filename + '.txt', content);
+                    this.downloadFile(filename + '.docx', content);
                 };
 
                 // Add button after document preview
@@ -1848,7 +1709,9 @@ ${this.transcript}
             }
 
             downloadFile(filename, content) {
-                const blob = new Blob([content], { type: 'text/plain' });
+                const blob = new Blob([content], { 
+                    type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' 
+                });
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
@@ -1858,62 +1721,93 @@ ${this.transcript}
                 window.URL.revokeObjectURL(url);
                 document.body.removeChild(a);
                 
-                // Show success message
-                this.showSuccessMessage(`Report downloaded: ${filename}`);
+                this.showSuccessMessage(`Medical Report downloaded: ${filename}`);
             }
 
             showSuccessMessage(message) {
-                // Create success notification
                 const notification = document.createElement('div');
-                notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
-                notification.innerHTML = `<i class="fas fa-check-circle mr-2"></i>${message}`;
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+                    color: white;
+                    padding: 1rem 1.5rem;
+                    border-radius: 8px;
+                    box-shadow: 0 10px 25px rgba(34, 197, 94, 0.3);
+                    z-index: 1000;
+                    font-weight: 600;
+                `;
+                notification.innerHTML = `<i class="fas fa-check-circle" style="margin-right: 0.5rem;"></i>${message}`;
                 
                 document.body.appendChild(notification);
                 
-                // Remove after 3 seconds
                 setTimeout(() => {
                     if (notification.parentNode) {
                         notification.parentNode.removeChild(notification);
                     }
-                }, 3000);
+                }, 4000);
             }
 
             updateTranscript() {
                 document.getElementById('transcriptText').textContent = 
-                    this.transcript || 'Live transcript will appear here...';
+                    this.transcript || 'Live transcript will appear here as you speak...';
             }
 
             updateStatus(status) {
                 document.getElementById('demoStatus').textContent = status;
             }
 
-            // Simulate demo for browsers without speech recognition
+            // Enhanced simulation for demo
             simulateDemo() {
                 this.isRecording = true;
                 document.getElementById('micButton').classList.add('recording');
                 document.getElementById('micIcon').className = 'fas fa-stop';
                 document.getElementById('demoOutput').style.display = 'block';
+                document.getElementById('demoOutput').classList.add('active');
                 
-                this.updateStatus('🎤 Demo Mode - Simulating enhanced voice input...');
+                this.updateStatus('🎤 Demo Mode - Simulating medical voice input...');
                 
-                // Enhanced simulation with more realistic medical speech
-                const simulatedSpeech = [
-                    "Patient Jennifer Martinez is here for her ultrasound examination",
-                    "This is a 32-week prenatal ultrasound assessment",
-                    "Biparietal diameter measures 84.2 millimeters",
-                    "Head circumference is 295 millimeters",
-                    "Abdominal circumference 275 millimeters", 
-                    "Femur length 63.8 millimeters",
-                    "Estimated fetal weight is 1850 grams",
-                    "Fetal heart rate is 142 beats per minute",
-                    "Placenta is located anteriorly",
-                    "Amniotic fluid appears normal"
+                // Multiple demo scenarios
+                const demoScenarios = [
+                    [
+                        "Patient Rajesh Kumar is here for CT brain examination",
+                        "This is a 45-year-old male patient",
+                        "The cerebral grey and white matter appear normal",
+                        "No focal lesion seen in cerebral parenchyma",
+                        "Basal ganglia and thalami are normal",
+                        "Posterior fossa structures are unremarkable",
+                        "Ventricular system and cisternal spaces are normal",
+                        "No intra or extra-axial bleed seen",
+                        "No midline shift noted",
+                        "Impression: No significant brain abnormality detected"
+                    ],
+                    [
+                        "MRI cervical spine for Priya Sharma",
+                        "32-year-old female patient",
+                        "Curvature of spine is well maintained",
+                        "Canal diameters are within normal limits",
+                        "Vertebral bodies show normal alignment",
+                        "Disc configuration appears normal",
+                        "No significant spinal abnormality"
+                    ],
+                    [
+                        "CT abdomen for Arjun Singh",
+                        "28-year-old male",
+                        "Liver is normal in size and attenuation",
+                        "Gallbladder appears normal",
+                        "Pancreas shows normal configuration",
+                        "Both kidneys are normal",
+                        "No significant abdominal abnormality"
+                    ]
                 ];
-
+                
+                const selectedScenario = demoScenarios[Math.floor(Math.random() * demoScenarios.length)];
+                
                 let index = 0;
                 const interval = setInterval(() => {
-                    if (index < simulatedSpeech.length && this.isRecording) {
-                        const text = simulatedSpeech[index];
+                    if (index < selectedScenario.length && this.isRecording) {
+                        const text = selectedScenario[index];
                         this.transcript += text + ' ';
                         this.processTranscript(text);
                         this.updateTranscript();
@@ -1923,14 +1817,14 @@ ${this.transcript}
                     } else {
                         clearInterval(interval);
                         if (this.isRecording) {
-                            this.updateStatus('✅ Demo complete - All parameters extracted successfully!');
+                            this.updateStatus('✅ Demo complete - Professional medical report generated!');
                         }
                     }
-                }, 1500); // Slower for better demo effect
+                }, 2000); // Slower for better medical demonstration
             }
         }
 
-        // Initialize demo when DOM is loaded
+        // Initialize demo when DOM loads
         document.addEventListener('DOMContentLoaded', function() {
             new MedicalVoiceDemo();
         });
