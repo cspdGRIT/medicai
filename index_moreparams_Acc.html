@@ -1688,43 +1688,38 @@ Generated: ${date} ${time}`;
 
             generateCTBrainReport(date, time) {
                 const age = this.parameters['Age'] || '[Age]';
-                const sex = this.guessGenderFromIndianName(this.patientName) || this.parameters['Sex'] || 'M';
-                const todayDate = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
+                const sex = this.parameters['Sex'] || 'M';
                 
-                return `**Name: ${this.patientName || '[Patient Name]'}                      Sex: ${sex}           Age: ${age} Yrs                    Date: ${todayDate}**
-**Reff.By: Dr. Rajesh Kumar                                                                     UHID: UH${Math.floor(Math.random() * 900000) + 100000}**
-** **
+                return `**Name: ${this.patientName} Sex: ${sex} Age: ${age} Yrs Date: ${date}**
+
+**Reff.By: UHID:**
+
 **DEPARTMENT OF RADIO-DIAGNOSIS**
+
 **CT BRAIN PLAIN**
-** **
-**TECHNIQUE: **CT scan of brain was performed on 96 slice MDCT scanner.
-** **
+
+**TECHNIQUE:** CT scan of brain was performed on 96 slice MDCT scanner.
+
 **FINDINGS:**
- 
-${this.parameters['Cerebral Matter'] || 'The cerebral grey and white matter appear normal. No focal lesion is seen in the cerebral parenchyma.'}
- 
-${this.parameters['Basal Ganglia'] || 'The basal ganglia and thalami are normal.'}
- 
-${this.parameters['Posterior Fossa'] || 'The posterior fossa structures including the brain stem and cerebellum do not show any abnormality.'}
- 
-${this.parameters['Ventricular System'] || 'The ventricular system, cisternal & sulcal spaces are normal.'}
- 
-${this.parameters['Hemorrhage'] || 'No intra / extra-axial bleed seen.'}
- 
-${this.parameters['Midline Shift'] || 'No midline shift / herniations noted.'}
- 
-${this.parameters['Skull Bones'] || 'Skull bones are unremarkable.'}
- 
-**IMPRESSION**:
-** **
-·       **${this.parameters['Impression'] || 'No significant brain parenchymal abnormality detected.'}**
-** **
-*---Suggested clinical correlation/further evaluation if clinically indicated.*
-** **
-** **
-**             CONSULTANT RADIOLOGIST**
-**                                                                            DR. VISHRUTH RASA. M.D. RADIOLOGY**`;
+The cerebral grey and white matter ${this.parameters['Cerebral Matter'] || 'appear normal. No focal lesion is seen in the cerebral parenchyma'}.
+The basal ganglia and thalami are ${this.parameters['Basal Ganglia'] || 'normal'}.
+The posterior fossa structures ${this.parameters['Posterior Fossa'] || 'including the brain stem and cerebellum do not show any abnormality'}.
+The ventricular system, cisternal & sulcal spaces are ${this.parameters['Ventricular System'] || 'normal'}.
+No intra / extra-axial bleed seen.
+No midline shift / herniations noted.
+Skull bones are unremarkable.
+
+**IMPRESSION:**
+- ${this.parameters['Impression'] || 'No significant brain parenchymal abnormality detected.'}
+
+---Suggested clinical correlation/further evaluation if clinically indicated.
+
+**CONSULTANT RADIOLOGIST**
+**DR. VISHRUTH RASA. M.D. RADIOLOGY**
+
+Generated: ${date} ${time}`;
             }
+
             generateMRISpineReport(date, time) {
                 const age = this.parameters['Age'] || '[Age]';
                 const sex = this.parameters['Sex'] || '[Sex]';
